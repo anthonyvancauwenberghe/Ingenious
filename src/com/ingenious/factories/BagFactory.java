@@ -6,11 +6,11 @@ import com.ingenious.models.Piece;
 public class BagFactory {
     private Bag bag;
 
-    public BagFactory(Bag bag) {
-        this.bag = bag;
+    public BagFactory() {
+        this.bag = new Bag();
     }
 
-    public void fill() {
+    public Bag generate() {
 
         /* FILL THE BAG WITH 6 PIECES OF A DIFFERENT COLOR */
         for (int i = 0; i < 6; i++) {
@@ -44,10 +44,8 @@ public class BagFactory {
             this.bag.addPiece(Piece.YELLOW_YELLOW);
             this.bag.addPiece(Piece.PURPLE_PURPLE);
         }
-
+        return this.bag;
     }
 
-    public Bag getBag() {
-        return this.getBag();
-    }
+
 }

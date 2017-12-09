@@ -1,6 +1,6 @@
 package com.ingenious.models;
 
-import com.ingenious.configuration.Configuration;
+import com.ingenious.config.Configuration;
 
 import java.awt.*;
 

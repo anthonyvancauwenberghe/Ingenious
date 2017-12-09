@@ -1,6 +1,4 @@
-package com.ingenious.configuration;
-
-import com.ingenious.models.Tile;
+package com.ingenious.config;
 
 import java.awt.*;
 

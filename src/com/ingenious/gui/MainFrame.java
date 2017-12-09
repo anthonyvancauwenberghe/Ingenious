@@ -103,16 +103,21 @@ public class MainFrame extends JFrame {
         this.rackPanel.add(rackComponent, gbc);
 
         JButton swapButton = new JButton("Swap");
-        SwapListener listener = new SwapListener();
+        SwapListener listener = new SwapListener(game);
         swapButton.addActionListener(listener);
         this.rackPanel.add(swapButton);
     }
 
     class SwapListener implements ActionListener {
+        Game game;
+
+        public SwapListener(Game game) {
+            this.game = game;
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            GameServiceProvider.game().swap();
+            this.game.swap();
             repaintAll();
         }
     }

@@ -1,8 +1,8 @@
 package com.ingenious.gui.components;
 
 import com.ingenious.config.Configuration;
-import com.ingenious.models.tiles.Tile;
-import com.ingenious.providers.impl.GameServiceProvider;
+import com.ingenious.engine.Game;
+import com.ingenious.models.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreComponent extends JPanel {
+
+    private Game game;
+
+    public ScoreComponent(Game game) {
+        this.game = game;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -36,10 +43,8 @@ public class ScoreComponent extends JPanel {
 
         int[] myScore = {0, 0, 0, 0, 0, 0};
         int[] opponentScore = {0, 0, 0, 0, 0, 0};
-        if (GameServiceProvider.isBooted()) {
-            myScore = GameServiceProvider.game().getCurrentPlayer().getScoreArray();
-            opponentScore = GameServiceProvider.game().getOppenent().getScoreArray();
-        }
+            myScore = game.getCurrentPlayer().getScoreArray();
+            opponentScore = game.getOtherPlayer().getScoreArray();
 
         //score on score com.ingenious.models.board
         for (int i = 0; i < 6; i++) {
