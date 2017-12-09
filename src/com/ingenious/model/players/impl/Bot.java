@@ -1,11 +1,11 @@
-package com.ingenious.models.players.impl;
+package com.ingenious.model.players.impl;
 
-import com.ingenious.algorithms.Algorithm;
-import com.ingenious.algorithms.Executeable;
+import com.ingenious.algorithm.Algorithm;
+import com.ingenious.algorithm.Executeable;
 import com.ingenious.engine.Game;
-import com.ingenious.models.Move;
-import com.ingenious.models.Rack;
-import com.ingenious.models.players.Player;
+import com.ingenious.model.Move;
+import com.ingenious.model.Rack;
+import com.ingenious.model.players.Player;
 
 public class Bot extends Player {
 

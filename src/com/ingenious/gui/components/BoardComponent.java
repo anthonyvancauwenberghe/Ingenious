@@ -2,11 +2,11 @@ package com.ingenious.gui.components;
 
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
-import com.ingenious.models.BoardNode;
-import com.ingenious.models.Move;
-import com.ingenious.models.Piece;
-import com.ingenious.models.Tile;
-import com.ingenious.providers.GameProvider;
+import com.ingenious.model.BoardNode;
+import com.ingenious.model.Move;
+import com.ingenious.model.Piece;
+import com.ingenious.model.Tile;
+import com.ingenious.provider.GameProvider;
 
 import javax.swing.*;
 import java.awt.*;

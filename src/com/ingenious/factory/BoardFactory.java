@@ -1,9 +1,9 @@
-package com.ingenious.factories;
+package com.ingenious.factory;
 
 import com.ingenious.config.Configuration;
-import com.ingenious.models.Board;
-import com.ingenious.models.BoardNode;
-import com.ingenious.models.Tile;
+import com.ingenious.model.Board;
+import com.ingenious.model.BoardNode;
+import com.ingenious.model.Tile;
 
 public class BoardFactory {
     private Board board;
@@ -30,7 +30,7 @@ public class BoardFactory {
 
     private void buildBoardList() {
         int cnt = 0; //This counter keeps track of the number of boardNodes that were created
-        int board_width = Configuration.boardWidth; // this is the radius of boardNodes from the center to the end of the com.ingenious.models.board (incl. center)
+        int board_width = Configuration.boardWidth; // this is the radius of boardNodes from the center to the end of the com.ingenious.model.board (incl. center)
         int tmp_top = -(board_width - 1);//reference to keep track of the decrease in the number of hexes to be created
         for (int i = 0; i < board_width; i++) //loop as many times as there are columns on the sides of the central one (* 2)
         {

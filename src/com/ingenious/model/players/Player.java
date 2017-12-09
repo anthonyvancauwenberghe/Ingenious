@@ -1,7 +1,7 @@
-package com.ingenious.models.players;
+package com.ingenious.model.players;
 
-import com.ingenious.models.Rack;
-import com.ingenious.models.Score;
+import com.ingenious.model.Rack;
+import com.ingenious.model.Score;
 
 abstract public class Player {
     private String name;

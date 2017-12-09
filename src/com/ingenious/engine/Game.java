@@ -1,9 +1,9 @@
 package com.ingenious.engine;
 
-import com.ingenious.models.Bag;
-import com.ingenious.models.Board;
-import com.ingenious.models.Move;
-import com.ingenious.models.players.Player;
+import com.ingenious.model.Bag;
+import com.ingenious.model.Board;
+import com.ingenious.model.Move;
+import com.ingenious.model.players.Player;
 
 import java.util.ArrayList;
 

@@ -1,13 +1,13 @@
-package com.ingenious.providers;
+package com.ingenious.provider;
 
 import com.ingenious.engine.Game;
-import com.ingenious.factories.BagFactory;
-import com.ingenious.factories.BoardFactory;
-import com.ingenious.factories.PlayerFactory;
+import com.ingenious.factory.BagFactory;
+import com.ingenious.factory.BoardFactory;
+import com.ingenious.factory.PlayerFactory;
 import com.ingenious.gui.MainFrame;
-import com.ingenious.models.Bag;
-import com.ingenious.models.Board;
-import com.ingenious.models.players.Player;
+import com.ingenious.model.Bag;
+import com.ingenious.model.Board;
+import com.ingenious.model.players.Player;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,6 @@ public class GameProvider implements Runnable {
 
     @Override
     public void run() {
-
         game.gameLoop();
     }
 

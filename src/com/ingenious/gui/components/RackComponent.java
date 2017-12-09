@@ -2,7 +2,7 @@ package com.ingenious.gui.components;
 
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
-import com.ingenious.providers.GameProvider;
+import com.ingenious.provider.GameProvider;
 
 import javax.swing.*;
 import java.awt.*;

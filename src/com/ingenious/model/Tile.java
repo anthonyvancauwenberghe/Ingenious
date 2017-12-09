@@ -1,4 +1,4 @@
-package com.ingenious.models;
+package com.ingenious.model;
 
 import com.ingenious.config.Configuration;
 

@@ -1,4 +1,4 @@
-import com.ingenious.providers.GameProvider;
+import com.ingenious.provider.GameProvider;
 
 public class Main {
     public static void main(String[] args) {

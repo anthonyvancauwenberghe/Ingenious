@@ -1,11 +1,11 @@
-package com.ingenious.factories;
+package com.ingenious.factory;
 
-import com.ingenious.algorithms.impl.RandomAlgorithm;
-import com.ingenious.models.Bag;
-import com.ingenious.models.Rack;
-import com.ingenious.models.players.Player;
-import com.ingenious.models.players.impl.Bot;
-import com.ingenious.models.players.impl.Human;
+import com.ingenious.algorithm.impl.RandomAlgorithm;
+import com.ingenious.model.Bag;
+import com.ingenious.model.Rack;
+import com.ingenious.model.players.Player;
+import com.ingenious.model.players.impl.Bot;
+import com.ingenious.model.players.impl.Human;
 
 import java.util.ArrayList;
 

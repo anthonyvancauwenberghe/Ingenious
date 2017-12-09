@@ -2,7 +2,7 @@ package com.ingenious.gui.components;
 
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
-import com.ingenious.models.Tile;
+import com.ingenious.model.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class ScoreComponent extends JPanel {
             myScore = game.getCurrentPlayer().getScore().toArray();
             opponentScore = game.getOtherPlayer().getScore().toArray();
 
-        //score on score com.ingenious.models.board
+        //score on score com.ingenious.model.board
         for (int i = 0; i < 6; i++) {
             g2d.setStroke(new BasicStroke(1));
             for (int j = 18; j >= 0; j--) {

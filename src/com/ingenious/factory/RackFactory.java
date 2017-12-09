@@ -1,7 +1,7 @@
-package com.ingenious.factories;
+package com.ingenious.factory;
 
-import com.ingenious.models.Bag;
-import com.ingenious.models.Rack;
+import com.ingenious.model.Bag;
+import com.ingenious.model.Rack;
 
 public class RackFactory {
     private Bag bag;

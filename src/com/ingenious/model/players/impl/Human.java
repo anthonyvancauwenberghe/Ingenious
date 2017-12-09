@@ -1,7 +1,7 @@
-package com.ingenious.models.players.impl;
+package com.ingenious.model.players.impl;
 
-import com.ingenious.models.Rack;
-import com.ingenious.models.players.Player;
+import com.ingenious.model.Rack;
+import com.ingenious.model.players.Player;
 
 public class Human extends Player {
 

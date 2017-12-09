@@ -1,4 +1,4 @@
-package com.ingenious.models;
+package com.ingenious.model;
 
 public class BoardNode {
     public int x;
