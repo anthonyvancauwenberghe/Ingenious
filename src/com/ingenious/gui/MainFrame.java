@@ -4,7 +4,6 @@ import com.ingenious.engine.Game;
 import com.ingenious.gui.components.BoardComponent;
 import com.ingenious.gui.components.RackComponent;
 import com.ingenious.gui.components.ScoreComponent;
-import com.ingenious.providers.impl.GameServiceProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,7 +79,7 @@ public class MainFrame extends JFrame {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        Component scoreComponent = new ScoreComponent();
+        Component scoreComponent = new ScoreComponent(this.game);
         this.scorePanel.add(scoreComponent, gbc);
     }
 
@@ -89,7 +88,7 @@ public class MainFrame extends JFrame {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        BoardComponent boardComponent = new BoardComponent();
+        BoardComponent boardComponent = new BoardComponent(this.game);
         this.boardPanel.add(boardComponent, gbc);
     }
 
@@ -98,7 +97,7 @@ public class MainFrame extends JFrame {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        Component rackComponent = new RackComponent();
+        Component rackComponent = new RackComponent(this.game);
         //rackPanel.setBackground(Color.WHITE);
         this.rackPanel.add(rackComponent, gbc);
 

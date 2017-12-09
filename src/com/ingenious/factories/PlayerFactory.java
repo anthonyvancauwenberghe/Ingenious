@@ -17,7 +17,7 @@ public class PlayerFactory {
         this.bag = bag;
     }
 
-    private void SetPlayers() {
+    private void setPlayers() {
         this.players.add(getFirstPlayer());
         this.players.add(getSecondPlayer());
     }
@@ -35,7 +35,7 @@ public class PlayerFactory {
     }
 
     public ArrayList<Player> generate() {
-        this.SetPlayers();
+        this.setPlayers();
         return this.players;
     }
 }

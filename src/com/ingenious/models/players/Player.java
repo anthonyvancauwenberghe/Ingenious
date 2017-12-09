@@ -14,7 +14,7 @@ abstract public class Player {
     public Player(String name, Rack rack, boolean human) {
         this.name = name;
         this.score = new Score();
-        this.rack = new Rack();
+        this.rack = rack;
         this.human = human;
     }
 

@@ -43,8 +43,8 @@ public class ScoreComponent extends JPanel {
 
         int[] myScore = {0, 0, 0, 0, 0, 0};
         int[] opponentScore = {0, 0, 0, 0, 0, 0};
-            myScore = game.getCurrentPlayer().getScoreArray();
-            opponentScore = game.getOtherPlayer().getScoreArray();
+            myScore = game.getCurrentPlayer().getScore().toArray();
+            opponentScore = game.getOtherPlayer().getScore().toArray();
 
         //score on score com.ingenious.models.board
         for (int i = 0; i < 6; i++) {

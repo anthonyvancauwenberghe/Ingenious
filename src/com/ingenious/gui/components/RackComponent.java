@@ -1,7 +1,8 @@
 package com.ingenious.gui.components;
 
 import com.ingenious.config.Configuration;
-import com.ingenious.providers.impl.GameServiceProvider;
+import com.ingenious.engine.Game;
+import com.ingenious.providers.GameProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,14 +12,18 @@ import java.awt.event.MouseMotionListener;
 
 public class RackComponent extends JComponent {
 
-    public RackComponent() {
+    private int X_start = 100;
+    private int X_position;
+    private int Y_line = 25;
+    private int X_gap = (int) (Hexagon.Width() + 40);
+
+    private Game game;
+
+    public RackComponent(Game game) {
+        this.game = game;
         this.setVisible(true);
     }
 
-    int X_start = 100;
-    int X_position;
-    int Y_line = 25;
-    int X_gap = (int) (Hexagon.Width() + 40);
 
     public void paint(Graphics g) {
 
@@ -31,10 +36,9 @@ public class RackComponent extends JComponent {
 
         X_position = X_start;
 
-        if (GameServiceProvider.isBooted()) {
-            for (int i = 0; i < 6; i++) {
-                if (GameServiceProvider.game().getCurrentPlayer().getRack().getIndexSelected() != i) {
-                    g.setColor(GameServiceProvider.game().getCurrentPlayer().getRack().getContents().get(i).getHead());
+        for (int i = 0; i < 6; i++) {
+            if (game.getCurrentPlayer().getRack().getIndexSelected() != i) {
+                g.setColor(game.getCurrentPlayer().getRack().getPieces().get(i).getHead());
                     Hexagon hexagon;
                     hexagon = new Hexagon(new Point(X_position, Y_line));
 
@@ -42,7 +46,7 @@ public class RackComponent extends JComponent {
                     g.setColor(Configuration.LineColor);
                     g.drawPolygon(hexagon.getHexagon());
 
-                    g.setColor(GameServiceProvider.game().getCurrentPlayer().getRack().getContents().get(i).getTail());
+                    g.setColor(game.getCurrentPlayer().getRack().getPieces().get(i).getTail());
                     Hexagon hexagon2;
                     hexagon2 = new Hexagon(new Point(X_position, (int) (Y_line + Hexagon.Height())));
 
@@ -59,7 +63,6 @@ public class RackComponent extends JComponent {
             MouseWatcher watcher = new MouseWatcher();
             addMouseMotionListener(watcher);
         }
-    }
 
     class MouseWatcher implements MouseMotionListener {
         @Override
@@ -77,39 +80,33 @@ public class RackComponent extends JComponent {
             float x = e.getX();
             if (x >= (X_start - Hexagon.Width(0.5)) && x <= (X_start + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(0);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(0);
+                GameProvider.updateGraphics();
             }
             if (x >= ((X_start + X_gap) - Hexagon.Width(0.5)) && x <= ((X_start + X_gap) + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(1);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(1);
+                GameProvider.updateGraphics();
             }
             if (x >= ((X_start + (X_gap * 2)) - Hexagon.Width(0.5)) && x <= ((X_start + (X_gap * 2)) + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(2);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(2);
+                GameProvider.updateGraphics();
             }
             if (x >= ((X_start + (X_gap * 3)) - Hexagon.Width(0.5)) && x <= ((X_start + (X_gap * 3)) + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(3);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(3);
+                GameProvider.updateGraphics();
             }
             if (x >= ((X_start + (X_gap * 4)) - Hexagon.Width(0.5)) && x <= ((X_start + (X_gap * 4)) + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(4);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(4);
+                GameProvider.updateGraphics();
             }
             if (x >= ((X_start + (X_gap * 5)) - Hexagon.Width(0.5)) && x <= ((X_start + (X_gap * 5)) + Hexagon.Width(0.5))) {
 
-                GameServiceProvider.game().getCurrentPlayer().getRack().setPieceSelected(5);
-                GameServiceProvider.gui().getRackPanel().repaint();
-                GameServiceProvider.gui().getBoardPanel().repaint();
+                game.getCurrentPlayer().getRack().setPieceSelected(5);
+                GameProvider.updateGraphics();
             }
             repaint();
         }

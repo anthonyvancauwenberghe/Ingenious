@@ -4,36 +4,29 @@ public class Move {
 
     private Piece piece;
 
-    private BoardNode firstNode;
-    private BoardNode secondNode;
+    private BoardNode headNode;
+    private BoardNode tailNode;
 
-    private boolean inverted;
-
-    public Move(BoardNode firstNode, BoardNode secondNode, Piece piece, boolean inverted) {
+    public Move(BoardNode topNode, BoardNode bottomNode, Piece piece) {
         this.piece = piece;
-        this.firstNode = firstNode;
-        this.secondNode = secondNode;
-        this.inverted = inverted;
+        this.headNode = topNode;
+        this.tailNode = bottomNode;
     }
 
     public Piece getPiece() {
         return piece;
     }
 
-    public BoardNode getFirstNode() {
-        return firstNode;
+    public BoardNode getHeadNode() {
+        return headNode;
     }
 
-    public BoardNode getSecondNode() { return secondNode;}
+    public BoardNode getTailNode() { return tailNode;}
 
-    public boolean isInverted() {
-        return inverted;
-    }
 
     public String toString(){
         return this.piece.getHead().toString() + " " + this.piece.getTail().toString()
-                + " " + this.firstNode.getX() + this.firstNode.getY() + " "
-                + this.secondNode.getX() + this.secondNode.getY() + " "
-                + this.inverted;
+                + " " + this.headNode.getX() + this.headNode.getY() + " "
+                + this.tailNode.getX() + this.tailNode.getY() + " ";
     }
 }
