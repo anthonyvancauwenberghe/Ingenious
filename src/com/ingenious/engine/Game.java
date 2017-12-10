@@ -6,6 +6,7 @@ import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
 import com.ingenious.model.Move;
 import com.ingenious.model.players.Player;
+import com.ingenious.model.players.impl.Bot;
 import com.ingenious.provider.GameProvider;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Game {
         if (!placeMove.execute())
             return;
 
-        //System.out.println(this.getBoard().getNode(1, 4).getTile().toString() + "," + this.getBoard().getNode(2, 3).getTile().toString());
+        System.out.println(this.getBoard().getNode(1, 4).getTile().toString() + "," + this.getBoard().getNode(2, 3).getTile().toString());
 
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
@@ -64,6 +65,11 @@ public class Game {
 
         setNextPlayerAsCurrent();
         GameProvider.updateGraphics();
+
+        if (this.getCurrentPlayer() instanceof Bot) {
+            Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
+            this.executeMove(botMove);
+        }
 
     }
 

@@ -6,7 +6,6 @@ import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
 import com.ingenious.model.Piece;
 import com.ingenious.model.Tile;
-import com.ingenious.provider.GameProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,57 +23,63 @@ public class BoardComponent extends JComponent {
 
     private int startingX = 350; // coordinates for node 0,0
     private int startingY = 253;
+    private BoardListener listener;
 
     public BoardComponent(Game game) {
         this.game = game;
         this.setVisible(true);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     public void paint(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
 
         ArrayList<BoardNode> boardNodeList = game.getBoard().getBoardNodes();
 
-            for (int i = 0; i < boardNodeList.size(); i++) {
-                //adjust x and y of node to actual location
-                Point node = hex_to_centerpoint(boardNodeList.get(i).x, boardNodeList.get(i).y);
+        for (int i = 0; i < boardNodeList.size(); i++) {
+            //adjust x and y of node to actual location
+            Point node = hex_to_centerpoint(boardNodeList.get(i).x, boardNodeList.get(i).y);
 
-                Hexagon hexagon = new Hexagon(new Point(node.x, node.y));
+            Hexagon hexagon = new Hexagon(new Point(node.x, node.y));
 
-                g.setColor(boardNodeList.get(i).getTile());
+            g.setColor(boardNodeList.get(i).getTile());
 
-                g.fillPolygon(hexagon.getHexagon());
+            g.fillPolygon(hexagon.getHexagon());
 
-                g.setColor(Configuration.LineColor);
+            g.setColor(Configuration.LineColor);
 
-                if (Configuration.showCoordinates)
-                    g.drawString((boardNodeList.get(i).getX()) + "," + (boardNodeList.get(i).getY()), node.x - 9, node.y + 3);
+            if (Configuration.showCoordinates)
+                g.drawString((boardNodeList.get(i).getX()) + "," + (boardNodeList.get(i).getY()), node.x - 9, node.y + 3);
 
-                g.drawPolygon(hexagon.getHexagon());
-            }
+            g.drawPolygon(hexagon.getHexagon());
+        }
 
         if (game.getCurrentPlayer().getRack().selected()) {
             Piece piece = game.getCurrentPlayer().getRack().getPieceSelected();
-                Hexagon hexagon = new Hexagon(new Point(670, 140));
-                g.setColor(piece.getHead());
-                g.fillPolygon(hexagon.getHexagon());
-                g.setColor(Configuration.LineColor);
-                g.drawPolygon(hexagon.getHexagon());
-                hexagon = new Hexagon(new Point(670, (int) (140 + Hexagon.Height())));
-                g.setColor(piece.getTail());
-                g.fillPolygon(hexagon.getHexagon());
-                g.setColor(Configuration.LineColor);
-                g.drawPolygon(hexagon.getHexagon());
-            }
-
-        BoardListener listener = new BoardListener(this, this.game);
-            addMouseListener(listener);
-            addKeyListener(listener);
-            requestFocus();
+            Hexagon hexagon = new Hexagon(new Point(670, 140));
+            g.setColor(piece.getHead());
+            g.fillPolygon(hexagon.getHexagon());
+            g.setColor(Configuration.LineColor);
+            g.drawPolygon(hexagon.getHexagon());
+            hexagon = new Hexagon(new Point(670, (int) (140 + Hexagon.Height())));
+            g.setColor(piece.getTail());
+            g.fillPolygon(hexagon.getHexagon());
+            g.setColor(Configuration.LineColor);
+            g.drawPolygon(hexagon.getHexagon());
+        }
+        if (this.listener == null) {
+            this.listener = new BoardListener(this);
+        }
+        addMouseListener(listener);
+        addKeyListener(listener);
+        requestFocus();
 
         g.drawString("Current Player: " + game.getCurrentPlayer().getName(), 20, 20);
 
@@ -107,95 +112,96 @@ public class BoardComponent extends JComponent {
     }
 
 
-    class BoardListener implements MouseListener, KeyListener {
+}
 
+class BoardListener implements MouseListener, KeyListener {
+    BoardNode clicked = null;
+    BoardNode clicked2 = null;
+    BoardComponent boardComponent;
+    int cnt;
+    public Move lastMove;
 
-        BoardNode clicked;
-        BoardNode clicked2;
-        int cnt = 0;
-        Graphics g;
-        Game game;
+    public BoardListener(BoardComponent component) {
+        this.boardComponent = component;
+        this.cnt = 0;
+    }
 
-        public BoardListener(BoardComponent boardComponent, Game game) {
-            this.g = boardComponent.getGraphics();
-            this.game = game;
-        }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        Point coord = boardComponent.point_to_hex(x, y);
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            Point coord = point_to_hex(x, y);
+        if (cnt == 0) {
+            clicked = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
+            if (boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
+                Tile c = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getHead();
+                boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, c);
+            }
 
-            if (cnt == 0) {
-                clicked = game.getBoard().getNode((int) coord.getX(), (int) coord.getY());
-                if (game.getCurrentPlayer().getRack().getPieceSelected() != null) {
-                    Tile c = game.getCurrentPlayer().getRack().getPieceSelected().getHead();
-                    repaintNode(g, coord.x, coord.y, c);
-                }
+            cnt++;
+        } else if (cnt == 1) {
+            clicked2 = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
 
+            if (boardComponent.getGame().getBoard().isNeighbour(clicked, clicked2)
+                    && boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
+                Tile d = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getTail();
+                boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, d);
                 cnt++;
-            } else if (cnt == 1) {
-                clicked2 = game.getBoard().getNode((int) coord.getX(), (int) coord.getY());
-
-                if (game.getBoard().isNeighbour(clicked, clicked2)
-                        && game.getCurrentPlayer().getRack().getPieceSelected() != null) {
-                    Tile d = game.getCurrentPlayer().getRack().getPieceSelected().getTail();
-                    repaintNode(g, coord.x, coord.y, d);
-                    cnt++;
-                }
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (game.getCurrentPlayer().getRack().selected() && cnt == 2) {
-                    Move move = new Move(clicked, clicked2, game.getCurrentPlayer().getRack().getPieceSelected());
-                    System.out.println("topnode: " + clicked.x + "," + clicked.y + "  tailnode: " + clicked2.x + "," + clicked2.y);
-                    game.executeMove(move);
-                    GameProvider.updateGraphics();
-                    cnt = 0;
-                    clicked = null;
-                    clicked2 = null;
-                }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                cnt = 0;
-                repaint();
             }
         }
     }
-}
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && (clicked != null && clicked2 != null)) {
+            if (boardComponent.getGame().getCurrentPlayer().getRack().selected() && cnt == 2) {
+                Move move = new Move(clicked, clicked2, boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected());
+                if (this.lastMove == null || this.lastMove.isEqual(move)) {
+                    System.out.println("topnode: " + clicked.x + "," + clicked.y + "  tailnode: " + clicked2.x + "," + clicked2.y);
+                    boardComponent.getGame().executeMove(move);
+                    this.lastMove = move;
+                }
+                cnt = 0;
+                clicked = null;
+                clicked2 = null;
+
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            cnt = 0;
+            boardComponent.repaint();
+        }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+}

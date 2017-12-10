@@ -23,6 +23,9 @@ public class Move {
 
     public BoardNode getTailNode() { return tailNode;}
 
+    public boolean isEqual(Move move) {
+        return this.piece.isEqual(move.getPiece()) && this.headNode.isEqual(move.getHeadNode()) && this.tailNode.isEqual(move.tailNode);
+    }
 
     public String toString(){
         return this.piece.getHead().toString() + " " + this.piece.getTail().toString()

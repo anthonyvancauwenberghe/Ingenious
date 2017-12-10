@@ -1,7 +1,6 @@
 package com.ingenious.model.players.impl;
 
 import com.ingenious.algorithm.Algorithm;
-import com.ingenious.algorithm.Executeable;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 import com.ingenious.model.Rack;
@@ -11,11 +10,12 @@ public class Bot extends Player {
 
     private Algorithm algorithm;
 
-    public Bot(Rack rack, Executeable algorithm) {
+    public Bot(Rack rack, Algorithm algorithm) {
         super("Bot",rack, false);
+        this.algorithm = algorithm;
     }
 
-    public Move executeMove(Game game) {
+    public Move getMove(Game game) {
         return algorithm.execute(game);
     }
 }
