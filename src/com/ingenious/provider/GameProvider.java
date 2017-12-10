@@ -15,23 +15,27 @@ public class GameProvider implements Runnable {
 
     private static GameProvider instance;
 
-    private Game game;
+    public Game game;
     private MainFrame gui;
 
-    private GameProvider() {
+    private GameProvider(boolean enableGui) {
         game = initializeGame();
-        gui = initializeGui(game);
+        if (enableGui)
+            gui = initializeGui(game);
     }
 
-    public static void start() {
+    public static void start(boolean enableGui) {
         if (instance == null) {
-            instance = new GameProvider();
+            instance = new GameProvider(enableGui);
             instance.run();
         } else {
             System.out.println("Error, Already running");
         }
     }
 
+    public static GameProvider getInstance() {
+        return instance;
+    }
     @Override
     public void run() {
         game.gameLoop();
@@ -46,7 +50,8 @@ public class GameProvider implements Runnable {
     }
 
     public static void updateGraphics() {
-        instance.gui.repaintAll();
+        if (instance.gui != null)
+            instance.gui.repaintAll();
     }
 
     public MainFrame initializeGui(Game game) {

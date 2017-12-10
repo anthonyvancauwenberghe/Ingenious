@@ -1,6 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.bot.impl.MCTSAlgorithm;
 import com.ingenious.algorithm.bot.impl.RandomAlgorithm;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ public class Configuration {
     public final static boolean showCoordinates = true;
     public final static int hexagonSize = 30;
 
-    public final static BotAlgorithm algorithm = new RandomAlgorithm();
+    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
 
     public final static Color LineColor = new Color(0, 0, 0);
 

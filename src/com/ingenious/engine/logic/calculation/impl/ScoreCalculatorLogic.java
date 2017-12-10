@@ -25,7 +25,6 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
     }
 
     public int getScoreStreakHeadPiece() {
-        System.out.println("IN");
         int x = this.move.getHeadNode().getX();
         int y = this.move.getHeadNode().getY();
         int addedScore = 0;
@@ -78,7 +77,6 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
             addedScore++;
             l++;
         }
-        System.out.println(addedScore);
         return addedScore;
     }
 

@@ -2,6 +2,7 @@ package com.ingenious.engine;
 
 import com.ingenious.engine.logic.calculation.impl.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
+import com.ingenious.engine.logic.game.GameOverLogic;
 import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
 import com.ingenious.model.Move;
@@ -77,8 +78,6 @@ public class Game {
         if (!placeMove.execute())
             return;
 
-        System.out.println(this.getBoard().getNode(1, 4).getTile().toString() + "," + this.getBoard().getNode(2, 3).getTile().toString());
-
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
 
@@ -99,7 +98,45 @@ public class Game {
             Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
             this.executeMove(botMove);
         }
+    }
 
+    public void doSimulationMove(Move move) {
+        BoardMovePlacementGameLogic placeMove = new BoardMovePlacementGameLogic(this, move);
+
+        /* Execute move on board if it is valid */
+        placeMove.execute();
+
+        /* Remove piece from currentplayer rack */
+        this.getCurrentPlayer().rack.removePiece(move.getPiece());
+
+        /* Calculate current player score */
+        ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
+        scoreCalculator.calculate();
+
+        if (this.bonusPlay > 0)
+            this.bonusPlay--;
+
+        if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
+            setNextPlayerAsCurrent();
+        }
+    }
+
+    public boolean isOver() {
+        GameOverLogic logic = new GameOverLogic(this);
+        return logic.calculate();
+    }
+
+    public boolean won() {
+        for (int i = 0; i < 6; i++) {
+            if (getCurrentPlayer().getScore().toArray()[i] >= 18) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWinner(Player player) {
+        return isOver() && this.getCurrentPlayer().getName().equals(player.getName());
     }
 
     public void setNextPlayerAsCurrent() {

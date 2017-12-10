@@ -69,7 +69,6 @@ public class BaseMovesAlgorithm {
     }
 
     public ArrayList<Move> generate() {
-        long startTime = System.nanoTime();
         ArrayList<Move> moves = new ArrayList<>();
 
         for (BoardNode boardNode : this.game.getBoard().getBoardNodes()) {
@@ -81,15 +80,18 @@ public class BaseMovesAlgorithm {
                             if (!piece.hasEqualTiles()) {
                                 moves.add(new Move(neighbour, boardNode, piece));
                             }
+                        } else if (!this.applyHeuristics) {
+                            moves.add(new Move(boardNode, neighbour, piece));
+                            if (!piece.hasEqualTiles()) {
+                                moves.add(new Move(neighbour, boardNode, piece));
+                            }
                         }
 
                     }
                 }
             }
         }
-        long endTime = System.nanoTime();
-        double timeDifference = ((double) endTime - (double) startTime) / 1000000;
-        System.out.println("Generating " + moves.size() + " moves took " + timeDifference + " ms");
+
         return moves;
     }
 }
