@@ -1,8 +1,7 @@
 package tests.impl;
 
-import com.ingenious.algorithm.bot.impl.MCTSAlgorithm;
+import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 import com.ingenious.engine.Game;
-import com.ingenious.model.players.impl.Bot;
 import tests.Test;
 
 public class MCTSAlgorithmTest extends Test {

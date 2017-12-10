@@ -1,8 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.MCTSAlgorithm;
-import com.ingenious.algorithm.bot.impl.RandomAlgorithm;
+import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 
 import java.awt.*;
 
