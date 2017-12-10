@@ -25,7 +25,7 @@ public class MoveValidatorLogic extends ValidateLogic {
             System.out.println("headNode: " + this.move.getHeadNode().x + "," + this.move.getHeadNode().x + " is taken");
         if (!bottomNodeAvailable)
             System.out.println("tailNode: " + this.move.getTailNode().x + "," + this.move.getTailNode().x + " is taken");
-        return headNodeAvailable && bottomNodeAvailable;
+        return headNodeAvailable && bottomNodeAvailable && this.getGame().getBoard().isNeighbour(this.move.getHeadNode(), this.move.getTailNode());
     }
 
 }

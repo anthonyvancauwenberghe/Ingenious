@@ -25,6 +25,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
     }
 
     public int getScoreStreakHeadPiece() {
+        System.out.println("IN");
         int x = this.move.getHeadNode().getX();
         int y = this.move.getHeadNode().getY();
         int addedScore = 0;
@@ -32,7 +33,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x, y - l) != null
-                && this.getGame().getBoard().getNode(x, y - l).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x, y - l).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x, y - l).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
@@ -40,7 +41,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x, y + l) != null
-                && this.getGame().getBoard().getNode(x, y + l).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x, y + l).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x, y + l).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
@@ -48,7 +49,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x + l, y) != null
-                && this.getGame().getBoard().getNode(x + l, y).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x + l, y).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x + l, y).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
@@ -56,7 +57,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x - l, y) != null
-                && this.getGame().getBoard().getNode(x - l, y).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x - l, y).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x - l, y).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
@@ -64,7 +65,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x + l, y - l) != null
-                && this.getGame().getBoard().getNode(x + l, y - l).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x + l, y - l).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x + l, y - l).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
@@ -72,12 +73,12 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x - l, y + l) != null
-                && this.getGame().getBoard().getNode(x - l, y + l).isEqual(this.move.getTailNode())
+                && !this.getGame().getBoard().getNode(x - l, y + l).isEqual(this.move.getTailNode())
                 && this.getGame().getBoard().getNode(x - l, y + l).getTile().isEqual(this.move.getPiece().getHead())) {
             addedScore++;
             l++;
         }
-
+        System.out.println(addedScore);
         return addedScore;
     }
 
@@ -89,7 +90,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x, y - l) != null
-                && this.getGame().getBoard().getNode(x, y - l).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x, y - l).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x, y - l).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
@@ -97,7 +98,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x, y + l) != null
-                && this.getGame().getBoard().getNode(x, y + l).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x, y + l).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x, y + l).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
@@ -105,7 +106,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x + l, y) != null
-                && this.getGame().getBoard().getNode(x + l, y).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x + l, y).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x + l, y).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
@@ -113,7 +114,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x - l, y) != null
-                && this.getGame().getBoard().getNode(x - l, y).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x - l, y).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x - l, y).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
@@ -121,7 +122,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x + l, y - l) != null
-                && this.getGame().getBoard().getNode(x + l, y - l).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x + l, y - l).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x + l, y - l).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
@@ -129,7 +130,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
 
         l = 1;
         while (this.getGame().getBoard().getNode(x - l, y + l) != null
-                && this.getGame().getBoard().getNode(x - l, y + l).isEqual(this.move.getHeadNode())
+                && !this.getGame().getBoard().getNode(x - l, y + l).isEqual(this.move.getHeadNode())
                 && this.getGame().getBoard().getNode(x - l, y + l).getTile().isEqual(this.move.getPiece().getTail())) {
             addedScore++;
             l++;
