@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class MCTSAlgorithm extends BotAlgorithm {
 
     /* Amount of simulations per basemove */
-    private final int simulations = 20;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private final int simulations = 100;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 
     public Move execute(Game game) {
