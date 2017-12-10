@@ -56,4 +56,12 @@ public class BoardNode {
         return this.x == node.getX() && this.y == node.y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof BoardNode) {
+            BoardNode node = (BoardNode) o;
+            return this.x == node.getX() && this.y == node.y;
+        } else
+            return false;
+    }
 }

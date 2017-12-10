@@ -1,5 +1,6 @@
 package com.ingenious.algorithm.bot;
 
+import com.ingenious.algorithm.support.BaseMoveGeneratorByFilledAlgorithm;
 import com.ingenious.algorithm.support.BaseMovesAlgorithm;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
@@ -33,7 +34,7 @@ abstract public class BotAlgorithm {
     }
 
     public ArrayList<Move> generateBaseMoves(Game game, boolean heuristics) {
-        BaseMovesAlgorithm movesFactory = new BaseMovesAlgorithm(game, heuristics);
+        BaseMoveGeneratorByFilledAlgorithm movesFactory = new BaseMoveGeneratorByFilledAlgorithm(game);
         return new ArrayList<>(movesFactory.generate());
     }
 

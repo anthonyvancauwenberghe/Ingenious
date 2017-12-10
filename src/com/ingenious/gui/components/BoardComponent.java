@@ -132,7 +132,7 @@ class BoardListener implements MouseListener, KeyListener {
         int y = e.getY();
         Point coord = boardComponent.point_to_hex(x, y);
 
-        if (cnt == 0) {
+        if (cnt == 0 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
             clicked = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
             if (boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
                 Tile c = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getHead();
@@ -140,7 +140,7 @@ class BoardListener implements MouseListener, KeyListener {
             }
 
             cnt++;
-        } else if (cnt == 1) {
+        } else if (cnt == 1 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
             clicked2 = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
 
             if (boardComponent.getGame().getBoard().isNeighbour(clicked, clicked2)
