@@ -132,6 +132,10 @@ public class Board {
         boardNode.setTile(tile);
     }
 
+    public void setTile(int x, int y, Tile tile) {
+        this.getNode(x, y).setTile(tile);
+    }
+
     public Board getClone() {
         ArrayList<BoardNode> boardNodes = new ArrayList<>();
 

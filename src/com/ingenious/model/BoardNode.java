@@ -52,4 +52,8 @@ public class BoardNode {
         this.tile = Tile.empty;
     }
 
+    public boolean isEqual(BoardNode node) {
+        return this.x == node.getX() && this.y == node.y;
+    }
+
 }

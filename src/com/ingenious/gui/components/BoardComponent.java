@@ -174,9 +174,16 @@ public class BoardComponent extends JComponent {
 
         @Override
         public void keyPressed(KeyEvent e) {
+
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.getCurrentPlayer().getRack().selected() && cnt == 2) {
                     Move move = new Move(clicked, clicked2, game.getCurrentPlayer().getRack().getPieceSelected());
+                    System.out.println("topnode: " + clicked.x + "," + clicked.y + "  tailnode: " + clicked2.x + "," + clicked2.y);
                     game.executeMove(move);
                     GameProvider.updateGraphics();
                     cnt = 0;
@@ -188,11 +195,7 @@ public class BoardComponent extends JComponent {
                 cnt = 0;
                 repaint();
             }
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
         }
     }
 }
+

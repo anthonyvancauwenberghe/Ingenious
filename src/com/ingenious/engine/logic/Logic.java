@@ -2,7 +2,7 @@ package com.ingenious.engine.logic;
 
 import com.ingenious.engine.Game;
 
-abstract public class Logic<T> {
+abstract public class Logic {
     private Game game;
 
     public Logic(Game game) {
@@ -12,6 +12,4 @@ abstract public class Logic<T> {
     public Game getGame() {
         return game;
     }
-
-    public abstract T execute();
 }
