@@ -35,6 +35,7 @@ public class Rack {
         return null;
     }
 
+
     public boolean selected() {
         return this.indexSelected != -1;
     }
@@ -55,6 +56,18 @@ public class Rack {
                 return true;
             }
             i++;
+        }
+        return false;
+    }
+
+    public boolean contains(Tile color){
+        for(int i=0; i<this.getPieces().size(); i++){
+            if(this.pieces.get(i).getHead().equals(color)){
+                return true;
+            }
+            if(this.pieces.get(i).getTail().equals(color)){
+                return true;
+            }
         }
         return false;
     }

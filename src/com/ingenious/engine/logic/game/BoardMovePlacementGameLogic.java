@@ -28,10 +28,6 @@ public class BoardMovePlacementGameLogic extends Logic {
         this.getGame().getBoard().setTile(move.getHeadNode().getX(), move.getHeadNode().getY(), move.getPiece().getHead());
         this.getGame().getBoard().setTile(move.getTailNode().getX(), move.getTailNode().getY(), move.getPiece().getTail());
 
-        /* Recalculate Score */
-        ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this.getGame(), this.move);
-        scoreCalculator.calculate();
-
         return true;
     }
 }

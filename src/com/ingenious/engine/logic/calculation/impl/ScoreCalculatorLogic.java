@@ -145,36 +145,42 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
         if (tile.isGreen()) {
             newScore = addedScore + oldScore.greenScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.greenScore = newScore;
         } else if (tile.isBlue()) {
             newScore = addedScore + oldScore.blueScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.blueScore = (newScore);
         } else if (tile.isRed()) {
             newScore = addedScore + oldScore.redScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.redScore = (newScore);
         } else if (tile.isYellow()) {
             newScore = addedScore + oldScore.yellowScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.yellowScore = (newScore);
         } else if (tile.isOrange()) {
             newScore = addedScore + oldScore.orangeScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.orangeScore = newScore;
         } else if (tile.isPurple()) {
             newScore = addedScore + oldScore.purpleScore;
             if (newScore > 18) {
+                this.getGame().setBonusPlay(this.getGame().getBonusPlay()+1);
                 newScore = 18;
             }
             oldScore.purpleScore = newScore;

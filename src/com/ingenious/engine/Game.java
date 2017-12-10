@@ -6,6 +6,7 @@ import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
+import com.ingenious.model.Tile;
 import com.ingenious.model.players.Player;
 import com.ingenious.model.players.impl.Bot;
 import com.ingenious.provider.GameProvider;
@@ -39,7 +40,34 @@ public class Game {
     }
 
     public void swap() {
+        if(canSwap()){
+            for(int i=0; i<6; i++){
+                this.getBag().addPiece(getCurrentPlayer().getRack().getPieces().get(i));
+                getCurrentPlayer().getRack().getPieces().set(i,getBag().getAndRemoveRandomPiece());
+            }
+        }
+    }
 
+    public void refresh(){
+        while(getCurrentPlayer().getRack().getPieces().size()!=6){
+            getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
+        }
+        GameProvider.updateGraphics();
+    }
+
+    public boolean canSwap(){
+        Tile[] score = getCurrentPlayer().getScore().sort();
+        int min = getCurrentPlayer().getScore().getScore(score[0]);
+        Tile minC = score[0];
+        for(int i=0; i<score.length; i++){
+            if(getCurrentPlayer().getScore().getScore(score[i]) > min){
+                break;
+            }
+            if(!getCurrentPlayer().getRack().contains(score[i])){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void executeMove(Move move) {
@@ -54,18 +82,18 @@ public class Game {
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
 
-        /* Add new piece to currentplayer rack from bag */
-        this.getCurrentPlayer().rack.addPiece(this.bag.getAndRemoveRandomPiece());
-
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.calculate();
 
         if (this.bonusPlay > 0)
-            bonusPlay--;
+            this.bonusPlay--;
 
-        setNextPlayerAsCurrent();
         GameProvider.updateGraphics();
+
+        if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
+            setNextPlayerAsCurrent();
+        }
 
         if (this.getCurrentPlayer() instanceof Bot) {
             Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
@@ -75,6 +103,8 @@ public class Game {
     }
 
     public void setNextPlayerAsCurrent() {
+        this.setBonusPlay(0);
+        refresh();
         if (this.currentPlayerIndex == 1) {
             this.currentPlayerIndex = 0;
         } else {
