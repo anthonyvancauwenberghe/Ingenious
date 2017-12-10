@@ -37,6 +37,43 @@ public class Score {
         return scores;
     }
 
+    public Tile[] sort(){
+        Tile[] tiles = {Tile.red, Tile.green, Tile.blue, Tile.orange, Tile.yellow, Tile.purple};
+        for(int i=1; i<tiles.length; i++){
+            for(int j=0; j<tiles.length-1; j++){
+                if(getScore(tiles[i])< getScore(tiles[j])){
+                    Tile temp = tiles[i];
+                    tiles[i] = tiles[j];
+                    tiles[j] = temp;
+                }
+            }
+        }
+        return tiles;
+    }
+
+    public int getScore(Tile color){
+        if(color.equals(Tile.red)){
+            return redScore;
+        }
+        if(color.equals(Tile.green)){
+            return greenScore;
+        }
+        if(color.equals(Tile.blue)){
+            return blueScore;
+        }
+        if(color.equals(Tile.orange)){
+            return redScore;
+        }
+        if(color.equals(Tile.yellow)){
+            return redScore;
+        }
+        if(color.equals(Tile.purple)){
+            return redScore;
+        }
+        return -1;
+    }
+
+
     public int[] toArray() {
         return new int[]{redScore, greenScore, blueScore, orangeScore, yellowScore, purpleScore};
     }
