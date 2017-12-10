@@ -121,6 +121,44 @@ public class Board {
         return neighbours;
     }
 
+    public ArrayList<BoardNode> getAvailableNeighboursOfNode(BoardNode boardNode) {
+        ArrayList<BoardNode> neighbours = new ArrayList<>();
+
+        BoardNode north = this.getNorthNode(boardNode);
+        BoardNode northWest = this.getNorthWestNode(boardNode);
+        BoardNode northEast = this.getNorthEastNode(boardNode);
+        BoardNode south = this.getSouthNode(boardNode);
+        BoardNode southWest = this.getSouthWestNode(boardNode);
+        BoardNode southEast = this.getSouthEastNode(boardNode);
+
+
+        if (northWest != null && northWest.isAvailable()) {
+            neighbours.add(northWest);
+        }
+
+        if (southWest != null && southWest.isAvailable()) {
+            neighbours.add(southWest);
+        }
+
+        if (north != null && north.isAvailable()) {
+            neighbours.add(north);
+        }
+
+        if (south != null && south.isAvailable()) {
+            neighbours.add(south);
+        }
+
+        if (northEast != null && northEast.isAvailable()) {
+            neighbours.add(northEast);
+        }
+
+        if (southEast != null && southEast.isAvailable()) {
+            neighbours.add(southEast);
+        }
+
+        return neighbours;
+    }
+
     public boolean isNeighbour(BoardNode boardNode1, BoardNode boardNode2) {
         if (boardNode1 == null || boardNode2 == null)
             return false;
@@ -143,6 +181,16 @@ public class Board {
             boardNodes.add(boardNode.getClone());
         }
         return new Board(boardNodes, this.nodeCoord.clone());
+    }
+
+    public ArrayList<BoardNode> getAvailableBoardNodes() {
+        ArrayList<BoardNode> availableNodes = new ArrayList<>();
+
+        for (BoardNode node : this.getBoardNodes()) {
+            if (node.isAvailable())
+                availableNodes.add(node);
+        }
+        return availableNodes;
     }
 
 

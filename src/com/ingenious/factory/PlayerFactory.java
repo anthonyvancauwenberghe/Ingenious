@@ -1,6 +1,6 @@
 package com.ingenious.factory;
 
-import com.ingenious.algorithm.impl.RandomAlgorithm;
+import com.ingenious.config.Configuration;
 import com.ingenious.model.Bag;
 import com.ingenious.model.Rack;
 import com.ingenious.model.players.Player;
@@ -31,7 +31,7 @@ public class PlayerFactory {
     private Player getSecondPlayer() {
         RackFactory rackFactory = new RackFactory(this.bag);
         Rack rack = rackFactory.generate();
-        return new Bot(rack, new RandomAlgorithm());
+        return new Bot(rack, Configuration.algorithm);
     }
 
     public ArrayList<Player> generate() {

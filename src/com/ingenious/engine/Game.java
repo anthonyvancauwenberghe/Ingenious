@@ -4,6 +4,7 @@ import com.ingenious.engine.logic.calculation.impl.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
+import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
 import com.ingenious.model.players.Player;
 import com.ingenious.model.players.impl.Bot;
@@ -104,4 +105,6 @@ public class Game {
     public void setBonusPlay(int bonusPlay) {
         this.bonusPlay = bonusPlay;
     }
+
+
 }

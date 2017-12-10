@@ -1,4 +1,4 @@
-package com.ingenious.algorithm;
+package com.ingenious.algorithm.bot;
 
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
