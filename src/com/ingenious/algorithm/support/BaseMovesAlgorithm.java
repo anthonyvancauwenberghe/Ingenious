@@ -4,6 +4,8 @@ import com.ingenious.engine.Game;
 import com.ingenious.model.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BaseMovesAlgorithm {
 
@@ -68,17 +70,23 @@ public class BaseMovesAlgorithm {
         return pieces;
     }
 
-    public ArrayList<Move> generate() {
-        ArrayList<Move> moves = new ArrayList<>();
+    public Set<Move> generate() {
+        HashSet<Move> moves = new HashSet<>();
 
         for (BoardNode boardNode : this.game.getBoard().getBoardNodes()) {
             if (boardNode.isEmpty()) {
                 for (BoardNode neighbour : this.game.getBoard().getAvailableNeighboursOfNode(boardNode)) {
                     for (Piece piece : this.rackPieces) {
                         if (this.applyHeuristics && (this.game.getBoard().hasFilledNeighbour(boardNode) || this.game.getBoard().hasFilledNeighbour(neighbour))){
-                            moves.add(new Move(boardNode, neighbour, piece));
+                            Move move = new Move(boardNode, neighbour, piece);
+                            if (!moves.contains(move)) {
+                                moves.add(move);
+                            }
                             if (!piece.hasEqualTiles()) {
-                                moves.add(new Move(neighbour, boardNode, piece));
+                                Move invertedMove = new Move(neighbour, boardNode, piece);
+                                if (!moves.contains(move)) {
+                                    moves.add(invertedMove);
+                                }
                             }
                         } else if (!this.applyHeuristics) {
                             moves.add(new Move(boardNode, neighbour, piece));

@@ -34,7 +34,7 @@ abstract public class BotAlgorithm {
 
     public ArrayList<Move> generateBaseMoves(Game game, boolean heuristics) {
         BaseMovesAlgorithm movesFactory = new BaseMovesAlgorithm(game, heuristics);
-        return movesFactory.generate();
+        return new ArrayList<>(movesFactory.generate());
     }
 
     protected abstract Move execute(Game game);

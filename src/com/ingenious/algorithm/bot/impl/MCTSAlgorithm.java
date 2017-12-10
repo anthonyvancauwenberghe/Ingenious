@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class MCTSAlgorithm extends BotAlgorithm {
 
     /* Amount of simulations per basemove */
-    private final int simulations = 10;
+    private final int simulations = 1;
 
 
     public Move execute(Game game) {
         ArrayList<Move> baseMoves = this.generateBaseMoves(game, true);
-
+        System.out.println("amount of moves: " + baseMoves.size());
         int[] totalWins = new int[baseMoves.size()];
 
         int wins;
@@ -51,7 +51,7 @@ public class MCTSAlgorithm extends BotAlgorithm {
             }
 
             totalWins[index] = wins;
-            System.out.println("Basemove " + index + " won " + wins + " games");
+           // System.out.println("Basemove " + index + " won " + wins + " games");
             index++;
         }
 

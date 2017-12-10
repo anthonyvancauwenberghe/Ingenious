@@ -23,6 +23,19 @@ public class Move {
 
     public BoardNode getTailNode() { return tailNode;}
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Move) {
+            Move move = (Move) o;
+            return this.piece.getHead().isEqual(move.getPiece().getHead())
+                    && this.piece.getTail().isEqual(move.getPiece().getTail())
+                    && this.headNode.isEqual(move.getHeadNode())
+                    && this.tailNode.isEqual(move.getTailNode());
+        } else
+            return false;
+    }
+
     public boolean isEqual(Move move) {
         return this.piece.isEqual(move.getPiece()) && this.headNode.isEqual(move.getHeadNode()) && this.tailNode.isEqual(move.tailNode);
     }

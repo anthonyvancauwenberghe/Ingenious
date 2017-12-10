@@ -23,6 +23,7 @@ public class BoardMovePlacementGameLogic extends Logic {
           //  return true;
         //}
 
+       // System.out.println("executing move placement");
 
         /* Place Piece on board */
         this.getGame().getBoard().setTile(move.getHeadNode().getX(), move.getHeadNode().getY(), move.getPiece().getHead());
