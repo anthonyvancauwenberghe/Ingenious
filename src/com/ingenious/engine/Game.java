@@ -4,11 +4,11 @@ import com.ingenious.engine.logic.calculation.impl.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
-import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
 import com.ingenious.model.Tile;
 import com.ingenious.model.players.Player;
 import com.ingenious.model.players.impl.Bot;
+import com.ingenious.model.players.impl.Human;
 import com.ingenious.provider.GameProvider;
 
 import java.util.ArrayList;
@@ -134,6 +134,18 @@ public class Game {
 
     public void setBonusPlay(int bonusPlay) {
         this.bonusPlay = bonusPlay;
+    }
+
+    public Game getClone() {
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : this.getPlayers()) {
+            if (player instanceof Human) {
+                players.add(((Human) player).getClone());
+            } else if (player instanceof Bot) {
+                players.add(((Bot) player).getClone());
+            }
+        }
+        return new Game(this.board.getClone(), players, this.bag.getClone());
     }
 
 

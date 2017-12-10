@@ -8,24 +8,28 @@ import java.util.ArrayList;
 
 abstract public class BotAlgorithm {
 
-    public Move generateMove(Game game) {
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Executing Algorithm: " + this.getClass().getSimpleName());
-        System.out.println("-------------------------------------------------------");
-        long startTime = System.nanoTime();
-        Move move = execute(game);
-        long endTime = System.nanoTime();
-        double timeDifference = ((double) endTime - (double) startTime) / 1000000;
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Took " + timeDifference + " ms to execute algorithm " + this.getClass().getSimpleName());
-        System.out.println("-------------------------------------------------------");
-        System.out.println();
-        return move;
-    }
-
-
     public Move generateMove(Game game, boolean output) {
-        return execute(game);
+        double startTime, endTime, timeDifference;
+
+        startTime = System.nanoTime();
+        if (output) {
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Executing Algorithm: " + this.getClass().getSimpleName());
+            System.out.println("-------------------------------------------------------");
+            startTime = System.nanoTime();
+        }
+
+        Move move = execute(game);
+        endTime = System.nanoTime();
+        timeDifference = (endTime - startTime) / 1000000;
+        if (output) {
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Took " + timeDifference + " ms to execute algorithm " + this.getClass().getSimpleName());
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+        }
+
+        return move;
     }
 
     public ArrayList<Move> generateBaseMoves(Game game, boolean heuristics) {

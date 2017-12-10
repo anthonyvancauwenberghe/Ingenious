@@ -22,51 +22,52 @@ public class ThirdDegreeIsolationCheckAlgorithm {
         BoardNode southEast = this.board.getSouthEastNode(this.node);
 
         if (north != null
-                && !north.isAvailable()
-                && this.board.getNorthNode(north) != null
-                && !this.board.getNorthNode(north).isAvailable()) {
+                && (!north.isAvailable()
+                || (this.board.getNorthNode(north) != null
+                && !this.board.getNorthNode(north).isAvailable()))) {
             return false;
         }
 
         if (northWest != null
-                && !northWest.isAvailable()
-                && this.board.getNorthNode(northWest) != null
-                && !this.board.getNorthNode(northWest).isAvailable()
-                && this.board.getNorthWestNode(northWest) != null
-                && !this.board.getNorthWestNode(northWest).isAvailable()) {
+                && (!northWest.isAvailable()
+                || (this.board.getNorthNode(northWest) != null
+                && !this.board.getNorthNode(northWest).isAvailable())
+                || (this.board.getNorthWestNode(northWest) != null
+                && !this.board.getNorthWestNode(northWest).isAvailable()))) {
             return false;
         }
 
         if (northEast != null
-                && !northEast.isAvailable()
-                && this.board.getNorthNode(northEast) != null
-                && !this.board.getNorthNode(northEast).isAvailable()
-                && this.board.getNorthEastNode(northEast) != null
-                && !this.board.getNorthEastNode(northEast).isAvailable()) {
+                && (!northEast.isAvailable()
+                || (this.board.getNorthNode(northEast) != null
+                && !this.board.getNorthNode(northEast).isAvailable())
+                || (this.board.getNorthEastNode(northEast) != null
+                && !this.board.getNorthEastNode(northEast).isAvailable()))) {
             return false;
         }
 
         if (south != null
-                && !south.isAvailable()
-                && this.board.getSouthNode(south) != null
-                && !this.board.getSouthNode(south).isAvailable()) {
+                && (!south.isAvailable()
+                || (this.board.getSouthNode(south) != null
+                && !this.board.getSouthNode(south).isAvailable()))) {
             return false;
         }
 
         if (southWest != null
-                && !southWest.isAvailable()
-                && this.board.getSouthNode(southWest) != null
+                && (!southWest.isAvailable()
+                || (this.board.getSouthNode(southWest) != null
                 && !this.board.getSouthNode(southWest).isAvailable()
-                && this.board.getSouthWestNode(southWest) != null
-                && !this.board.getSouthWestNode(southWest).isAvailable()) {
+                || (this.board.getSouthWestNode(southWest) != null
+                && !this.board.getSouthWestNode(southWest).isAvailable())))) {
             return false;
         }
 
         if (southEast != null
-                && !southEast.isAvailable()
-                && this.board.getSouthNode(southEast) != null
+                && (!southEast.isAvailable()
+                || (this.board.getSouthNode(southEast) != null
                 && !this.board.getSouthNode(southEast).isAvailable()
-                && !this.board.getSouthEastNode(southEast).isAvailable()) {
+                || (this.board.getSouthEastNode(southEast) != null
+                && !this.board.getSouthEastNode(southEast).isAvailable())))) {
             return false;
         }
 

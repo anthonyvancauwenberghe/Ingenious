@@ -16,6 +16,10 @@ public class Bot extends Player {
     }
 
     public Move getMove(Game game) {
-        return algorithm.generateMove(game);
+        return algorithm.generateMove(game,true);
+    }
+
+    public Bot getClone() {
+        return new Bot(this.getRack().getClone(), this.algorithm);
     }
 }

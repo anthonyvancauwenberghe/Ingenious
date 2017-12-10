@@ -9,7 +9,7 @@ abstract public class Player {
     public Score score;
     public Rack rack;
 
-    private boolean human;
+    private final boolean human;
 
     public Player(String name, Rack rack, boolean human) {
         this.name = name;
@@ -45,4 +45,5 @@ abstract public class Player {
     public boolean isHuman() {
         return this.human;
     }
+
 }

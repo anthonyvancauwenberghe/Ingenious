@@ -119,7 +119,6 @@ class BoardListener implements MouseListener, KeyListener {
     BoardNode clicked2 = null;
     BoardComponent boardComponent;
     int cnt;
-    public Move lastMove;
 
     public BoardListener(BoardComponent component) {
         this.boardComponent = component;
@@ -128,6 +127,7 @@ class BoardListener implements MouseListener, KeyListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
         int x = e.getX();
         int y = e.getY();
         Point coord = boardComponent.point_to_hex(x, y);
@@ -179,25 +179,21 @@ class BoardListener implements MouseListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && (clicked != null && clicked2 != null)) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (boardComponent.getGame().getCurrentPlayer().getRack().selected() && cnt == 2) {
                 Move move = new Move(clicked, clicked2, boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected());
-                if (this.lastMove == null || this.lastMove.isEqual(move)) {
                     System.out.println("topnode: " + clicked.x + "," + clicked.y + "  tailnode: " + clicked2.x + "," + clicked2.y);
                     boardComponent.getGame().executeMove(move);
-                    this.lastMove = move;
-                }
                 cnt = 0;
                 clicked = null;
                 clicked2 = null;
-
             }
         }
+
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             cnt = 0;
             boardComponent.repaint();
         }
-
     }
 
     @Override

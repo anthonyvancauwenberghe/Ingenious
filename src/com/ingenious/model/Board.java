@@ -121,6 +121,40 @@ public class Board {
         return neighbours;
     }
 
+    public boolean hasFilledNeighbour(BoardNode boardNode) {
+        BoardNode north = this.getNorthNode(boardNode);
+        BoardNode northWest = this.getNorthWestNode(boardNode);
+        BoardNode northEast = this.getNorthEastNode(boardNode);
+        BoardNode south = this.getSouthNode(boardNode);
+        BoardNode southWest = this.getSouthWestNode(boardNode);
+        BoardNode southEast = this.getSouthEastNode(boardNode);
+
+        if (northWest != null && !northWest.isAvailable()) {
+            return true;
+        }
+
+        if (southWest != null && !southWest.isAvailable()) {
+            return true;
+        }
+
+        if (north != null && !north.isAvailable()) {
+            return true;
+        }
+
+        if (south != null && !south.isAvailable()) {
+            return true;
+        }
+
+        if (northEast != null && !northEast.isAvailable()) {
+            return true;
+        }
+
+        if (southEast != null && !southEast.isAvailable()) {
+            return true;
+        }
+        return false;
+    }
+
     public ArrayList<BoardNode> getAvailableNeighboursOfNode(BoardNode boardNode) {
         ArrayList<BoardNode> neighbours = new ArrayList<>();
 

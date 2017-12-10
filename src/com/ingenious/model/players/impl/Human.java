@@ -12,4 +12,8 @@ public class Human extends Player {
     public Human(Rack rack) {
         super("Human Player", rack, true);
     }
+
+    public Human getClone() {
+        return new Human(this.getName(), this.getRack().getClone());
+    }
 }
