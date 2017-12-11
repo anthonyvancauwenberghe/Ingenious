@@ -88,22 +88,23 @@ public class Game {
         if (this.bonusPlay > 0)
             this.bonusPlay--;
 
-        GameProvider.updateGraphics();
 
         if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
             setNextPlayerAsCurrent();
         }
 
+        GameProvider.updateGraphics();
         if (this.getCurrentPlayer() instanceof Bot) {
             Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
-            this.executeMove(botMove);
+            this.doSimulationMove(botMove);
+            GameProvider.updateGraphics();
         }
     }
 
     public void doSimulationMove(Move move) {
         BoardMovePlacementGameLogic placeMove = new BoardMovePlacementGameLogic(this, move);
 
-        /* Execute move on board if it is valid */
+        /* Execute move on board */
         placeMove.execute();
 
         /* Remove piece from currentplayer rack */

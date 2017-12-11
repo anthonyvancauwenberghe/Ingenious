@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class MCTSAlgorithm extends BotAlgorithm {
 
     /* Amount of simulations per basemove */
-    private final int simulations = 1000;
+    private final int simulations = 500;
 
     public MCTSAlgorithm() {
         super();
@@ -25,6 +25,7 @@ public class MCTSAlgorithm extends BotAlgorithm {
         ArrayList<Move> baseMoves = this.generateBaseMoves(game, true);
         System.out.println("amount of moves: " + baseMoves.size());
         System.out.println("simulations per move: " + this.simulations);
+        System.out.println("total amount of moveSimulations: " + baseMoves.size() * this.simulations);
         int[] totalWins = new int[baseMoves.size()];
 
         int index = 0;
