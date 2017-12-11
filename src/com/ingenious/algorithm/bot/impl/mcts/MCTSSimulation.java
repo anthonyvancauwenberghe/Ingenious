@@ -44,7 +44,8 @@ public class MCTSSimulation implements Callable {
                 aGame.doSimulationMove(randomMove);
             }
 
-            if (aGame.isWinner(aGame.getPlayers().get(1))) {
+            //TODO PROPER GAME WINNING ASSIGNMENT LOGIC
+            if (logic.playerHasMaxScore(1)) {
                 this.winAmount++;
             }
 

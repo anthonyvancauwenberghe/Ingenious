@@ -7,10 +7,6 @@ import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 import com.ingenious.model.players.Player;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 public class GameOverLogic extends Logic {
 
     public GameOverLogic(Game game) {
@@ -32,6 +28,17 @@ public class GameOverLogic extends Logic {
         }
         return false;
     }
+
+    public boolean playerHasMaxScore(int playerIndex) {
+        for (int i = 0; i < 6; i++) {
+            if (getGame().getPlayers().get(playerIndex).getScore().toArray()[i] >= 18) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 
     public boolean noMovesLeft() {
         for (BoardNode boardNode : this.getGame().getBoard().getBoardNodes()) {
