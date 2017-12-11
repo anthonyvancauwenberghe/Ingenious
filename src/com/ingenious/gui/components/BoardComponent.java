@@ -132,22 +132,24 @@ class BoardListener implements MouseListener, KeyListener {
         int y = e.getY();
         Point coord = boardComponent.point_to_hex(x, y);
 
-        if (cnt == 0 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
-            clicked = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
-            if (boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
-                Tile c = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getHead();
-                boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, c);
-            }
+        if (boardComponent.getGame().getBoard().inBoard((int) coord.getX(), (int) coord.getY())) {
+            if (cnt == 0 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
+                clicked = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
+                if (boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
+                    Tile c = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getHead();
+                    boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, c);
+                }
 
-            cnt++;
-        } else if (cnt == 1 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
-            clicked2 = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
-
-            if (boardComponent.getGame().getBoard().isNeighbour(clicked, clicked2)
-                    && boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
-                Tile d = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getTail();
-                boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, d);
                 cnt++;
+            } else if (cnt == 1 && boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY()).isAvailable()) {
+                clicked2 = boardComponent.getGame().getBoard().getNode((int) coord.getX(), (int) coord.getY());
+
+                if (boardComponent.getGame().getBoard().isNeighbour(clicked, clicked2)
+                        && boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected() != null) {
+                    Tile d = boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected().getTail();
+                    boardComponent.repaintNode(boardComponent.getGraphics(), coord.x, coord.y, d);
+                    cnt++;
+                }
             }
         }
     }

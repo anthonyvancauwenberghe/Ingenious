@@ -6,7 +6,7 @@ import com.ingenious.model.Move;
 import com.ingenious.model.Rack;
 import com.ingenious.model.players.Player;
 
-public class Bot extends Player {
+public class Bot extends Player<Bot> {
 
     private BotAlgorithm algorithm;
 
@@ -22,4 +22,5 @@ public class Bot extends Player {
     public Bot getClone() {
         return new Bot(this.getRack().getClone(), this.algorithm);
     }
+
 }

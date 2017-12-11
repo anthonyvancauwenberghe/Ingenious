@@ -1,8 +1,8 @@
 package com.ingenious.model;
 
 public class BoardNode {
-    public int x;
-    public int y;
+    public final int x;
+    public final int y;
 
     private Tile tile;
 

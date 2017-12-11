@@ -18,7 +18,6 @@ public class Tile extends Color {
     public final static Tile yellow = new Tile(62, Configuration.yellowTileColor);
     public final static Tile purple = new Tile(123, Configuration.purpleTileColor);
 
-
     public Tile(int tileId, Color color) {
         super(color.getRed(), color.getGreen(), color.getBlue());
         this.tileId = tileId;
@@ -26,6 +25,11 @@ public class Tile extends Color {
 
     public boolean isEqual(Tile tile) {
         return this.tileId == tile.tileId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Tile && this.getUniqueCode() == ((Tile) o).getUniqueCode();
     }
 
     public int getUniqueCode() {

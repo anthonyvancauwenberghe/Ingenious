@@ -24,6 +24,7 @@ public class Piece {
     public final static Piece ORANGE_YELLOW = new Piece(Tile.orange, Tile.yellow);
     public final static Piece ORANGE_PURPLE = new Piece(Tile.orange, Tile.purple);
     public final static Piece ORANGE_ORANGE = new Piece(Tile.orange, Tile.orange);
+
     public final static Piece YELLOW_PURPLE = new Piece(Tile.yellow, Tile.purple);
     public final static Piece YELLOW_YELLOW = new Piece(Tile.yellow, Tile.yellow);
 
@@ -56,6 +57,10 @@ public class Piece {
 
     public boolean hasEqualTiles() {
         return head.isEqual(tail);
+    }
+
+    public boolean containsTile(Tile tile) {
+        return this.getHead().isEqual(tile) || this.getTail().isEqual(tile);
     }
 
     public boolean isEqual(Piece piece) {

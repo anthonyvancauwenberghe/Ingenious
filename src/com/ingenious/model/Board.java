@@ -121,6 +121,44 @@ public class Board {
         return neighbours;
     }
 
+    public ArrayList<BoardNode> getSameColorNeighbours(BoardNode boardNode) {
+        ArrayList<BoardNode> neighbours = new ArrayList<BoardNode>();
+
+        BoardNode north = this.getNorthNode(boardNode);
+        BoardNode northWest = this.getNorthWestNode(boardNode);
+        BoardNode northEast = this.getNorthEastNode(boardNode);
+        BoardNode south = this.getSouthNode(boardNode);
+        BoardNode southWest = this.getSouthWestNode(boardNode);
+        BoardNode southEast = this.getSouthEastNode(boardNode);
+
+
+        if (northWest != null) {
+            neighbours.add(northWest);
+        }
+
+        if (southWest != null) {
+            neighbours.add(southWest);
+        }
+
+        if (north != null) {
+            neighbours.add(north);
+        }
+
+        if (south != null) {
+            neighbours.add(south);
+        }
+
+        if (northEast != null) {
+            neighbours.add(northEast);
+        }
+
+        if (southEast != null) {
+            neighbours.add(southEast);
+        }
+
+        return neighbours;
+    }
+
     public boolean hasFilledNeighbour(BoardNode boardNode) {
         BoardNode north = this.getNorthNode(boardNode);
         BoardNode northWest = this.getNorthWestNode(boardNode);

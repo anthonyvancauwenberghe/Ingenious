@@ -3,7 +3,7 @@ package com.ingenious.model.players;
 import com.ingenious.model.Rack;
 import com.ingenious.model.Score;
 
-abstract public class Player {
+abstract public class Player<T> {
     private String name;
 
     public Score score;
@@ -45,5 +45,7 @@ abstract public class Player {
     public boolean isHuman() {
         return this.human;
     }
+
+    public abstract T getClone();
 
 }
