@@ -17,7 +17,6 @@ public class MCTSAlgorithm extends BotAlgorithm {
 
     public MCTSAlgorithm() {
         super();
-
     }
 
     public Move execute(Game game) {
@@ -30,7 +29,7 @@ public class MCTSAlgorithm extends BotAlgorithm {
 
         int index = 0;
         for (Move baseMove : baseMoves) {
-            executorService.submit(new MCTSFuture(game, baseMove, index, totalWins, this.simulations));
+            executorService.submit(new MCTSSimulation(game, baseMove, index, totalWins, this.simulations));
             index++;
         }
 
@@ -47,7 +46,6 @@ public class MCTSAlgorithm extends BotAlgorithm {
                 maxValueIndex = i;
             }
         }
-        System.out.println();
         return baseMoves.get(maxValueIndex);
     }
 

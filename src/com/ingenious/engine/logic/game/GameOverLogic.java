@@ -21,7 +21,7 @@ public class GameOverLogic extends Logic {
         return playerHasMaxScore() || noMovesLeft();
     }
 
-    private boolean playerHasMaxScore() {
+    public boolean playerHasMaxScore() {
         for (int i = 0; i < 6; i++) {
             for (Player player : this.getGame().getPlayers()) {
                 if (player.getScore().toArray()[i] >= 18) {
@@ -33,7 +33,7 @@ public class GameOverLogic extends Logic {
         return false;
     }
 
-    private boolean noMovesLeft() {
+    public boolean noMovesLeft() {
         for (BoardNode boardNode : this.getGame().getBoard().getBoardNodes()) {
             if (boardNode.isAvailable()) {
                 for (BoardNode neighbour : this.getGame().getBoard().getNeighboursOfNode(boardNode)) {

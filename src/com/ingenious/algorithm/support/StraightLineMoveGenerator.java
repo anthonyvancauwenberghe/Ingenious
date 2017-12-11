@@ -12,7 +12,6 @@ import java.util.Set;
 public class StraightLineMoveGenerator {
 
     private Board board;
-    private ArrayList<Piece> rackPieces;
 
     private ArrayList<Piece> redPieces = new ArrayList<>();
     private ArrayList<Piece> bluePieces = new ArrayList<>();
@@ -23,10 +22,7 @@ public class StraightLineMoveGenerator {
 
     public StraightLineMoveGenerator(Game game) {
         this.board = game.getBoard().getClone();
-        Rack rack = game.getCurrentPlayer().getRack().getClone();
-        //System.out.println("rack contains: " + rack.getPieces().size());
-        this.rackPieces = this.getNonDuplicateRackPieces(rack);
-        this.generateColorPiecesLists(this.rackPieces);
+        this.generateColorPiecesLists(this.getNonDuplicateRackPieces(game.getCurrentPlayer().getRack().getClone()));
     }
 
     private void generateColorPiecesLists(ArrayList<Piece> pieces) {
@@ -63,13 +59,11 @@ public class StraightLineMoveGenerator {
                 pieces.add(piece);
             }
         }
-        //System.out.println("Rack contains " + pieces.size() + " non duplicate pieces");
         return pieces;
     }
 
     public Set<Move> generate() {
-        ArrayList<BoardNode> filledNodes = getFilledBoardNodes();
-        HashSet<NodePair> straightLinePairs = getStraightLinePairsFromFilledNodes(filledNodes);
+        HashSet<NodePair> straightLinePairs = generateStraightLinePairsFromFilledNodes();
         return pairsToMoves(straightLinePairs);
     }
 
@@ -93,7 +87,6 @@ public class StraightLineMoveGenerator {
             return purplePieces;
         }
         return new ArrayList<>();
-
     }
 
     public HashSet<Move> pairsToMoves(Iterable<NodePair> pairs) {
@@ -112,34 +105,25 @@ public class StraightLineMoveGenerator {
                         moves.add(move);
                     }
                 }
-
             }
         }
         return moves;
     }
 
-    private HashSet<NodePair> getStraightLinePairsFromFilledNodes(ArrayList<BoardNode> filledNodes) {
-        /* GET ALL AVAILABLE NEIGHBOURS OF THE FILLED NODES AND STORE IN HASHSET */
+    private HashSet<NodePair> generateStraightLinePairsFromFilledNodes() {
+        /* GET ALL AVAILABLE STRAIGHT LINE PAIRS OF THE FILLED NODES AND STORE IN HASHSET TO MAKE SURE THERE ARE NO DOUBLES */
         HashSet<NodePair> straightLinePairs = new HashSet<>();
-        for (BoardNode filledNode : filledNodes) {
-            NodeStraightLinePairPossibilities generator = new NodeStraightLinePairPossibilities(filledNode, this.board);
-            for (NodePair pair : generator.generateStraightLinePairs()) {
-                if (!straightLinePairs.contains(pair)) {
-                    straightLinePairs.add(pair);
+        for (BoardNode filledNode : board.getBoardNodes()) {
+            if (!filledNode.isAvailable()) {
+                NodeStraightLinePairPossibilities generator = new NodeStraightLinePairPossibilities(filledNode, this.board);
+                for (NodePair pair : generator.generateStraightLinePairs()) {
+                    if (!straightLinePairs.contains(pair)) {
+                        straightLinePairs.add(pair);
+                    }
                 }
             }
         }
         return straightLinePairs;
-    }
-
-    private ArrayList<BoardNode> getFilledBoardNodes() {
-        /* GET ALL FILLED NODES AND STORE IN ARRAYLIST */
-        ArrayList<BoardNode> filledNodes = new ArrayList<>();
-        for (BoardNode node : board.getBoardNodes()) {
-            if (!node.isAvailable())
-                filledNodes.add(node);
-        }
-        return filledNodes;
     }
 
 }
