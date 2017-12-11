@@ -14,10 +14,10 @@ public class GameOverLogic extends Logic {
     }
 
     public boolean calculate() {
-        return playerHasMaxScore() || noMovesLeft();
+        return playerHasMaxScoreInAtLeastOneColor() || noMovesLeft();
     }
 
-    public boolean playerHasMaxScore() {
+    public boolean playerHasMaxScoreInAtLeastOneColor() {
         for (int i = 0; i < 6; i++) {
             for (Player player : this.getGame().getPlayers()) {
                 if (player.getScore().toArray()[i] >= 18) {
@@ -29,7 +29,7 @@ public class GameOverLogic extends Logic {
         return false;
     }
 
-    public boolean playerHasMaxScore(int playerIndex) {
+    public boolean playerHasMaxScoreInAtLeastOneColor(int playerIndex) {
         for (int i = 0; i < 6; i++) {
             if (getGame().getPlayers().get(playerIndex).getScore().toArray()[i] >= 18) {
                 return true;
@@ -53,8 +53,20 @@ public class GameOverLogic extends Logic {
         return true;
     }
 
-    public Boolean firstPlayerWinsWithBestScore(Score score1, Score score2)
+    public boolean playerHasMaxScoreAcrossAllColors(int playerIndex)
     {
+        for (int i = 0; i < 6; i++)
+        {
+            if (getGame().getPlayers().get(playerIndex).getScore().toArray()[i] < 18)
+                return false;
+        }
+        return true;
+    }
+
+    public Boolean firstPlayerWinsWithBestScore()
+    {
+        Score score1 = getGame().getPlayers().get(0).getScore();
+        Score score2 = getGame().getPlayers().get(1).getScore();
         Tile[] s1 = score1.sort();
         Tile[] s2 = score2.sort();
 

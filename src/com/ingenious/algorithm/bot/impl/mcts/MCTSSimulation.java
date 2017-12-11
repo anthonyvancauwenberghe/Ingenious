@@ -37,7 +37,7 @@ public class MCTSSimulation implements Callable {
         while (simulationRound < this.simulations) {
             Game aGame = firstMoveGame.getClone();
             GameOverLogic logic = new GameOverLogic(aGame);
-            while (!logic.playerHasMaxScore()) {
+            while (!logic.playerHasMaxScoreInAtLeastOneColor()) {
                 randomMove = randomAlgorithm.execute(aGame);
                 if (randomMove == null)
                     break;
@@ -45,7 +45,7 @@ public class MCTSSimulation implements Callable {
             }
 
             //TODO PROPER GAME WINNING ASSIGNMENT LOGIC
-            if (logic.playerHasMaxScore(1)) {
+            if (logic.playerHasMaxScoreInAtLeastOneColor(1)) {
                 this.winAmount++;
             }
 

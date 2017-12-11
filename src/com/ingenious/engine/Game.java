@@ -187,4 +187,21 @@ public class Game {
     }
 
 
+    public Boolean whoWon(Game game) // true for first player, false for second player, null for no winner
+    {
+        GameOverLogic logic = new GameOverLogic(game);
+
+        if (logic.playerHasMaxScoreAcrossAllColors(0))
+            return true;
+        else if (logic.playerHasMaxScoreAcrossAllColors(1))
+            return false;
+        else if (logic.noMovesLeft())
+        {
+            return logic.firstPlayerWinsWithBestScore();
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
