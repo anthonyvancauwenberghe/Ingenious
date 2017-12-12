@@ -17,7 +17,7 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
     {
         Tree alphabetaTree = generateTree(game, 1);
 
-        int result = runAlphaBeta(alphabetaTree.getRootAsTreeNode(),1,-10000, 10000, true);
+        int result = (int)runAlphaBeta(alphabetaTree.getRootAsTreeNode(),1,-10000, 10000, true)[0];
 
 
 
@@ -73,36 +73,43 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
     }
 
 
-    public int runAlphaBeta(TreeNode node, int depth, int alpha, int beta, Boolean maximizing)
-    {
+    public Object[] runAlphaBeta(TreeNode node, int depth, int alpha, int beta, Boolean maximizing)
+    {	
+    	Object[] returned = new Object[2];
             if (depth == 0 || !node.hasChildren())
             {
-                return node.evaluationScore;
+            	returned[0]=node.evaluationScore;
+                returned[1]=node.move;
+                return returned;
             }
             if (maximizing)
             {
                 int v = -10000;
                 for (TreeNode childNode : node.getChildren())
                 {
-                    v = Math.max(v, runAlphaBeta(childNode, depth - 1, alpha, beta, false));
+                    v = Math.max(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, false)[0]);
                     alpha = Math.max(alpha, v);
                     if (beta <= alpha)
                         break;
                 }
-                return v;
+                returned[0]=v;
+                returned[1]=node.move;
+                return returned;
             }
             else
             {
                 int v = 10000;
                 for (TreeNode childNode : node.getChildren())
                 {
-                    v = Math.min(v, runAlphaBeta(childNode, depth - 1, alpha, beta, true));
+                    v = Math.min(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, true)[0]);
                     beta = Math.min(beta, v);
                     if (beta <= alpha)
                         break;
                 }
-                return v;
+                returned[0]=v;
+                returned[1]=node.move;
+                return returned;
             }
-        }
+      }
 
-    }
+}
