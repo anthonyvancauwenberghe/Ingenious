@@ -20,7 +20,7 @@ public class StraightLineMoveGenerator {
     private ArrayList<Piece> yellowPieces = new ArrayList<>();
     private ArrayList<Piece> purplePieces = new ArrayList<>();
 
-    public StraightLineMoveGenerator(Game game) {
+    public  StraightLineMoveGenerator(Game game) {
         this.board = game.getBoard().getClone();
         this.generateColorPiecesLists(this.getNonDuplicateRackPieces(game.getCurrentPlayer().getRack().getClone()));
     }
