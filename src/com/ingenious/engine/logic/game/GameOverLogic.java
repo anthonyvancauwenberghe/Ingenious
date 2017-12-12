@@ -7,13 +7,13 @@ import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 import com.ingenious.model.players.Player;
 
-public class GameOverLogic extends Logic {
+public class GameOverLogic extends Logic<Boolean> {
 
     public GameOverLogic(Game game) {
         super(game);
     }
 
-    public boolean calculate() {
+    public Boolean execute() {
         return playerHasMaxScoreInAtLeastOneColor() || noMovesLeft();
     }
 

@@ -1,6 +1,6 @@
 package com.ingenious.engine;
 
-import com.ingenious.engine.logic.calculation.impl.ScoreCalculatorLogic;
+import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.engine.logic.game.GameOverLogic;
 import com.ingenious.model.Bag;
@@ -74,16 +74,15 @@ public class Game {
     public void executeMove(Move move) {
         BoardMovePlacementGameLogic placeMove = new BoardMovePlacementGameLogic(this, move);
 
-        /* Execute move on board if it is valid */
-        if (!placeMove.execute())
-            return;
+        /* Execute move on board */
+        placeMove.execute();
 
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
-        scoreCalculator.calculate();
+        scoreCalculator.execute();
 
         if (this.bonusPlay > 0)
             this.bonusPlay--;
@@ -112,7 +111,7 @@ public class Game {
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
-        scoreCalculator.calculate();
+        scoreCalculator.execute();
 
         if (this.bonusPlay > 0)
             this.bonusPlay--;
@@ -124,7 +123,7 @@ public class Game {
 
     public boolean isOver() {
         GameOverLogic logic = new GameOverLogic(this);
-        return logic.calculate();
+        return logic.execute();
     }
 
     public boolean won() {

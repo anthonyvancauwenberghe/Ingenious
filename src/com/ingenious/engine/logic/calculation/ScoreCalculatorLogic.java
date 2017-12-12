@@ -1,12 +1,12 @@
-package com.ingenious.engine.logic.calculation.impl;
+package com.ingenious.engine.logic.calculation;
 
 import com.ingenious.engine.Game;
-import com.ingenious.engine.logic.calculation.CalculateLogic;
+import com.ingenious.engine.logic.Logic;
 import com.ingenious.model.Move;
 import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 
-public class ScoreCalculatorLogic<Void> extends CalculateLogic {
+public class ScoreCalculatorLogic<Void> extends Logic {
     private Move move;
 
     public ScoreCalculatorLogic(Game game, Move move) {
@@ -15,7 +15,7 @@ public class ScoreCalculatorLogic<Void> extends CalculateLogic {
     }
 
     @Override
-    public Void calculate() {
+    public Void execute() {
         int headScoreStreak = this.getScoreStreakHeadPiece();
         int tailScoreStreak = this.getScoreStreakTailPiece();
 
