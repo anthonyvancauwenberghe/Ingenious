@@ -1,10 +1,10 @@
-package com.ingenious.engine.logic.validation.impl;
+package com.ingenious.engine.logic.validation;
 
 import com.ingenious.engine.Game;
-import com.ingenious.engine.logic.validation.ValidateLogic;
+import com.ingenious.engine.logic.Logic;
 import com.ingenious.model.Move;
 
-public class MoveValidatorLogic extends ValidateLogic {
+public class MoveValidatorLogic extends Logic<Boolean> {
 
     private Move move;
 
@@ -13,8 +13,7 @@ public class MoveValidatorLogic extends ValidateLogic {
         this.move = move;
     }
 
-    @Override
-    public boolean validate() {
+    public Boolean execute() {
         System.out.println("head & tail coords for validation: ");
         System.out.println(this.move.getHeadNode().getX() +"," + this.move.getHeadNode().getY());
         System.out.println(this.move.getTailNode().getX() +"," + this.move.getTailNode().getY());
