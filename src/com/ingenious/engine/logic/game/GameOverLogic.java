@@ -14,10 +14,10 @@ public class GameOverLogic extends Logic<Boolean> {
     }
 
     public Boolean execute() {
-        return playerHasMaxScoreInAllColors() || noMovesLeft();
+        return playerHasMaxScoreInAtLeastOneColor() || noMovesLeft();
     }
 
-    public boolean playerHasMaxScoreInAllColors() {
+    public boolean playerHasMaxScoreInAtLeastOneColor() {
         for (int i = 0; i < 6; i++) {
             for (Player player : this.getGame().getPlayers()) {
                 if (player.getScore().toArray()[i] < 18) {
@@ -29,14 +29,14 @@ public class GameOverLogic extends Logic<Boolean> {
         return true;
     }
 
-    public boolean playerHasMaxScoreInAllColors(int playerIndex) {
+    public boolean playerHasMaxScoreInAtLeastOneColor(int playerIndex) {
         for (int i = 0; i < 6; i++) {
-            if (getGame().getPlayers().get(playerIndex).getScore().toArray()[i] < 18) {
-                return false;
+            if (getGame().getPlayers().get(playerIndex).getScore().toArray()[i] >= 18) {
+                return true;
             }
 
         }
-        return true;
+        return false;
     }
 
 
