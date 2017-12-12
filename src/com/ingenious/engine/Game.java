@@ -1,5 +1,6 @@
 package com.ingenious.engine;
 
+import com.ingenious.algorithm.support.BaseMovesAlgorithm;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.engine.logic.game.GameOverLogic;
@@ -18,6 +19,7 @@ public class Game {
     private Board board;
     private ArrayList<Player> players;
     private Bag bag;
+    private Player winner;
 
     private int currentPlayerIndex = 0;
     public int bonusPlay = 0;
@@ -121,6 +123,43 @@ public class Game {
         }
     }
 
+    public void end(){
+        if(this.winner.equals(null)){
+            System.out.println("IS A DRAW");
+        }
+        else {
+            System.out.println("WINNER IS: " + this.winner);
+        }
+    }
+    public boolean gameOver(){
+        GameOverLogic logic = new GameOverLogic(this);
+        if(won()){
+            this.winner = getCurrentPlayer();
+            return true;
+        }
+        if(logic.noMovesLeft()){
+            this.winner = getWinner();
+            return true;
+        }
+        return false;
+    }
+
+    public Player getWinner(){
+        for(int i=0; i<6; i++){
+            Tile current_low = getCurrentPlayer().getScore().sort()[i];
+            Tile other_low = getOtherPlayer().getScore().sort()[i];
+            if(getCurrentPlayer().getScore().getScore(current_low)<getOtherPlayer().getScore().getScore(other_low)){
+                return  getOtherPlayer();
+            }
+            if(getCurrentPlayer().getScore().getScore(current_low)>getOtherPlayer().getScore().getScore(other_low)){
+                return getCurrentPlayer();
+            }
+        }
+        //draw case
+        return null;
+    }
+
+
     public boolean isOver() {
         GameOverLogic logic = new GameOverLogic(this);
         return logic.execute();
@@ -128,11 +167,11 @@ public class Game {
 
     public boolean won() {
         for (int i = 0; i < 6; i++) {
-            if (getCurrentPlayer().getScore().toArray()[i] >= 18) {
-                return true;
+            if (getCurrentPlayer().getScore().toArray()[i] < 18) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public boolean isWinner(Player player) {
@@ -140,12 +179,17 @@ public class Game {
     }
 
     public void setNextPlayerAsCurrent() {
-        this.setBonusPlay(0);
-        refresh();
-        if (this.currentPlayerIndex == 1) {
-            this.currentPlayerIndex = 0;
-        } else {
-            this.currentPlayerIndex++;
+        if(!gameOver()) {
+            this.setBonusPlay(0);
+            refresh();
+            if (this.currentPlayerIndex == 1) {
+                this.currentPlayerIndex = 0;
+            } else {
+                this.currentPlayerIndex++;
+            }
+        }
+        else{
+            end();
         }
     }
 
