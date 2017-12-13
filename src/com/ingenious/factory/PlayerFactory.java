@@ -31,7 +31,7 @@ public class PlayerFactory {
     private Player getSecondPlayer() {
         RackFactory rackFactory = new RackFactory(this.bag);
         Rack rack = rackFactory.generate();
-        return new Bot(rack, Configuration.algorithm);
+        return new Bot(rack, Configuration.BOT_ALGORITHM);
     }
 
     public ArrayList<Player> generate() {

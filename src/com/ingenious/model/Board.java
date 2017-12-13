@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Board {
 
     private ArrayList<BoardNode> boardNodes = new ArrayList<BoardNode>(); //This is the list containing the boardNodes
-    private int[][] nodeCoord = new int[2 * (Configuration.boardWidth) - 1][2 * (Configuration.boardWidth) - 1];
+    private int[][] nodeCoord = new int[2 * (Configuration.BOARD_WIDTH) - 1][2 * (Configuration.BOARD_WIDTH) - 1];
 
     public Board() {
     }
@@ -39,10 +39,10 @@ public class Board {
      */
     public BoardNode getNode(int x, int y) {
         //ADDING THE WIDTH OF THE BOARD TO MAKE SURE THERE ARE NO NEGATIVE NUMBERS AS KEY IN THE ARRAY
-        x = x + Configuration.boardWidth - 1;
-        y = y + Configuration.boardWidth - 1;
+        x = x + Configuration.BOARD_WIDTH - 1;
+        y = y + Configuration.BOARD_WIDTH - 1;
 
-        if (x < 0 || x > 2 * (Configuration.boardWidth - 1) || y < 0 || y > 2 * (Configuration.boardWidth - 1))
+        if (x < 0 || x > 2 * (Configuration.BOARD_WIDTH - 1) || y < 0 || y > 2 * (Configuration.BOARD_WIDTH - 1))
             return null;
 
         if (this.nodeCoord[x][y] == -1)
