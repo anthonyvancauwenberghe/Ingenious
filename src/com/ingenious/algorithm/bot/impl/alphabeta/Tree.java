@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Tree
 {
     private Game root;
-    private ArrayList<TreeNode> nodes;
+    private ArrayList<TreeNode> nodes = new ArrayList<TreeNode>();
 
     public Tree(Game root)
     {
@@ -17,10 +17,19 @@ public class Tree
 
     public TreeNode getRootAsTreeNode()
     {
-        TreeNode rootNode = new TreeNode();
-        rootNode.children = this.nodes;
+        if(nodes.size() > 0)
+        {
+            TreeNode rootNode = new TreeNode(true);
+            rootNode.children = this.nodes;
 
-        return rootNode;
+            return rootNode;
+        }
+        return null;
+    }
+
+    public ArrayList<TreeNode> getFirstLayerChilden()
+    {
+        return nodes;
     }
 
     public void addDirectChildNode(TreeNode node)
