@@ -17,7 +17,6 @@ public class MCTSSimulation implements Callable {
     private final int[] totalwins;
     private final int simulations;
 
-
     public MCTSSimulation(Game game, Move move, int index, int[] totalwins, int simulations) {
         this.move = move;
         this.game = game;
