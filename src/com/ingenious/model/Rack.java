@@ -40,6 +40,11 @@ public class Rack {
         return this.indexSelected != -1;
     }
 
+    public void resetSelectedPiece()
+    {
+        this.indexSelected = -1;
+    }
+
     public ArrayList<Piece> getPieces() {
         return this.pieces;
     }
