@@ -53,9 +53,9 @@ public class BoardComponent extends JComponent {
 
             g.fillPolygon(hexagon.getHexagon());
 
-            g.setColor(Configuration.LineColor);
+            g.setColor(Configuration.LINE_COLOR);
 
-            if (Configuration.showCoordinates)
+            if (Configuration.SHOW_COORDINATES)
                 g.drawString((boardNodeList.get(i).getX()) + "," + (boardNodeList.get(i).getY()), node.x - 9, node.y + 3);
 
             g.drawPolygon(hexagon.getHexagon());
@@ -66,12 +66,12 @@ public class BoardComponent extends JComponent {
             Hexagon hexagon = new Hexagon(new Point(670, 140));
             g.setColor(piece.getHead());
             g.fillPolygon(hexagon.getHexagon());
-            g.setColor(Configuration.LineColor);
+            g.setColor(Configuration.LINE_COLOR);
             g.drawPolygon(hexagon.getHexagon());
             hexagon = new Hexagon(new Point(670, (int) (140 + Hexagon.Height())));
             g.setColor(piece.getTail());
             g.fillPolygon(hexagon.getHexagon());
-            g.setColor(Configuration.LineColor);
+            g.setColor(Configuration.LINE_COLOR);
             g.drawPolygon(hexagon.getHexagon());
         }
         if (this.listener == null) {
@@ -92,7 +92,7 @@ public class BoardComponent extends JComponent {
             Hexagon h = new Hexagon(p);
             g.setColor(tileColor);
             g.fillPolygon(h.getHexagon());
-            g.setColor(Configuration.LineColor);
+            g.setColor(Configuration.LINE_COLOR);
             g.drawPolygon(h.getHexagon());
         }
     }

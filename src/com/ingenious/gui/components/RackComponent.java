@@ -43,7 +43,7 @@ public class RackComponent extends JComponent {
                     hexagon = new Hexagon(new Point(X_position, Y_line));
 
                     g.fillPolygon(hexagon.getHexagon());
-                    g.setColor(Configuration.LineColor);
+                    g.setColor(Configuration.LINE_COLOR);
                     g.drawPolygon(hexagon.getHexagon());
 
                     g.setColor(game.getCurrentPlayer().getRack().getPieces().get(i).getTail());
@@ -51,7 +51,7 @@ public class RackComponent extends JComponent {
                     hexagon2 = new Hexagon(new Point(X_position, (int) (Y_line + Hexagon.Height())));
 
                     g.fillPolygon(hexagon2.getHexagon());
-                    g.setColor(Configuration.LineColor);
+                    g.setColor(Configuration.LINE_COLOR);
                     g.drawPolygon(hexagon2.getHexagon());
                 }
 

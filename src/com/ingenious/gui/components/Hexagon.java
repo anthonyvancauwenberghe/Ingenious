@@ -12,7 +12,7 @@ public class Hexagon
     private final Point center;
     private final Polygon hexagon;
 
-    private static int SIZE = Configuration.hexagonSize;
+    private static int SIZE = Configuration.HEXAGON_SIZE;
     private static double WIDTH = SIZE * 2;
     private static double HEIGHT = WIDTH * 3 / 4;
 

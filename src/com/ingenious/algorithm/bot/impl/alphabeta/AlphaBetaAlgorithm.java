@@ -1,11 +1,16 @@
 package com.ingenious.algorithm.bot.impl.alphabeta;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.bot.impl.mcts.MCTSSimulation;
+import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 import com.ingenious.algorithm.bot.impl.alphabeta.TreeNode;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class AlphaBetaAlgorithm extends BotAlgorithm
 {
@@ -15,7 +20,7 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
 
     public Move execute(Game game)
     {
-        int treeDepth = 2;
+        int treeDepth = Configuration.ALPHABETA_TREE_DEPTH;
         Tree alphabetaTree = generateTree(game, treeDepth, true);
 
         Object[] returned = new Object[2];
@@ -29,10 +34,17 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
         Tree tree = new Tree(game);
 
         ArrayList<TreeNode> newChildren = generateFirstSetOfChildren(game, tree, heuristics);
-
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for(TreeNode newChild : newChildren)
         {
-            generateNewChildren(tree.getNodeState(newChild), tree, newChild, countdown-1, heuristics);
+            executorService.submit(new NodeGenerator(tree.getNodeState(newChild), tree, newChild, countdown-1));
+        }
+
+        try {
+            executorService.shutdown();
+            executorService.awaitTermination(30, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         return tree;
@@ -42,7 +54,7 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
     {
         if(countdown > 0)
         {
-            ArrayList<Move> baseMoves = this.generateBaseMoves(state,heuristics);
+            ArrayList<Move> baseMoves = this.generateBaseMoves(state,true);
 
             for (Move move : baseMoves)
             {
@@ -50,7 +62,7 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
                 newChild.addEvaluation(tree.getParentState(newChild),tree.getNodeState(newChild));
 
                 parent.addChild(newChild);
-                generateNewChildren(tree.getNodeState(newChild), tree, newChild, countdown-1, heuristics);
+                generateNewChildren(tree.getNodeState(newChild), tree, newChild, countdown-1, true);
             }
         }
     }

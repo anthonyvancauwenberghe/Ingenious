@@ -25,7 +25,7 @@ abstract public class BotAlgorithm {
         timeDifference = (endTime - startTime) / 1000000;
         if (output) {
             System.out.println("-------------------------------------------------------");
-            System.out.println("Took " + timeDifference + " ms to execute algorithm " + this.getClass().getSimpleName());
+            System.out.println("Took " + timeDifference + " ms to execute BOT_ALGORITHM " + this.getClass().getSimpleName());
             System.out.println("-------------------------------------------------------");
             System.out.println();
         }
