@@ -12,7 +12,7 @@ public class Configuration {
     public final static boolean showCoordinates = true;
     public final static int hexagonSize = 30;
 
-    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
+    public final static BotAlgorithm algorithm = new GreedyAlgorithm(); //new MCTSAlgorithm();
 
     public final static Color LineColor = new Color(0, 0, 0);
 
