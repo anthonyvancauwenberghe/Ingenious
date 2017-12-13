@@ -59,11 +59,19 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 score[6] = head + tail;
                 moves[6] = move;
             }
-            if (score[getIndex(headc)] < head) {
-                moves[getIndex(headc)] = move;
+            if(move.getPiece().hasEqualTiles()) {
+                if (score[getIndex(headc)] < head) {
+                    moves[getIndex(headc)] = move;
+                }
+                if (score[getIndex(tailc)] < tail) {
+                    moves[getIndex(tailc)] = move;
+                }
             }
-            if (score[getIndex(tailc)] < tail) {
-                moves[getIndex(tailc)] = move;
+            else{
+                if(score[getIndex(headc)] < head+tail){
+                    score[getIndex(headc)] = head+tail;
+                    moves[getIndex(headc)] = move;
+                }
             }
         }
         return moves;
