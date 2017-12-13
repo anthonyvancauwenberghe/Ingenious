@@ -14,4 +14,16 @@ public class ScoreMove {
         this.score = score;
         this.tile = tile;
     }
+
+    public int getScore(){
+        return this.score;
+    }
+
+    public Tile getColor(){
+        return this.tile;
+    }
+
+    public Move getMove(){
+        return this.move;
+    }
 }

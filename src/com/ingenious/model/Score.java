@@ -51,6 +51,7 @@ public class Score {
         return tiles;
     }
 
+
     public int getScore(Tile color){
         if(color.equals(Tile.red)){
             return redScore;
@@ -73,6 +74,9 @@ public class Score {
         return -1;
     }
 
+    public Tile getLowestScoreTile(){
+        return sort()[0];
+    }
 
     public int[] toArray() {
         return new int[]{redScore, greenScore, blueScore, orangeScore, yellowScore, purpleScore};

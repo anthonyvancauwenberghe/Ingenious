@@ -5,6 +5,7 @@ import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.model.Move;
+import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 
 import java.util.ArrayList;
@@ -20,25 +21,59 @@ public class GreedyAlgorithm extends BotAlgorithm {
         return generator.generate();
     }
 
-    public ArrayList<ScoreMove> generateScoreMoves(Set<Move> allMoves) {
+    public ArrayList<ScoreMove> generateScoreMoves(Game game, Set<Move> allMoves) {
         ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
-
         for (Move aMove : allMoves) {
-            //TODO IMPLEMENT
-
-           // EXAMPLE ScoreMove scoreMove = new ScoreMove(aMove, 0, Tile.green)
-           // scoreMoves.add()
+            if(aMove.getPiece().hasEqualTiles()){
+                ScoreCalculatorLogic calc = new ScoreCalculatorLogic(game,aMove);
+                int score = calc.getScoreStreakHeadPiece() + calc.getScoreStreakTailPiece();
+                Tile color = aMove.getPiece().getHead();
+                ScoreMove scoreMove = new ScoreMove(aMove, score, color);
+                scoreMoves.add(scoreMove);
+            }
+            else{
+                ScoreCalculatorLogic calc = new ScoreCalculatorLogic(game, aMove);
+                int score1 = calc.getScoreStreakHeadPiece();
+                int score2 = calc.getScoreStreakTailPiece();
+                Tile color1 = aMove.getPiece().getHead();
+                Tile color2 = aMove.getPiece().getTail();
+                ScoreMove scoreMove1 = new ScoreMove(aMove, score1, color1);
+                ScoreMove scoreMove2 = new ScoreMove(aMove, score2, color2);
+                scoreMoves.add(scoreMove1);
+                scoreMoves.add(scoreMove2);
+            }
         }
-
-
         return scoreMoves;
     }
 
-    public Move selectBestMove(ArrayList<ScoreMove> scoreMoves) {
-
-        //TODO IMPLEMENT
-        return null;
+    public Move getGlobalHigh(ArrayList<ScoreMove> scoreMoves){
+        Move move = scoreMoves.get(0).getMove();
+        ScoreMove scoreMove = scoreMoves.get(0);
+        for(ScoreMove aScoreMove : scoreMoves){
+            if(scoreMove.getScore()<aScoreMove.getScore()){
+                move = aScoreMove.getMove();
+                scoreMove = aScoreMove;
+            }
+        }
+        return move;
     }
+
+    public Move getBestMoveColor(Tile tile, ArrayList<ScoreMove> scoreMoves){
+
+    }
+
+
+    public Move selectBestMove(Game game, ArrayList<ScoreMove> scoreMoves) {
+       if(!playHighest(game)){
+           Tile[] sorted = game.getCurrentPlayer().getScore().sort();
+
+           for(Tile color: sorted){
+            return getBestMoveColor(color, scoreMoves);
+           }
+       }
+            return getGlobalHigh(scoreMoves);
+    }
+
 
     public Move[] getMoves(Game game) {
         ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
@@ -122,7 +157,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
     protected Move execute(Game game) {
         Game simulatedGame = game.getClone();
         Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
-        ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(allMoves);
-        return selectBestMove(scoreMoves);
+        ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
+        return selectBestMove(simulatedGame, scoreMoves);
     }
 }
