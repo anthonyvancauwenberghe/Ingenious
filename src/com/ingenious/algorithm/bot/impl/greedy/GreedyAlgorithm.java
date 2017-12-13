@@ -26,9 +26,10 @@ public class GreedyAlgorithm extends BotAlgorithm {
         for (Move aMove : allMoves) {
             if(aMove.getPiece().hasEqualTiles()){
                 ScoreCalculatorLogic calc = new ScoreCalculatorLogic(game,aMove);
-                int score = calc.getScoreStreakHeadPiece() + calc.getScoreStreakTailPiece();
+                int scoreHead = calc.getScoreStreakHeadPiece();
+                int scoreTail = calc.getScoreStreakTailPiece();
                 Tile color = aMove.getPiece().getHead();
-                ScoreMove scoreMove = new ScoreMove(aMove, score, color);
+                ScoreMove scoreMove = new ScoreMove(aMove, scoreHead, scoreTail, color, color);
                 scoreMoves.add(scoreMove);
             }
             else{
@@ -37,10 +38,10 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 int score2 = calc.getScoreStreakTailPiece();
                 Tile color1 = aMove.getPiece().getHead();
                 Tile color2 = aMove.getPiece().getTail();
-                ScoreMove scoreMove1 = new ScoreMove(aMove, score1, color1);
-                ScoreMove scoreMove2 = new ScoreMove(aMove, score2, color2);
+                ScoreMove scoreMove1 = new ScoreMove(aMove, score1, score2, color1, color2);
+               // ScoreMove scoreMove2 = new ScoreMove(aMove, score2, color2);
                 scoreMoves.add(scoreMove1);
-                scoreMoves.add(scoreMove2);
+                //scoreMoves.add(scoreMove2);
             }
         }
         return scoreMoves;
@@ -59,7 +60,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
     }
 
     public Move getBestMoveColor(Tile tile, ArrayList<ScoreMove> scoreMoves){
-
+        return null;
     }
 
 
