@@ -7,6 +7,8 @@ import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 import com.ingenious.model.players.Player;
 
+import javax.swing.*;
+
 public class GameOverLogic extends Logic<Boolean> {
 
     public GameOverLogic(Game game) {
@@ -14,7 +16,7 @@ public class GameOverLogic extends Logic<Boolean> {
     }
 
     public Boolean execute() {
-        return playerHasMaxScoreInAtLeastOneColor() || noMovesLeft();
+        return playerHasMaxScoreAcrossAllColors(1) || playerHasMaxScoreAcrossAllColors(2) || noMovesLeft();
     }
 
     public boolean playerHasMaxScoreInAtLeastOneColor() {
@@ -81,6 +83,7 @@ public class GameOverLogic extends Logic<Boolean> {
                 return false;
             }
         }
+
         return null;
     }
 }

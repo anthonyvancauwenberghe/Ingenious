@@ -2,6 +2,7 @@ package com.ingenious.algorithm.bot.impl.mcts;
 
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class MCTSAlgorithm extends BotAlgorithm {
 
     /* Amount of simulations per basemove */
-    private final int simulations = 500;
+    private final int simulations = Configuration.MCTS_SIMULATIONS;
 
     public MCTSAlgorithm() {
         super();
