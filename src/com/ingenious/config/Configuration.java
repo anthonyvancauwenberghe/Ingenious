@@ -1,9 +1,10 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
+import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
+import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
 
 import java.awt.*;
 
@@ -14,9 +15,10 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
 
 //    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
-    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
-    public final static int MCTS_SIMULATIONS = 500;
-    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
+    public final static BotAlgorithm algorithm = new GreedyAlgorithm();
+
+    public final static int MCTS_SIMULATIONS = 50;
+    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new SmartRandomAlgorithm();
 
     public final static Color LineColor = new Color(0, 0, 0);
 

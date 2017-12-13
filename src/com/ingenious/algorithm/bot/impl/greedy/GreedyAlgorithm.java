@@ -5,7 +5,6 @@ import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.model.Move;
-import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 
 import java.util.ArrayList;
@@ -39,9 +38,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 Tile color1 = aMove.getPiece().getHead();
                 Tile color2 = aMove.getPiece().getTail();
                 ScoreMove scoreMove1 = new ScoreMove(aMove, score1, score2, color1, color2);
-               // ScoreMove scoreMove2 = new ScoreMove(aMove, score2, color2);
                 scoreMoves.add(scoreMove1);
-                //scoreMoves.add(scoreMove2);
             }
         }
         return scoreMoves;
@@ -51,7 +48,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
         Move move = scoreMoves.get(0).getMove();
         ScoreMove scoreMove = scoreMoves.get(0);
         for(ScoreMove aScoreMove : scoreMoves){
-            if(scoreMove.getScore()<aScoreMove.getScore()){
+            if(scoreMove.getTotalScore()<aScoreMove.getTotalScore()){
                 move = aScoreMove.getMove();
                 scoreMove = aScoreMove;
             }
@@ -156,7 +153,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
 
     @Override
     public Move execute(Game game) {
-        Game simulatedGame = game.getClone();
+        Game simulatedGame = game;
         Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
         ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
         return selectBestMove(simulatedGame, scoreMoves);

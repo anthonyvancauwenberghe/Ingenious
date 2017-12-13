@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.bot.impl;
+package com.ingenious.algorithm.bot.impl.random;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.engine.Game;
@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RandomAlgorithm extends BotAlgorithm {
     public Move execute(Game game) {
 
-        ArrayList<Move> moves = generateBaseMoves(game, true);
+        ArrayList<Move> moves = generateAllBaseMoves(game);
 
         if (moves.size() != 0) {
             int i = ThreadLocalRandom.current().nextInt(0, moves.size());

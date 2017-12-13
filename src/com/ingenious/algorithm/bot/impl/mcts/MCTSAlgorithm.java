@@ -24,6 +24,7 @@ public class MCTSAlgorithm extends BotAlgorithm {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         ArrayList<Move> baseMoves = this.generateBaseMoves(game, true);
+        System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
         System.out.println("amount of moves: " + baseMoves.size());
         System.out.println("simulations per move: " + this.simulations);
         System.out.println("total amount of moveSimulations: " + baseMoves.size() * this.simulations);
