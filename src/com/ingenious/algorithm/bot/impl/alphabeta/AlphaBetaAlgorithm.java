@@ -15,9 +15,12 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
 
     public Move execute(Game game)
     {
-        Tree alphabetaTree = generateTree(game, 1, true);
+        int treeDepth = 2;
+        Tree alphabetaTree = generateTree(game, treeDepth, true);
 
-        return  (Move)runAlphaBeta(alphabetaTree.getRootAsTreeNode(),1,-10000, 10000, true)[1];
+        Object[] returned = new Object[2];
+        Object[] results =  runAlphaBeta(alphabetaTree.getRootAsTreeNode(),treeDepth,-10000, 10000, true, returned);
+        return (Move) results[1];
     }
 
     public Tree generateTree(Game game, int layerLimit, boolean heuristics)
@@ -66,12 +69,11 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
         return outputNodes;
     }
 
-    public Object[] runAlphaBeta(TreeNode node, int depth, int alpha, int beta, Boolean maximizing)
-    {	
-    	Object[] returned = new Object[2];
+    public Object[] runAlphaBeta(TreeNode node, int depth, int alpha, int beta, Boolean maximizing, Object[] returned)
+    {
             if (depth == 0 || !node.hasChildren())
             {
-            	if(!node.isRoot())
+                if(!node.isRoot() && node.getRootMove() != null)
                 {
                     returned[0]=node.evaluationScore;
                     returned[1]=node.getRootMove();
@@ -83,13 +85,14 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
                 int v = -10000;
                 for (TreeNode childNode : node.getChildren())
                 {
-                    v = Math.max(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, false)[0]);
+                    v = Math.max(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, false, returned)[0]);
                     alpha = Math.max(alpha, v);
                     if (beta <= alpha)
                         break;
                 }
                 returned[0]=v;
-                returned[1]=node.getRootMove();
+                if(!node.isRoot() && node.getRootMove() != null)
+                    returned[1]=node.getRootMove();
                 return returned;
             }
             else
@@ -97,13 +100,14 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
                 int v = 10000;
                 for (TreeNode childNode : node.getChildren())
                 {
-                    v = Math.min(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, true)[0]);
+                    v = Math.min(v, (int)runAlphaBeta(childNode, depth - 1, alpha, beta, true, returned)[0]);
                     beta = Math.min(beta, v);
                     if (beta <= alpha)
                         break;
                 }
                 returned[0]=v;
-                returned[1]=node.getRootMove();
+                if(!node.isRoot() && node.getRootMove() != null)
+                    returned[1]=node.getRootMove();
                 return returned;
             }
       }

@@ -15,7 +15,8 @@ public class Bot extends Player<Bot> {
         this.algorithm = algorithm;
     }
 
-    public Move getMove(Game game) {
+    public Move getMove(Game game)
+    {
         return algorithm.generateMove(game,true);
     }
 

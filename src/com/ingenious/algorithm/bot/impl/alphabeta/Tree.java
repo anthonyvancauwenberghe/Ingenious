@@ -50,9 +50,12 @@ public class Tree
     {
         Game state = this.root.getClone();
 
-        for (Move move : node.parentMoves)
+        if(node.parentMoves.size() > 0)
         {
-            state.doSimulationMove(move);
+            for (Move move : node.parentMoves)
+            {
+                state.doSimulationMove(move);
+            }
         }
         state.doSimulationMove(node.move);
 
@@ -63,12 +66,16 @@ public class Tree
     {
         Game state = this.root.getClone();
 
-        for (Move move : node.parentMoves)
+        if(node.parentMoves.size() > 0)
         {
-            state.doSimulationMove(node.move);
+            for (Move move : node.parentMoves)
+            {
+                state.doSimulationMove(node.move);
+            }
+            return state;
         }
-
-        return state;
+        else
+            return root;
     }
 
     public ArrayList<TreeNode> getFirstLayerChildren()
