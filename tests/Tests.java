@@ -1,6 +1,7 @@
 import com.ingenious.engine.Game;
 import com.ingenious.provider.GameProvider;
 import tests.Test;
+import tests.impl.AlphaBetaAlgorithmTest;
 import tests.impl.MCTSAlgorithmTest;
 
 public class Tests {
@@ -11,8 +12,11 @@ public class Tests {
     }
 
     public static void executeTests(Game game) {
-        Test monteCarloAlgoTest = new MCTSAlgorithmTest(game);
-        monteCarloAlgoTest.execute();
+        //Test monteCarloAlgoTest = new MCTSAlgorithmTest(game);
+        //monteCarloAlgoTest.execute();
+
+        Test alphabetaTest = new AlphaBetaAlgorithmTest(game);
+        alphabetaTest.execute();
     }
 
 }
