@@ -49,7 +49,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
         Move move = scoreMoves.get(0).getMove();
         ScoreMove scoreMove = scoreMoves.get(0);
         for(ScoreMove aScoreMove : scoreMoves){
-            if(scoreMove.getTotalScore()<aScoreMove.getTotalScore()){
+            if(scoreMove.getTotalScore() < aScoreMove.getTotalScore()){
                 move = aScoreMove.getMove();
                 scoreMove = aScoreMove;
             }
@@ -111,7 +111,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
 
     @Override
     public Move execute(Game game) {
-        Game simulatedGame = game;
+        Game simulatedGame = game.getClone();
         Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
         ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
         return selectBestMove(simulatedGame, scoreMoves);

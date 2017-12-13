@@ -14,10 +14,13 @@ public class ScoreMove {
         this.move = move;
         this.head = head;
         this.tail = tail;
+        this.scoreHead = scoreHead;
+        this.scoreTail = scoreTail;
     }
 
     public int getTotalScore(){
-        return this.scoreHead + scoreTail;
+        int score = this.getScoreHead() + this.getScoreTail();
+        return score;
     }
 
     public int getScoreHead(){
