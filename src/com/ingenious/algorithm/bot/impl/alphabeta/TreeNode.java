@@ -12,6 +12,7 @@ public class TreeNode
     public ArrayList<Move> parentMoves;
     public Move move;
     public int evaluationScore;
+    private boolean isRoot = false;
 
     public TreeNode(Move move, ArrayList<Move> parentMoves)
     {
@@ -20,7 +21,10 @@ public class TreeNode
         this.parentMoves = parentMoves;
     }
 
-    public TreeNode(){}
+    public TreeNode(boolean root)
+    {
+        this.isRoot = root;
+    }
 
     public ArrayList<TreeNode> getChildren()
     {
@@ -54,5 +58,23 @@ public class TreeNode
             return true;
         else
             return false;
+    }
+
+    public Move getRootMove()
+    {
+        if(!isRoot())
+        {
+            if (parentMoves.size() > 0)
+                return parentMoves.get(0);
+            else
+                return move;
+        }
+        else
+            return null;
+    }
+
+    public boolean isRoot()
+    {
+        return this.isRoot;
     }
 }
