@@ -16,7 +16,9 @@ public class GameOverLogic extends Logic<Boolean> {
     }
 
     public Boolean execute() {
-        return playerHasMaxScoreAcrossAllColors(1) || playerHasMaxScoreAcrossAllColors(2) || noMovesLeft();
+        return playerHasMaxScoreAcrossAllColors(0)
+                || playerHasMaxScoreAcrossAllColors(1)
+                || noMovesLeft();
     }
 
     public boolean playerHasMaxScoreInAtLeastOneColor() {

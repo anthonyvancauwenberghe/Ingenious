@@ -15,8 +15,8 @@ public class Configuration {
 
 //    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
     public final static BotAlgorithm algorithm = new MCTSAlgorithm();
-    public final static int MCTS_SIMULATIONS = 1500;
-    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new RandomAlgorithm();
+    public final static int MCTS_SIMULATIONS = 500;
+    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
 
     public final static Color LineColor = new Color(0, 0, 0);
 
