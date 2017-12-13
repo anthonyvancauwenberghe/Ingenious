@@ -155,7 +155,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
 
 
     @Override
-    protected Move execute(Game game) {
+    public Move execute(Game game) {
         Game simulatedGame = game.getClone();
         Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
         ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
