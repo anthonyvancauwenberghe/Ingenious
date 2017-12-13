@@ -1,7 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
+import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 
 import java.awt.*;
 
@@ -12,7 +12,7 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
 
 //    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
-    public final static BotAlgorithm algorithm = new MCTSAlgorithm();
+    public final static BotAlgorithm algorithm = new GreedyAlgorithm();
 
     public final static Color LineColor = new Color(0, 0, 0);
 

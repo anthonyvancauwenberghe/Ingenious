@@ -1,55 +1,51 @@
-package com.ingenious.algorithm.bot.impl;
+package com.ingenious.algorithm.bot.impl.greedy;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
-import com.ingenious.model.*;
-import com.ingenious.provider.GameProvider;
+import com.ingenious.model.Move;
+import com.ingenious.model.Tile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by carolley on 12-Dec-17.
  */
 public class GreedyAlgorithm extends BotAlgorithm {
 
-
-    public GreedyAlgorithm() {
+    public Set<Move> getAvailableMoves(Game game) {
+        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(game);
+        return generator.generate();
     }
 
-    public Game getGame() {
-        return GameProvider.getInstance().game;
-    }
+    public ArrayList<ScoreMove> generateScoreMoves(Set<Move> allMoves) {
+        ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
 
-    public ArrayList<Move> getAvailableMoves() {
-        ArrayList<Move> moves = new ArrayList<>();
-        Game game = getGame();
-        ArrayList<BoardNode> nodes = game.getBoard().getBoardNodes();
-        Board board = game.getBoard();
-        ArrayList<Piece> pieces = game.getCurrentPlayer().getRack().getPieces();
-        for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).isEmpty()) {
-                ArrayList<BoardNode> neighbours = board.getAvailableNeighboursOfNode(nodes.get(i));
-                for (int j = 0; j < neighbours.size(); j++) {
-                    for (int k = 0; k < pieces.size(); k++) {
+        for (Move aMove : allMoves) {
+            //TODO IMPLEMENT
 
-                        moves.add(new Move(nodes.get(i), neighbours.get(j), pieces.get(k)));
-                    }
-                }
-            }
+           // EXAMPLE ScoreMove scoreMove = new ScoreMove(aMove, 0, Tile.green)
+           // scoreMoves.add()
         }
-        System.out.println("amount of moves generated" + moves.size());
-        return moves;
+
+
+        return scoreMoves;
     }
 
-    public Move[] getMoves() {
-        Game game = GameProvider.getInstance().game;
+    public Move selectBestMove(ArrayList<ScoreMove> scoreMoves) {
+
+        //TODO IMPLEMENT
+        return null;
+    }
+
+    public Move[] getMoves(Game game) {
+        ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
+
         Move[] moves = new Move[7];
-        ArrayList<Move> available = getAvailableMoves();
         int[] score = {0, 0, 0, 0, 0, 0, 0};
-        for (int i = 0; i < available.size(); i++) {
-            Move move = available.get(i);
+        for (Move move : this.getAvailableMoves(game)) {
             ScoreCalculatorLogic calculator = new ScoreCalculatorLogic(game, move);
             int head = calculator.getScoreStreakHeadPiece();
             Tile headc = move.getPiece().getHead();
@@ -77,8 +73,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
         return moves;
     }
 
-    public boolean playHighest() {
-        Game game = GameProvider.getInstance().game;
+    public boolean playHighest(Game game) {
         Tile[] sorted = game.getCurrentPlayer().getScore().sort();
         int low = game.getCurrentPlayer().getScore().getScore(sorted[0]);
         int high = game.getCurrentPlayer().getScore().getScore(sorted[5]);
@@ -88,8 +83,8 @@ public class GreedyAlgorithm extends BotAlgorithm {
         return false;
     }
 
-    public Move getLowPlay(Move[] moves) {
-        Tile[] sorted = GameProvider.getInstance().game.getCurrentPlayer().getScore().sort();
+    public Move getLowPlay(Move[] moves, Game game) {
+        Tile[] sorted = game.getCurrentPlayer().getScore().sort();
         for (int i = 0; i < 6; i++) {
             if (moves[getIndex(sorted[i])] != null) {
                 System.out.println("MOVE NOT NULL");
@@ -125,11 +120,9 @@ public class GreedyAlgorithm extends BotAlgorithm {
 
     @Override
     protected Move execute(Game game) {
-        Move[] moves = getMoves();
-        if (!playHighest()) {
-            return getLowPlay(moves);
-        } else {
-            return moves[6];
-        }
+        Game simulatedGame = game.getClone();
+        Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
+        ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(allMoves);
+        return selectBestMove(scoreMoves);
     }
 }

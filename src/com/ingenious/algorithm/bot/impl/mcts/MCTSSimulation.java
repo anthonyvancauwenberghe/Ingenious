@@ -36,7 +36,6 @@ public class MCTSSimulation implements Callable {
         RandomAlgorithm randomAlgorithm = new RandomAlgorithm();
         while (simulationRound < this.simulations) {
             Game aGame = firstMoveGame.getClone();
-            GameOverLogic logic = new GameOverLogic(aGame);
             while (!game.isOver()) {
                 randomMove = randomAlgorithm.execute(aGame);
                 if (randomMove == null)
