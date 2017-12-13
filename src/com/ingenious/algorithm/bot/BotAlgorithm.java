@@ -37,6 +37,6 @@ abstract public class BotAlgorithm {
         return new ArrayList<>(movesFactory.generate());
     }
 
-    protected abstract Move execute(Game game);
+    public abstract Move execute(Game game);
 
 }

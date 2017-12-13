@@ -1,8 +1,8 @@
 package com.ingenious.algorithm.bot.impl.mcts;
 
-import com.ingenious.algorithm.bot.impl.RandomAlgorithm;
+import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
-import com.ingenious.engine.logic.game.GameOverLogic;
 import com.ingenious.model.Move;
 
 import java.util.concurrent.Callable;
@@ -33,7 +33,7 @@ public class MCTSSimulation implements Callable {
 
         int simulationRound = 0;
         Move randomMove;
-        RandomAlgorithm randomAlgorithm = new RandomAlgorithm();
+        BotAlgorithm randomAlgorithm = Configuration.MCTS_SIMULATION_ALGORITHM;
         while (simulationRound < this.simulations) {
             Game aGame = firstMoveGame.getClone();
             while (!game.isOver()) {

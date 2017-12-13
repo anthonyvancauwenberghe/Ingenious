@@ -5,7 +5,6 @@ import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.model.Move;
-import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
 
 import java.util.ArrayList;
@@ -29,7 +28,8 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 int score = calc.getScoreStreakHeadPiece() + calc.getScoreStreakTailPiece();
                 Tile color = aMove.getPiece().getHead();
                 ScoreMove scoreMove = new ScoreMove(aMove, score, color);
-                scoreMoves.add(scoreMove);
+                if (score > 0)
+                    scoreMoves.add(scoreMove);
             }
             else{
                 ScoreCalculatorLogic calc = new ScoreCalculatorLogic(game, aMove);
@@ -39,8 +39,10 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 Tile color2 = aMove.getPiece().getTail();
                 ScoreMove scoreMove1 = new ScoreMove(aMove, score1, color1);
                 ScoreMove scoreMove2 = new ScoreMove(aMove, score2, color2);
-                scoreMoves.add(scoreMove1);
-                scoreMoves.add(scoreMove2);
+                if (score1 > 0)
+                    scoreMoves.add(scoreMove1);
+                if (score2 > 0)
+                    scoreMoves.add(scoreMove2);
             }
         }
         return scoreMoves;
@@ -59,7 +61,18 @@ public class GreedyAlgorithm extends BotAlgorithm {
     }
 
     public Move getBestMoveColor(Tile tile, ArrayList<ScoreMove> scoreMoves){
-
+        ScoreMove highestScoreMove = null;
+        for (ScoreMove aScoreMove : scoreMoves) {
+            if (aScoreMove.tile.equals(tile)) {
+                if (highestScoreMove == null) {
+                    highestScoreMove = aScoreMove;
+                } else {
+                    if (highestScoreMove.score < aScoreMove.score)
+                        highestScoreMove = aScoreMove;
+                }
+            }
+        }
+        return highestScoreMove.move;
     }
 
 
@@ -74,40 +87,6 @@ public class GreedyAlgorithm extends BotAlgorithm {
             return getGlobalHigh(scoreMoves);
     }
 
-
-    public Move[] getMoves(Game game) {
-        ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
-
-        Move[] moves = new Move[7];
-        int[] score = {0, 0, 0, 0, 0, 0, 0};
-        for (Move move : this.getAvailableMoves(game)) {
-            ScoreCalculatorLogic calculator = new ScoreCalculatorLogic(game, move);
-            int head = calculator.getScoreStreakHeadPiece();
-            Tile headc = move.getPiece().getHead();
-            int tail = calculator.getScoreStreakTailPiece();
-            Tile tailc = move.getPiece().getTail();
-            if (score[6] < head + tail) {
-                score[6] = head + tail;
-                moves[6] = move;
-            }
-            if(!move.getPiece().hasEqualTiles()) {
-                if (score[getIndex(headc)] < head) {
-                    moves[getIndex(headc)] = move;
-                }
-                if (score[getIndex(tailc)] < tail) {
-                    moves[getIndex(tailc)] = move;
-                }
-            }
-            else{
-                if(score[getIndex(headc)] < head+tail){
-                    score[getIndex(headc)] = head+tail;
-                    moves[getIndex(headc)] = move;
-                }
-            }
-        }
-        return moves;
-    }
-
     public boolean playHighest(Game game) {
         Tile[] sorted = game.getCurrentPlayer().getScore().sort();
         int low = game.getCurrentPlayer().getScore().getScore(sorted[0]);
@@ -118,43 +97,9 @@ public class GreedyAlgorithm extends BotAlgorithm {
         return false;
     }
 
-    public Move getLowPlay(Move[] moves, Game game) {
-        Tile[] sorted = game.getCurrentPlayer().getScore().sort();
-        for (int i = 0; i < 6; i++) {
-            if (moves[getIndex(sorted[i])] != null) {
-                System.out.println("MOVE NOT NULL");
-
-                return moves[i];
-            }
-        }
-        return moves[6];
-    }
-
-    public int getIndex(Tile color) {
-        if (color.equals(Tile.red)) {
-            return 0;
-        }
-        if (color.equals(Tile.green)) {
-            return 1;
-        }
-        if (color.equals(Tile.blue)) {
-            return 2;
-        }
-        if (color.equals(Tile.orange)) {
-            return 3;
-        }
-        if (color.equals(Tile.yellow)) {
-            return 4;
-        }
-        if (color.equals(Tile.purple)) {
-            return 5;
-        }
-        return -1;
-    }
-
 
     @Override
-    protected Move execute(Game game) {
+    public Move execute(Game game) {
         Game simulatedGame = game.getClone();
         Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
         ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
