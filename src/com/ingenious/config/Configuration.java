@@ -1,9 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
-import com.ingenious.provider.GameProvider;
 
 import java.awt.*;
 
@@ -11,6 +9,7 @@ public class Configuration {
     public final static int boardWidth = 6;
     public final static boolean showCoordinates = true;
     public final static int hexagonSize = 30;
+    public final static boolean DEBUG_MODE = false;
 
     public final static BotAlgorithm algorithm = new MCTSAlgorithm();
 

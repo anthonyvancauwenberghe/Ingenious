@@ -1,6 +1,6 @@
 package com.ingenious.engine;
 
-import com.ingenious.algorithm.support.BaseMovesAlgorithm;
+import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.engine.logic.game.GameOverLogic;
@@ -124,11 +124,12 @@ public class Game {
     }
 
     public void end(){
-        if(this.winner.equals(null)){
-            System.out.println("IS A DRAW");
-        }
-        else {
-            System.out.println("WINNER IS: " + this.winner);
+        if (Configuration.DEBUG_MODE) {
+            if (this.winner.equals(null)) {
+                System.out.println("IS A DRAW");
+            } else {
+                System.out.println("WINNER IS: " + this.winner);
+            }
         }
     }
     public boolean gameOver(){
@@ -229,10 +230,22 @@ public class Game {
         return new Game(this.board.getClone(), players, this.bag.getClone());
     }
 
+    public boolean firstPlayerWon() {
+        GameOverLogic logic = new GameOverLogic(this);
 
-    public Boolean whoWon(Game game) // true for first player, false for second player, null for no winner
+        if (logic.playerHasMaxScoreAcrossAllColors(0))
+            return true;
+        else if (logic.playerHasMaxScoreAcrossAllColors(1))
+            return false;
+        else if (logic.noMovesLeft()) {
+            return logic.firstPlayerWinsWithBestScore();
+        }
+        return false;
+    }
+
+    public Boolean whoWon() // true for first player, false for second player, null for no winner
     {
-        GameOverLogic logic = new GameOverLogic(game);
+        GameOverLogic logic = new GameOverLogic(this);
 
         if (logic.playerHasMaxScoreAcrossAllColors(0))
             return true;
