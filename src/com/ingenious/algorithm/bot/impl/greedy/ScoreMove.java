@@ -36,4 +36,24 @@ public class ScoreMove {
     public Move getMove(){
         return this.move;
     }
+
+    public boolean contains_color(Tile color){
+        if(color.equals(head) || color.equals(tail)){
+            return true;
+        }
+        return false;
+    }
+
+    public int scoreColor(Tile color){
+        if(head.equals(tail) && color.equals(head)){
+            return scoreTail+scoreHead;
+        }
+        if(head.equals(color)){
+            return scoreHead;
+        }
+        if(tail.equals(color)){
+            return scoreTail;
+        }
+        return 0;
+    }
 }
