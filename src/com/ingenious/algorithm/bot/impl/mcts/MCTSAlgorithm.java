@@ -51,6 +51,4 @@ public class MCTSAlgorithm extends BotAlgorithm {
         }
         return baseMoves.get(maxValueIndex);
     }
-
-
 }

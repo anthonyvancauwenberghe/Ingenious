@@ -5,27 +5,29 @@ import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;
 import com.ingenious.model.Tile;
 
+import java.util.ArrayList;
+
 public class BoardFactory {
     private Board board;
-
+    private ArrayList<BoardNode> boardNodes = new ArrayList<BoardNode>();
     public BoardFactory() {
         this.board = new Board();
     }
 
     public Board generate() {
         this.buildBoardList();
-        this.buildNodeCoordinatesArray();
         this.setInitialTiles();
+        this.buildNodeCoordinatesArray();
         return this.board;
     }
 
     public void setInitialTiles() {
-        board.getBoardNodes().get(0).setTile(Tile.red);
-        board.getBoardNodes().get(79).setTile(Tile.green);
-        board.getBoardNodes().get(89).setTile(Tile.blue);
-        board.getBoardNodes().get(10).setTile(Tile.orange);
-        board.getBoardNodes().get(80).setTile(Tile.yellow);
-        board.getBoardNodes().get(90).setTile(Tile.purple);
+        this.boardNodes.get(0).setTile(Tile.red);
+        this.boardNodes.get(79).setTile(Tile.green);
+        this.boardNodes.get(89).setTile(Tile.blue);
+        this.boardNodes.get(10).setTile(Tile.orange);
+        this.boardNodes.get(80).setTile(Tile.yellow);
+        this.boardNodes.get(90).setTile(Tile.purple);
     }
 
     private void buildBoardList() {
@@ -36,10 +38,10 @@ public class BoardFactory {
         {
             for (int j = board_width - 1; j >= tmp_top; j--) {
                 if (i == 0) {
-                    board.getBoardNodes().add(new BoardNode(i, -j, Tile.empty));//Create boardNodes only once for the case when i is 0 because it is the center
+                    this.boardNodes.add(new BoardNode(i, -j, Tile.empty));//Create boardNodes only once for the case when i is 0 because it is the center
                 } else {
-                    board.getBoardNodes().add(new BoardNode(i, -j, Tile.empty));
-                    board.getBoardNodes().add(new BoardNode(-i, j, Tile.empty)); // then creates 2 version of the node, its regular and mirrored version.
+                    this.boardNodes.add(new BoardNode(i, -j, Tile.empty));
+                    this.boardNodes.add(new BoardNode(-i, j, Tile.empty)); // then creates 2 version of the node, its regular and mirrored version.
                     cnt += 2;
                 }
             }
@@ -58,10 +60,10 @@ public class BoardFactory {
         }
 
         /* Set all coordinate values to the given index from the node arraylist */
-        for (int i = 0; i < board.getBoardNodes().size(); i++) {
-            int xOffset = board.getBoardNodes().get(i).getX() + offset;
-            int yOffset = board.getBoardNodes().get(i).getY() + offset;
-            board.getNodeCoord()[xOffset][yOffset] = i;
+        for (int i = 0; i < this.boardNodes.size(); i++) {
+            int xOffset = this.boardNodes.get(i).getX() + offset;
+            int yOffset = this.boardNodes.get(i).getY() + offset;
+            board.getNodeCoord()[xOffset][yOffset] = Configuration.EMPTY_TILE_ID;
         }
     }
 }

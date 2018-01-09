@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.support;
+package com.ingenious.algorithm.support.nodegenerators;
 
 import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;

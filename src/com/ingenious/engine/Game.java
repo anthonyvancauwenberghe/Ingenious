@@ -97,7 +97,7 @@ public class Game {
         GameProvider.updateGraphics();
         if (this.getCurrentPlayer() instanceof Bot) {
             Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
-            this.doSimulationMove(botMove);
+            this.executeMove(botMove);
             GameProvider.updateGraphics();
         }
     }

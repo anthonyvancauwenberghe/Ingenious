@@ -1,6 +1,6 @@
 package com.ingenious.algorithm.bot.impl.alphabeta;
 
-import com.ingenious.algorithm.support.StraightLineMoveGenerator;
+import com.ingenious.algorithm.support.nodegenerators.StraightLineMoveGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 

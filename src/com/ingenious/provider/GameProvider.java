@@ -58,7 +58,6 @@ public class GameProvider implements Runnable {
         return new MainFrame(game);
     }
 
-
     private Bag initializeBag() {
         BagFactory factory = new BagFactory();
         return factory.generate();

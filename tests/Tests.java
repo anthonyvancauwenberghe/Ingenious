@@ -12,11 +12,15 @@ public class Tests {
     }
 
     public static void executeTests(Game game) {
-        //Test monteCarloAlgoTest = new MCTSAlgorithmTest(game);
-        //monteCarloAlgoTest.execute();
 
-        Test alphabetaTest = new AlphaBetaAlgorithmTest(game);
-        alphabetaTest.execute();
+        while(!game.isOver()){
+            Test monteCarloAlgoTest = new MCTSAlgorithmTest(game);
+            monteCarloAlgoTest.execute();
+
+            Test alphabetaTest = new AlphaBetaAlgorithmTest(game);
+            alphabetaTest.execute();
+        }
+
     }
 
 }

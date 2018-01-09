@@ -5,8 +5,8 @@ import com.ingenious.model.Tile;
 
 public class ScoreMove {
     public Move move;
-    public int scoreHead;
-    public int scoreTail;
+    public int scoreHead=0;
+    public int scoreTail=0;
     public Tile head;
     public Tile tail;
 

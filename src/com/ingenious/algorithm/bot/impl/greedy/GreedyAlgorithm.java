@@ -1,13 +1,12 @@
 package com.ingenious.algorithm.bot.impl.greedy;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.support.AllBaseMovesGenerator;
+import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.model.Move;
 import com.ingenious.model.Tile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -30,7 +29,8 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 int scoreTail = calc.getScoreStreakTailPiece();
                 Tile color = aMove.getPiece().getHead();
                 ScoreMove scoreMove = new ScoreMove(aMove, scoreHead, scoreTail, color, color);
-                scoreMoves.add(scoreMove);
+                if (scoreMove.getTotalScore() > 0)
+                    scoreMoves.add(scoreMove);
             }
             else{
                 ScoreCalculatorLogic calc = new ScoreCalculatorLogic(game, aMove);
@@ -39,7 +39,8 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 Tile color1 = aMove.getPiece().getHead();
                 Tile color2 = aMove.getPiece().getTail();
                 ScoreMove scoreMove1 = new ScoreMove(aMove, score1, score2, color1, color2);
-                scoreMoves.add(scoreMove1);
+                if (scoreMove1.getTotalScore() > 0)
+                    scoreMoves.add(scoreMove1);
             }
         }
         return scoreMoves;

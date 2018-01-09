@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Board {
 
-    private ArrayList<BoardNode> boardNodes = new ArrayList<BoardNode>(); //This is the list containing the boardNodes
     private int[][] nodeCoord = new int[2 * (Configuration.BOARD_WIDTH) - 1][2 * (Configuration.BOARD_WIDTH) - 1];
 
     public Board() {
@@ -18,37 +17,59 @@ public class Board {
         return nodeCoord;
     }
 
-    private Board(ArrayList<BoardNode> ns, int[][] nc) {
-        this.boardNodes = ns;
+    private Board(int[][] nc) {
         this.nodeCoord = nc;
     }
 
+    @Deprecated
     public ArrayList<BoardNode> getBoardNodes() {
-        return boardNodes;
+        ArrayList<BoardNode> nodes = new ArrayList<>();
+        for (int x = 0; x < getNodeCoord().length; x++) {
+            for (int y = 0; y < getNodeCoord()[x].length; y++) {
+                int offset = Configuration.BOARD_WIDTH - 1;
+                if (this.nodeCoord[x][y] != -1)
+                    nodes.add(getBoardNodeFromCoordinate(x - offset, y - offset));
+            }
+        }
+        return nodes;
     }
 
     public boolean inBoard(int x, int y) {
-        return getNode(x, y) != null;
+        return getTileIdFromCoordinate(x, y) != -1;
+    }
+
+    @Deprecated
+    public BoardNode getBoardNodeFromCoordinate(int x, int y) {
+        return new BoardNode(x, y, getTileFromCoordinate(x, y));
+    }
+
+    public Tile getTileFromCoordinate(int x, int y) {
+        int tileId = getTileIdFromCoordinate(x, y);
+        if (tileId == -1)
+            return null;
+        return new Tile(tileId);
+    }
+
+    public int getTileIdFromCoordinate(int x, int y) {
+        int offset = Configuration.BOARD_WIDTH - 1;
+        return this.nodeCoord[x + offset][y + offset];
     }
 
     /**
-     * @param x
-     * @param y
-     * @return mixed
-     * return node when it's found on the board else return null
+     * @deprecated
      */
     public BoardNode getNode(int x, int y) {
         //ADDING THE WIDTH OF THE BOARD TO MAKE SURE THERE ARE NO NEGATIVE NUMBERS AS KEY IN THE ARRAY
-        x = x + Configuration.BOARD_WIDTH - 1;
-        y = y + Configuration.BOARD_WIDTH - 1;
+        int shiftedX = x + Configuration.BOARD_WIDTH - 1;
+        int shiftedY = y + Configuration.BOARD_WIDTH - 1;
 
-        if (x < 0 || x > 2 * (Configuration.BOARD_WIDTH - 1) || y < 0 || y > 2 * (Configuration.BOARD_WIDTH - 1))
+        if (shiftedX < 0 || shiftedX > 2 * (Configuration.BOARD_WIDTH - 1) || shiftedY < 0 || shiftedY > 2 * (Configuration.BOARD_WIDTH - 1))
             return null;
 
-        if (this.nodeCoord[x][y] == -1)
+        if (this.nodeCoord[shiftedX][shiftedY] == -1)
             return null;
 
-        return boardNodes.get(this.nodeCoord[x][y]);
+        return new BoardNode(x, y, getTileFromCoordinate(x, y));
     }
 
     public boolean nodeHasAllEmptyNeighbours(BoardNode boardNode) {
@@ -238,31 +259,13 @@ public class Board {
         return this.getNeighboursOfNode(boardNode1).contains(boardNode2);
     }
 
-    public void addTile(Tile tile, BoardNode boardNode) {
-        boardNode.setTile(tile);
-    }
-
     public void setTile(int x, int y, Tile tile) {
-        this.getNode(x, y).setTile(tile);
+        int offset = Configuration.BOARD_WIDTH - 1;
+        this.nodeCoord[x + offset][y + offset] = tile.getUniqueCode();
     }
 
     public Board getClone() {
-        ArrayList<BoardNode> boardNodes = new ArrayList<>();
-
-        for (BoardNode boardNode : this.boardNodes) {
-            boardNodes.add(boardNode.getClone());
-        }
-        return new Board(boardNodes, this.nodeCoord.clone());
-    }
-
-    public ArrayList<BoardNode> getAvailableBoardNodes() {
-        ArrayList<BoardNode> availableNodes = new ArrayList<>();
-
-        for (BoardNode node : this.getBoardNodes()) {
-            if (node.isAvailable())
-                availableNodes.add(node);
-        }
-        return availableNodes;
+        return new Board(this.nodeCoord.clone());
     }
 
 
