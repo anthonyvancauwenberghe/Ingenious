@@ -1,6 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
 import com.ingenious.model.Tile;
@@ -16,7 +17,7 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
 
-    public final static BotAlgorithm BOT_ALGORITHM = new MCTSAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 50;

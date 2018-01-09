@@ -16,18 +16,18 @@ public class BoardFactory {
 
     public Board generate() {
         this.buildBoardList();
-        this.setInitialTiles();
         this.buildNodeCoordinatesArray();
+        this.setInitialTiles();
         return this.board;
     }
 
     public void setInitialTiles() {
-        this.boardNodes.get(0).setTile(Tile.red);
-        this.boardNodes.get(79).setTile(Tile.green);
-        this.boardNodes.get(89).setTile(Tile.blue);
-        this.boardNodes.get(10).setTile(Tile.orange);
-        this.boardNodes.get(80).setTile(Tile.yellow);
-        this.boardNodes.get(90).setTile(Tile.purple);
+        this.board.setTile(0, -5, Tile.red);
+        this.board.setTile(-5, 0, Tile.green);
+        this.board.setTile(-5, 5, Tile.orange);
+        this.board.setTile(5, 0, Tile.yellow);
+        this.board.setTile(5, -5, Tile.purple);
+        this.board.setTile(0, 5, Tile.blue);
     }
 
     private void buildBoardList() {
