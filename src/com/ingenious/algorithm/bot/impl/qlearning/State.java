@@ -15,6 +15,7 @@ public class State {
     private int tEast;
     private int south;
     private int tail;
+    private int visited;
 
 
     public State(int [] description){
@@ -28,9 +29,13 @@ public class State {
         this.tEast = description[6];
         this.south = description[7];
         this.tail = description[8];
+        this.visited = 0;
 
     }
 
+    public int getVisited(){
+        return this.visited;
+    }
 
     public int gethEast() {
         return hEast;

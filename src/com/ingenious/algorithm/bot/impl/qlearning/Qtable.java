@@ -10,21 +10,15 @@ import java.util.Map;
 public class Qtable {
 
     private Map<State,Double> table;
-    private ArrayList<State> states;
 
     public Qtable(){
         Generator generator = new Generator();
         ArrayList<State> states = generator.generate_All();
-        this.states = states;
         Map<State,Double> qtable = new HashMap<>();
         for(int i=0; i<states.size(); i++){
             qtable.put(states.get(i),0.0);
         }
         this.table = qtable;
-    }
-
-    public State getState(int i){
-        return this.states.get(i);
     }
 
     public Map<State,Double> getTable(){

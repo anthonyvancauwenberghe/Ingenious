@@ -1,8 +1,12 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
+import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
+import com.ingenious.model.Board;
+import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
+import com.ingenious.model.Piece;
 import com.ingenious.provider.GameProvider;
 
 import java.util.ArrayList;
@@ -11,7 +15,7 @@ import java.util.Set;
 /**
  * Created by carolley on 10-Jan-18.
  */
-public class Generator {
+public class Generator{
 
 
     public ArrayList<State> generate_All(){
@@ -100,15 +104,67 @@ public class Generator {
         System.out.println(states.size());
     }
 
-    public ArrayList<State> generate_Moves(){
+    public ArrayList<State> generate_Actions(){
         ArrayList<State> moves = new ArrayList<>();
         AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
         Set<Move> move = generator.generate();
+        for(Move m: move){
+            moves.add(convert(m));
+        }
         return moves;
     }
 
-    //public State convert(Move move){
-    //}
+    // 0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
+    public State convert(Move move){
+        Board board = GameProvider.getInstance().game.getBoard();
+        int description [] = new int [9];
+        State state = new State(description);
+        int [] head = {move.getHeadNode().getX(), move.getHeadNode().getY()};
+        int [] tail = {move.getTailNode().getX(), move.getTailNode().getY()};
+        BoardNode north = board.getNode(head[0],head[1]-1);
+        BoardNode south = board.getNode(tail[0],tail[1]+1);
+        BoardNode hWest = board.getNode(head[0]-1,head[1]);
+        BoardNode hEast = board.getNode(head[0]+1,head[1]-1);
+        BoardNode left = board.getNode(head[0]-1,head[1]+1);
+        BoardNode right = board.getNode(head[0]+1,head[1]);
+        BoardNode tWest = board.getNode(tail[0]-1,tail[1]+1);
+        BoardNode tEast = board.getNode(tail[0]+1,tail[1]);
+        Piece piece = move.getPiece();
+        state.setNorth(giveValue(north, piece));
+        state.sethEast(giveValue(hEast, piece));
+        state.sethWest(giveValue(hWest, piece));
+        state.setLeft(giveValue(left, piece));
+        state.setRight(giveValue(right, piece));
+        state.settEast(giveValue(tEast,piece));
+        state.settWest(giveValue(tWest,piece));
+        state.setSouth(giveValue(south,piece));
+        if(piece.hasEqualTiles()){
+            state.setTail(0);
+        }
+        else{
+            state.setTail(1);
+        }
+        return state;
+    }
 
+    public int giveValue(BoardNode node, Piece piece){
+        if(node == null){
+            return -1;
+        }
+
+        if(node.getTile().equals(piece.getHead())){
+            return 0;
+        }
+
+        if(node.getTile().equals(piece.getTail()) && !piece.hasEqualTiles()){
+            return 1;
+        }
+
+        if(node.isEmpty()){
+            return 3;
+        }
+
+        return 2;
+    }
 
 }
