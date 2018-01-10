@@ -4,8 +4,11 @@ import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
+import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
+import com.ingenious.model.Piece;
 import com.ingenious.model.Tile;
+import com.ingenious.model.players.impl.Bot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -16,12 +19,32 @@ import java.util.Set;
  */
 public class GreedyAlgorithm extends BotAlgorithm {
 
-    public Set<Move> getAvailableMoves(Game game) {
-        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(game);
-        return generator.generate();
+    public ArrayList<Move> getAvailableMoves(Game game) {
+        ArrayList<Move> generator = generateAllMoves(game);
+                //generateAllBaseMoves(game);
+        return generator;
     }
 
-    public ArrayList<ScoreMove> generateScoreMoves(Game game, Set<Move> allMoves) {
+    public ArrayList<Move> generateAllMoves(Game game){
+        ArrayList<Move> available = new ArrayList<>();
+        for(BoardNode boardNode : game.getBoard().getBoardNodes()){
+            if(boardNode.isEmpty()){
+                for(BoardNode neighbour: game.getBoard().getAvailableNeighboursOfNode(boardNode)){
+                    for(Piece piece: game.getCurrentPlayer().getRack().getPieces()){
+                       /* if(game.getCurrentPlayer()  instanceof Bot){
+                            System.out.println("BOTTT");
+                        }*/
+                        Move move = new Move(boardNode, neighbour,piece);
+                        available.add(move);
+                    }
+                }
+            }
+        }
+        return available;
+    }
+
+
+    public ArrayList<ScoreMove> generateScoreMoves(Game game, ArrayList<Move> allMoves) {
         ArrayList<ScoreMove> scoreMoves = new ArrayList<>();
         for (Move aMove : allMoves) {
             if(aMove.getPiece().hasEqualTiles()){
@@ -90,7 +113,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
        if(!playHighest(game)){
            Tile[] sorted = game.getCurrentPlayer().getScore().sort();
            for(Tile color: sorted){
-               if(!getBestMoveColor(color,scoreMoves).equals(null)){
+               if(getBestMoveColor(color,scoreMoves) != null ){
                    return getBestMoveColor(color, scoreMoves);
                }
            }
@@ -103,7 +126,13 @@ public class GreedyAlgorithm extends BotAlgorithm {
         Tile[] sorted = game.getCurrentPlayer().getScore().sort();
         int low = game.getCurrentPlayer().getScore().getScore(sorted[0]);
         int high = game.getCurrentPlayer().getScore().getScore(sorted[5]);
-        if (high <= (low * 2)) {
+        for(int i=5; i>0; i--){
+            if(game.getCurrentPlayer().getScore().getScore(sorted[i])!=18){
+                high = game.getCurrentPlayer().getScore().getScore(sorted[i]);
+                break;
+            }
+        }
+        if (high < (low * 2)) {
             return true;
         }
         return false;
@@ -111,8 +140,8 @@ public class GreedyAlgorithm extends BotAlgorithm {
 
     @Override
     public Move execute(Game game) {
-        Game simulatedGame = game.getClone();
-        Set<Move> allMoves = this.getAvailableMoves(simulatedGame);
+        Game simulatedGame = game;
+        ArrayList<Move> allMoves = this.getAvailableMoves(simulatedGame);
         ArrayList<ScoreMove> scoreMoves = this.generateScoreMoves(simulatedGame, allMoves);
         return selectBestMove(simulatedGame, scoreMoves);
     }
