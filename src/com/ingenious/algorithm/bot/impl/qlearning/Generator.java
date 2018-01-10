@@ -9,5 +9,7 @@ public class Generator {
 
     public ArrayList<State> generate_All(){
         //GENERATE ALL POSSIBLE STATES !!
+        ArrayList<State> states = new ArrayList<>();
+        return states;
     }
 }
