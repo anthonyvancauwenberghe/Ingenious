@@ -26,8 +26,8 @@ public class Generator {
         return moves;
     }
 
-    public State convert(Move move){
-    }
+    //public State convert(Move move){
+    //}
 
 
 }

@@ -1,41 +1,43 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by carolley on 10-Jan-18.
  */
 public class Qtable {
 
-    private double [] table;
+    private Map<State,Double> table;
     private ArrayList<State> states;
 
     public Qtable(){
         Generator generator = new Generator();
         ArrayList<State> states = generator.generate_All();
         this.states = states;
-        double []table = new double[states.size()];
+        Map<State,Double> qtable = new HashMap<>();
         for(int i=0; i<states.size(); i++){
-            table[states.get(i).getIndex()] = 0;
+            qtable.put(states.get(i),0.0);
         }
-        this.table = table;
+        this.table = qtable;
     }
 
     public State getState(int i){
         return this.states.get(i);
     }
 
-    public double[] getTable(){
+    public Map<State,Double> getTable(){
         return this.table;
     }
 
     public double get_Qvalue(State state){
-        double [] table = this.getTable();
-        return table[state.getIndex()];
+        Map<State,Double> table = this.getTable();
+        return table.get(state);
     }
 
     public void edit_Qvalue(State state, double newValue){
-        double [] table = this.getTable();
-        table[state.getIndex()] = newValue;
+        Map<State,Double> table = this.getTable();
+        table.put(state,newValue);
     }
 }
