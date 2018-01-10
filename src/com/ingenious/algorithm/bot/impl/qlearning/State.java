@@ -6,7 +6,6 @@ package com.ingenious.algorithm.bot.impl.qlearning;
 public class State {
 
     private int[] description;
-    private int index;
     private int north;
     private int hWest;
     private int hEast;
@@ -18,7 +17,7 @@ public class State {
     private int tail;
 
 
-    public State(int [] description, int index){
+    public State(int [] description){
         this.description = description;
         this.north = description[0];
         this.hWest = description[1];
@@ -29,12 +28,9 @@ public class State {
         this.tEast = description[6];
         this.south = description[7];
         this.tail = description[8];
-        this.index = index;
+
     }
 
-    public int getIndex(){
-        return this.index;
-    }
 
     public int gethEast() {
         return hEast;
