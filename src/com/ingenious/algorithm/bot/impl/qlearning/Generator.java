@@ -9,7 +9,9 @@ import com.ingenious.model.Move;
 import com.ingenious.model.Piece;
 import com.ingenious.provider.GameProvider;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -17,7 +19,9 @@ import java.util.Set;
  */
 public class Generator{
 
-
+    /*
+    Generates all possible 167.936 states
+     */
     public ArrayList<State> generate_All(){
         //GENERATE ALL POSSIBLE STATES !!
         ArrayList<State> states = new ArrayList<>();
@@ -55,7 +59,9 @@ public class Generator{
         }
         return states;
     }
-
+    /*
+    Check if generated state can actually occur
+     */
     public boolean viable_canditate(State state){
         int [] a = state.get_description();
         int count = 0;
@@ -93,6 +99,7 @@ public class Generator{
             if(state.getRight() == -1 && state.gethEast()==-1 && state.gettEast()==-1){
                 return true;
             }
+
         }
         return false;
     }
@@ -104,17 +111,10 @@ public class Generator{
         System.out.println(states.size());
     }
 
-    public ArrayList<State> generate_Actions(){
-        ArrayList<State> moves = new ArrayList<>();
-        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
-        Set<Move> move = generator.generate();
-        for(Move m: move){
-            moves.add(convert(m));
-        }
-        return moves;
-    }
-
-    // 0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
+    /*
+    DOES NOT WORK YET!!!!
+    0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
+     */
     public State convert(Move move){
         Board board = GameProvider.getInstance().game.getBoard();
         int description [] = new int [9];
@@ -145,6 +145,17 @@ public class Generator{
             state.setTail(1);
         }
         return state;
+    }
+
+
+    public ArrayList<Move> generateActions(){
+        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
+        Set<Move> moves  = generator.generate();
+        ArrayList<Move> actions = new ArrayList<>();
+        for(Move move: moves){
+            actions.add(move);
+        }
+        return actions;
     }
 
     public int giveValue(BoardNode node, Piece piece){

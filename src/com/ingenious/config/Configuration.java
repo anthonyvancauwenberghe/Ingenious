@@ -3,6 +3,7 @@ package com.ingenious.config;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.alphabeta.AlphaBetaAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
 
