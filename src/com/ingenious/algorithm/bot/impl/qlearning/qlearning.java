@@ -1,13 +1,9 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
-import com.ingenious.provider.GameProvider;
-
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by carolley on 10-Jan-18.
@@ -17,6 +13,7 @@ public class qlearning extends BotAlgorithm{
     private double epsilon;
     private Qtable qtable;
     private Information popup;
+    private double P_RATE = 0.6;
 
 // should load q table instead of creating q table
     public qlearning(double epsilon){
@@ -76,11 +73,11 @@ public class qlearning extends BotAlgorithm{
         if(state1==null){
             popup.error("STATE EQUALS NULL");
         }
-        state1.visited();
         double oldQ = state1.getQ_value();
-        double alpha = 1/state1.getVisited();
-        double newQ = (1-alpha)*oldQ + alpha*reward(state1);
+        double alpha = 1/1+state1.getVisited();
+        double newQ = (1-alpha)*oldQ + (state1.getVisited()+1)*P_RATE*reward(state1);
         state1.setQ_value(newQ);
+        state1.visited();
         popup.popup(oldQ,newQ);
         return newQ;
     }
