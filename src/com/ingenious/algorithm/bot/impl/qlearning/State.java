@@ -19,7 +19,7 @@ public class State {
     private double q_value;
 
 
-    public State(int [] description){
+    public State(int [] description, double q_value){
         this.description = description;
         this.north = description[0];
         this.hWest = description[1];
@@ -31,7 +31,7 @@ public class State {
         this.south = description[7];
         this.tail = description[8];
         this.visited = 0;
-        this.q_value = 0;
+        this.q_value = q_value;
 
     }
 

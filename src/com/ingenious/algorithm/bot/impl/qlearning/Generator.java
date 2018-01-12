@@ -40,7 +40,7 @@ public class Generator{
                                         for(int south = -1; south < 4; south++)
                                         {
                                             int[] array = {north,hWest,hEast,left,right,tWest,tEast,south,tail};
-                                            State state = new State(array);
+                                            State state = new State(array,0.0);
                                             if(viable_canditate(state)){
                                                 states.add(state);
                                             }
@@ -178,7 +178,7 @@ public class Generator{
             description[5] = giveValue(board.getNode(tail[0]-1,tail[1]), piece);
             description[1] = giveValue(board.getNode(head[0], head[1]-1), piece);
         }
-        State state = new State(description);
+        State state = new State(description,0.0);
         return state;
     }
 
