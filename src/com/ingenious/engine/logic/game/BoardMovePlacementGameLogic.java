@@ -16,6 +16,7 @@ public class BoardMovePlacementGameLogic extends Logic<Void> {
         /* Place Piece on board */
         this.getGame().getBoard().setTile(move.getHeadNode().getX(), move.getHeadNode().getY(), move.getPiece().getHead());
         this.getGame().getBoard().setTile(move.getTailNode().getX(), move.getTailNode().getY(), move.getPiece().getTail());
+        this.getGame().getBoard().recordUsedPiece(move.getPiece());
         this.getGame().getCurrentPlayer().getRack().resetSelectedPiece();
         return null;
     }
