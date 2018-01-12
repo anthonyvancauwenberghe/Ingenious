@@ -3,6 +3,7 @@ package com.ingenious.config;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.alphabeta.AlphaBetaAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
 
@@ -17,7 +18,7 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
 
-    public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new RandomAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 50;

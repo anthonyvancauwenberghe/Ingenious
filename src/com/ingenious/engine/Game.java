@@ -13,6 +13,7 @@ import com.ingenious.model.players.impl.Bot;
 import com.ingenious.model.players.impl.Human;
 import com.ingenious.provider.GameProvider;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -86,20 +87,28 @@ public class Game {
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if (this.bonusPlay > 0)
-            this.bonusPlay--;
-
-
-        if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
-            setNextPlayerAsCurrent();
+        if(gameOver()){
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, "GAME OVER");
         }
+        else{
+            if (this.bonusPlay > 0)
+                this.bonusPlay--;
 
-        GameProvider.updateGraphics();
-        if (this.getCurrentPlayer() instanceof Bot) {
-            Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
-            this.doSimulationMove(botMove);
+
+            if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
+                setNextPlayerAsCurrent();
+            }
+
             GameProvider.updateGraphics();
+            if (this.getCurrentPlayer() instanceof Bot) {
+                Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
+                this.doSimulationMove(botMove);
+                GameProvider.updateGraphics();
+            }
         }
+
+
     }
 
     public void doSimulationMove(Move move) {

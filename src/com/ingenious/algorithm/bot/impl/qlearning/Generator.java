@@ -1,8 +1,6 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
-import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.support.AllBaseMovesGenerator;
-import com.ingenious.engine.Game;
 import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
@@ -17,7 +15,9 @@ import java.util.Set;
  */
 public class Generator{
 
-
+    /*
+    Generates all possible 167.936 states
+     */
     public ArrayList<State> generate_All(){
         //GENERATE ALL POSSIBLE STATES !!
         ArrayList<State> states = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Generator{
                                         for(int south = -1; south < 4; south++)
                                         {
                                             int[] array = {north,hWest,hEast,left,right,tWest,tEast,south,tail};
-                                            State state = new State(array);
+                                            State state = new State(array,0.0);
                                             if(viable_canditate(state)){
                                                 states.add(state);
                                             }
@@ -55,7 +55,9 @@ public class Generator{
         }
         return states;
     }
-
+    /*
+    Check if generated state can actually occur
+     */
     public boolean viable_canditate(State state){
         int [] a = state.get_description();
         int count = 0;
@@ -93,58 +95,102 @@ public class Generator{
             if(state.getRight() == -1 && state.gethEast()==-1 && state.gettEast()==-1){
                 return true;
             }
+
         }
         return false;
     }
 
-
-    public static void main(String[] args) {
-        Generator gen = new Generator();
-        ArrayList<State> states = gen.generate_All();
-        System.out.println(states.size());
-    }
-
-    public ArrayList<State> generate_Actions(){
-        ArrayList<State> moves = new ArrayList<>();
-        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
-        Set<Move> move = generator.generate();
-        for(Move m: move){
-            moves.add(convert(m));
-        }
-        return moves;
-    }
-
-    // 0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
+    /*
+    0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
+     */
     public State convert(Move move){
         Board board = GameProvider.getInstance().game.getBoard();
         int description [] = new int [9];
-        State state = new State(description);
         int [] head = {move.getHeadNode().getX(), move.getHeadNode().getY()};
         int [] tail = {move.getTailNode().getX(), move.getTailNode().getY()};
-        BoardNode north = board.getNode(head[0],head[1]-1);
-        BoardNode south = board.getNode(tail[0],tail[1]+1);
-        BoardNode hWest = board.getNode(head[0]-1,head[1]);
-        BoardNode hEast = board.getNode(head[0]+1,head[1]-1);
-        BoardNode left = board.getNode(head[0]-1,head[1]+1);
-        BoardNode right = board.getNode(head[0]+1,head[1]);
-        BoardNode tWest = board.getNode(tail[0]-1,tail[1]+1);
-        BoardNode tEast = board.getNode(tail[0]+1,tail[1]);
         Piece piece = move.getPiece();
-        state.setNorth(giveValue(north, piece));
-        state.sethEast(giveValue(hEast, piece));
-        state.sethWest(giveValue(hWest, piece));
-        state.setLeft(giveValue(left, piece));
-        state.setRight(giveValue(right, piece));
-        state.settEast(giveValue(tEast,piece));
-        state.settWest(giveValue(tWest,piece));
-        state.setSouth(giveValue(south,piece));
-        if(piece.hasEqualTiles()){
-            state.setTail(0);
+        if(!piece.hasEqualTiles()){
+            description[8] = 1;
         }
-        else{
-            state.setTail(1);
+        //pos 1:
+        if(tail[0] == head[0] && tail[1]== head[1]+1){
+            description[0] = giveValue(board.getNode(head[0],head[1]-1), piece);
+            description [7] = giveValue(board.getNode(tail[0], tail[1]+1), piece);
+            description[3] = giveValue(board.getNode(head[0]-1, head[1]+1), piece);
+            description[4] = giveValue(board.getNode(head[0]+1,head[1]), piece);
+            description[2] = giveValue(board.getNode(head[0]+1,head[1]-1), piece);
+            description[6] = giveValue(board.getNode(tail[0]+1,tail[1]), piece);
+            description[5] = giveValue(board.getNode(tail[0]-1,tail[1]+1), piece);
+            description[1] = giveValue(board.getNode(head[0]-1, head[1]), piece);
         }
+        //pos 2:
+        if(tail[0] == head[0]+1 && tail[1]== head[1]){
+            description[0] = giveValue(board.getNode(head[0]-1,head[1]), piece);
+            description [7] = giveValue(board.getNode(tail[0]+1, tail[1]), piece);
+            description[3] = giveValue(board.getNode(head[0], head[1]+1), piece);
+            description[4] = giveValue(board.getNode(head[0]+1,head[1]-1), piece);
+            description[2] = giveValue(board.getNode(head[0],head[1]-1), piece);
+            description[6] = giveValue(board.getNode(tail[0]+1,tail[1]-1), piece);
+            description[5] = giveValue(board.getNode(tail[0],tail[1]+1), piece);
+            description[1] = giveValue(board.getNode(head[0]-1, head[1]+1), piece);
+        }
+        //pos 3:
+        if(tail[0] == head[0]+1 && tail[1]== head[1]-1){
+            description[0] = giveValue(board.getNode(head[0]-1,head[1]+1), piece);
+            description[7] = giveValue(board.getNode(tail[0]+1, tail[1]-1), piece);
+            description[3] = giveValue(board.getNode(head[0]+1, head[1]), piece);
+            description[4] = giveValue(board.getNode(head[0],head[1]-1), piece);
+            description[2] = giveValue(board.getNode(head[0]-1,head[1]), piece);
+            description[6] = giveValue(board.getNode(tail[0],tail[1]-1), piece);
+            description[5] = giveValue(board.getNode(tail[0]+1,tail[1]), piece);
+            description[1] = giveValue(board.getNode(head[0], head[1]+1), piece);
+        }
+        //pos 4:
+        if(tail[0] == head[0] && tail[1]== head[1]-1){
+            description[0] = giveValue(board.getNode(head[0],head[1]+1), piece);
+            description[7] = giveValue(board.getNode(tail[0], tail[1]-1), piece);
+            description[3] = giveValue(board.getNode(head[0]+1, head[1]-1), piece);
+            description[4] = giveValue(board.getNode(head[0]-1,head[1]), piece);
+            description[2] = giveValue(board.getNode(head[0]-1,head[1]+1), piece);
+            description[6] = giveValue(board.getNode(tail[0]-1,tail[1]), piece);
+            description[5] = giveValue(board.getNode(tail[0]+1,tail[1]-1), piece);
+            description[1] = giveValue(board.getNode(head[0]+1, head[1]), piece);
+        }
+        //pos 5:
+        if(tail[0] == head[0]-1 && tail[1]== head[1]){
+            description[0] = giveValue(board.getNode(head[0]+1,head[1]), piece);
+            description[7] = giveValue(board.getNode(tail[0]-1, tail[1]), piece);
+            description[3] = giveValue(board.getNode(head[0], head[1]-1), piece);
+            description[4] = giveValue(board.getNode(head[0]-1,head[1]+1), piece);
+            description[2] = giveValue(board.getNode(head[0],head[1]+1), piece);
+            description[6] = giveValue(board.getNode(tail[0]-1,tail[1]+1), piece);
+            description[5] = giveValue(board.getNode(tail[0],tail[1]-1), piece);
+            description[1] = giveValue(board.getNode(head[0]+1, head[1]-1), piece);
+        }
+        //pos 6:
+        if(tail[0] == head[0]-1 && tail[1]== head[1]+1){
+            description[0] = giveValue(board.getNode(head[0]+1,head[1]-1), piece);
+            description[7] = giveValue(board.getNode(tail[0]-1, tail[1]+1), piece);
+            description[3] = giveValue(board.getNode(head[0]-1, head[1]), piece);
+            description[4] = giveValue(board.getNode(head[0],head[1]+1), piece);
+            description[2] = giveValue(board.getNode(head[0]+1,head[1]), piece);
+            description[6] = giveValue(board.getNode(tail[0],tail[1]+1), piece);
+            description[5] = giveValue(board.getNode(tail[0]-1,tail[1]), piece);
+            description[1] = giveValue(board.getNode(head[0], head[1]-1), piece);
+        }
+        State state = new State(description,0.0);
         return state;
+    }
+
+
+    public ArrayList<Move> generateActions(){
+        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
+        Set<Move> moves  = generator.generate();
+        ArrayList<Move> actions = new ArrayList<>();
+        for(Move move: moves){
+            actions.add(move);
+        }
+        return actions;
     }
 
     public int giveValue(BoardNode node, Piece piece){
