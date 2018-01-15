@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.Scanner;
 
 /**
@@ -14,7 +15,7 @@ public class QTable_File{
 
     public State[] load_Qtable() throws FileNotFoundException{
         Generator g = new Generator();
-        File q_table = new File("QTable");
+        File q_table = new File("QTable.txt");
         ArrayList<State> states = g.generate_All();
         State[] qtable = new State[states.size()];
 
@@ -32,17 +33,19 @@ public class QTable_File{
         }
         return qtable;
     }
+    
 
     public void save_Qtable(Qtable q) throws IOException {
-        File old = new File("QTable");
-        old.delete();
-        File newFile = new File("QTable");
-        newFile.createNewFile();
-        FileWriter qFile = new FileWriter("QTable");
+        File file = new File("QTable.txt");
+        if(!file.exists()){
+            file.createNewFile();
+            file.setWritable(true);
+        }
+        FileWriter qFile = new FileWriter("QTable.txt");
         State[] states = q.getTable();
         for (int i = 0; i < states.length; i++){
             double value = states[i].getQ_value();
-            qFile.write(value + "\n");
+            qFile.write(Double.toString(value)+ "\n");
         }
         qFile.close();
     }
