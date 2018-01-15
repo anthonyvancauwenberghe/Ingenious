@@ -17,7 +17,7 @@ public class Configuration {
     /* Debug Settings */
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
-
+  
     public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
 
     /* MCTS Configuration Settings */

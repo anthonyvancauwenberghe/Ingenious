@@ -3,6 +3,10 @@ package com.ingenious.algorithm.bot.impl.qlearning;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
+import com.ingenious.provider.GameProvider;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +19,7 @@ public class qlearning extends BotAlgorithm{
     private Information popup;
     private double P_RATE = 0.6;
 
-// should load q table instead of creating q table
+
     public qlearning(double epsilon){
         this.epsilon = epsilon;
         this.qtable = new Qtable();
@@ -36,6 +40,7 @@ public class qlearning extends BotAlgorithm{
             return move;
         }
     }
+
 
     public double getEpsilon(){
         return this.epsilon;
@@ -107,6 +112,15 @@ public class qlearning extends BotAlgorithm{
             }
         }
         return maxMove;
+    }
+
+    public void end(){
+        QTable_File f = new QTable_File();
+        try {
+            f.save_Qtable(getQtable());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
