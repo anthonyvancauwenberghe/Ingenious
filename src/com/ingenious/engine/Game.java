@@ -1,5 +1,7 @@
 package com.ingenious.engine;
 
+import com.ingenious.algorithm.bot.impl.qlearning.QTable_File;
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
@@ -139,6 +141,9 @@ public class Game {
             } else {
                 System.out.println("WINNER IS: " + this.winner);
             }
+        }
+        if(Configuration.BOT_ALGORITHM instanceof qlearning){
+            ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
     }
     public boolean gameOver(){
