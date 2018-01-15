@@ -19,7 +19,7 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
   
-    public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new qlearning(1);
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 25;

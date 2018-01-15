@@ -50,6 +50,10 @@ public class State {
     public void visited(){
         this.visited = this.visited + 1;
     }
+
+    public void setVisited(int i){
+        this.visited = i;
+    }
     public int gethEast() {
         return hEast;
     }

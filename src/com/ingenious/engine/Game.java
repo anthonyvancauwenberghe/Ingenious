@@ -103,8 +103,7 @@ public class Game {
         scoreCalculator.execute();
 
         if(gameOver()){
-            JFrame frame = new JFrame();
-            JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+          end();
         }
         else{
             if (this.bonusPlay > 0)
@@ -138,24 +137,35 @@ public class Game {
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if (this.bonusPlay > 0)
-            this.bonusPlay--;
-
-        if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
-            setNextPlayerAsCurrent();
+        if(gameOver()){
+            end();
         }
+        else{
+            if (this.bonusPlay > 0)
+                this.bonusPlay--;
+
+            if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
+                setNextPlayerAsCurrent();
+            }
+        }
+
     }
 
     public void end(){
+
+        if(Configuration.BOT_ALGORITHM instanceof qlearning){
+            ((qlearning) Configuration.BOT_ALGORITHM).end();
+        }
+
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+
         if (Configuration.DEBUG_MODE) {
             if (this.winner.equals(null)) {
                 System.out.println("IS A DRAW");
             } else {
                 System.out.println("WINNER IS: " + this.winner);
             }
-        }
-        if(Configuration.BOT_ALGORITHM instanceof qlearning){
-            ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
     }
     public boolean gameOver(){
@@ -216,7 +226,7 @@ public class Game {
             }
         }
         else{
-            end();
+            this.end();
         }
     }
 

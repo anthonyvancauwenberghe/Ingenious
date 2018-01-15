@@ -17,11 +17,13 @@ public class Qtable {
     public Qtable(){
         QTable_File f = new QTable_File();
         State[] qtable = null;
+
         try {
             qtable = f.load_Qtable();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         this.table = qtable;
     }
 

@@ -90,6 +90,7 @@ public class qlearning extends BotAlgorithm{
     public Qtable getQtable() {
         return this.qtable;
     }
+
     private Move qMove(){
         Generator generator = new Generator();
         ArrayList<Move> moves = generator.generateActions();
@@ -117,8 +118,9 @@ public class qlearning extends BotAlgorithm{
     public void end(){
         QTable_File f = new QTable_File();
         try {
-            f.save_Qtable(getQtable());
+            f.save_Qtable(this.getQtable());
         } catch (IOException e) {
+            System.out.println("ERROR");
             e.printStackTrace();
         }
     }
