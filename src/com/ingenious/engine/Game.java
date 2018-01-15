@@ -1,6 +1,5 @@
 package com.ingenious.engine;
 
-import com.ingenious.algorithm.bot.impl.qlearning.QTable_File;
 import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
@@ -105,7 +104,7 @@ public class Game {
 
         if(gameOver()){
             JFrame frame = new JFrame();
-            JOptionPane.showMessageDialog(frame, "GAME OVER");
+            JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
         }
         else{
             if (this.bonusPlay > 0)
@@ -284,6 +283,25 @@ public class Game {
         }
         else
         {
+            return null;
+        }
+    }
+
+    public Player wichPlayerWon() // true for first player, false for second player, null for no winner
+    {
+        GameOverLogic logic = new GameOverLogic(this);
+
+        if (logic.playerHasMaxScoreAcrossAllColors(0))
+            return this.players.get(0);
+        else if (logic.playerHasMaxScoreAcrossAllColors(1))
+            return this.players.get(1);
+        else if (logic.noMovesLeft()) {
+            if (logic.firstPlayerWinsWithBestScore()) {
+                return this.players.get(0);
+            } else {
+                return this.players.get(1);
+            }
+        } else {
             return null;
         }
     }
