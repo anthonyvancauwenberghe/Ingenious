@@ -22,7 +22,7 @@ public class Rack {
 
     public void printRackPieces(){
         for(Piece piece : this.pieces){
-            System.out.println(piece.getHead().toString() + "_" + piece.getTail().toString());
+            System.out.println(piece.toString());
         }
     }
 
@@ -61,7 +61,7 @@ public class Rack {
 
     public boolean removePiece(Piece piece) {
         for (int index = 0; index < this.getPieces().size(); index++) {
-            System.out.println("comparing " + piece.getUniqueCode() + " with " + this.pieces.get(index).getUniqueCode());
+            //System.out.println("comparing " + piece.getUniqueCode() + " with " + this.pieces.get(index).getUniqueCode());
             if (this.pieces.get(index).isEqual(piece)) {
                 this.pieces.remove(index);
                 return true;
