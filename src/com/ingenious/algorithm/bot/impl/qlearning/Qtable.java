@@ -1,5 +1,7 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +15,12 @@ public class Qtable {
     private State[] table;
 
     public Qtable(){
-        Generator generator = new Generator();
-        ArrayList<State> states = generator.generate_All();
-        State[] qtable = new State[states.size()];
-        for(int i=0; i<states.size(); i++){
-            qtable[i] = states.get(i);
+        QTable_File f = new QTable_File();
+        State[] qtable = null;
+        try {
+            qtable = f.load_Qtable();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         this.table = qtable;
     }

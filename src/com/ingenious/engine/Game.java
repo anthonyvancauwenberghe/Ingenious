@@ -1,5 +1,7 @@
 package com.ingenious.engine;
 
+import com.ingenious.algorithm.bot.impl.qlearning.QTable_File;
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
@@ -28,6 +30,15 @@ public class Game {
         this.players = players;
         this.bag = bag;
         this.tracker = tracker;
+    }
+
+    public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker, int currentPlayerIndex, int bonusPlay) {
+        this.board = board;
+        this.players = players;
+        this.bag = bag;
+        this.tracker = tracker;
+        this.currentPlayerIndex = currentPlayerIndex;
+        this.bonusPlay = bonusPlay;
     }
 
 
@@ -84,13 +95,9 @@ public class Game {
         /* Execute move on board */
         placeMove.execute();
 
-
-
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
         this.getTracker().removePiece(move.getPiece());
-
-        System.out.println("Pieces left in tracker:" + this.getTracker().amountOfPiecesLeft());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -110,7 +117,7 @@ public class Game {
             }
 
             GameProvider.updateGraphics();
-            if (this.getCurrentPlayer() instanceof Bot) {
+            if (this.getCurrentPlayer().getName().equals("Bot")) {
                 Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
                 this.doSimulationMove(botMove);
                 GameProvider.updateGraphics();
@@ -124,13 +131,9 @@ public class Game {
 
         /* Execute move on board */
         placeMove.execute();
-
         /* Remove piece from currentplayer rack */
-        System.out.println("Amount of pieces in the rack: " + this.getCurrentPlayer().getRack().getPieces().size());
         this.getCurrentPlayer().getRack().removePiece(move.getPiece());
-        System.out.println("Amount of pieces in the rack: " + this.getCurrentPlayer().getRack().getPieces().size());
         this.getTracker().removePiece(move.getPiece());
-        System.out.println("Pieces left in tracker:" + this.getTracker().amountOfPiecesLeft());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -151,6 +154,9 @@ public class Game {
             } else {
                 System.out.println("WINNER IS: " + this.winner);
             }
+        }
+        if(Configuration.BOT_ALGORITHM instanceof qlearning){
+            ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
     }
     public boolean gameOver(){
@@ -248,7 +254,7 @@ public class Game {
                 players.add(((Bot) player).getClone());
             }
         }
-        return new Game(this.board.getClone(), players, this.bag.getClone(), this.tracker.getClone());
+        return new Game(this.board.getClone(), this.getPlayers(), this.bag.getClone(), this.tracker.getClone(), this.currentPlayerIndex, this.bonusPlay);
     }
 
     public boolean firstPlayerWon() {

@@ -7,7 +7,9 @@ import com.ingenious.model.Move;
 import com.ingenious.model.Piece;
 import com.ingenious.provider.GameProvider;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -56,13 +58,8 @@ public class Generator{
         return states;
     }
 
-    public void load_Qtable(){
 
-    }
 
-    public void save_Qtable(){
-
-    }
     /*
     Check if generated state can actually occur
      */

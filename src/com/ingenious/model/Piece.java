@@ -42,7 +42,7 @@ public class Piece {
 
     @Override
     public String toString() {
-        return head.toString() + "_" + tail.toString();
+        return name + ":" + this.getUniqueCode();
     }
 
     public int getUniqueCode() {
