@@ -18,29 +18,29 @@ public class PieceTracker
     }
 
     private void resetTableValues()
-    {
-        pieceLookupTable.put(Piece.RED_RED, 5);
-        pieceLookupTable.put(Piece.BLUE_BLUE, 5);
-        pieceLookupTable.put(Piece.GREEN_GREEN, 5);
-        pieceLookupTable.put(Piece.ORANGE_ORANGE, 5);
-        pieceLookupTable.put(Piece.YELLOW_YELLOW, 5);
-        pieceLookupTable.put(Piece.PURPLE_PURPLE, 5);
-        pieceLookupTable.put(Piece.RED_BLUE,6);
-        pieceLookupTable.put(Piece.RED_GREEN,6);
-        pieceLookupTable.put(Piece.RED_ORANGE,6);
-        pieceLookupTable.put(Piece.RED_YELLOW,6);
-        pieceLookupTable.put(Piece.RED_PURPLE,6);
-        pieceLookupTable.put(Piece.BLUE_GREEN,6);
-        pieceLookupTable.put(Piece.BLUE_ORANGE,6);
-        pieceLookupTable.put(Piece.BLUE_YELLOW,6);
-        pieceLookupTable.put(Piece.BLUE_PURPLE,6);
-        pieceLookupTable.put(Piece.GREEN_ORANGE,6);
-        pieceLookupTable.put(Piece.GREEN_YELLOW,6);
-        pieceLookupTable.put(Piece.GREEN_PURPLE,6);
-        pieceLookupTable.put(Piece.ORANGE_YELLOW,6);
-        pieceLookupTable.put(Piece.ORANGE_PURPLE,6);
-        pieceLookupTable.put(Piece.YELLOW_PURPLE,6);
-    }
+{
+    pieceLookupTable.put(Piece.RED_RED, 5);
+    pieceLookupTable.put(Piece.BLUE_BLUE, 5);
+    pieceLookupTable.put(Piece.GREEN_GREEN, 5);
+    pieceLookupTable.put(Piece.ORANGE_ORANGE, 5);
+    pieceLookupTable.put(Piece.YELLOW_YELLOW, 5);
+    pieceLookupTable.put(Piece.PURPLE_PURPLE, 5);
+    pieceLookupTable.put(Piece.RED_BLUE,6);
+    pieceLookupTable.put(Piece.RED_GREEN,6);
+    pieceLookupTable.put(Piece.RED_ORANGE,6);
+    pieceLookupTable.put(Piece.RED_YELLOW,6);
+    pieceLookupTable.put(Piece.RED_PURPLE,6);
+    pieceLookupTable.put(Piece.BLUE_GREEN,6);
+    pieceLookupTable.put(Piece.BLUE_ORANGE,6);
+    pieceLookupTable.put(Piece.BLUE_YELLOW,6);
+    pieceLookupTable.put(Piece.BLUE_PURPLE,6);
+    pieceLookupTable.put(Piece.GREEN_ORANGE,6);
+    pieceLookupTable.put(Piece.GREEN_YELLOW,6);
+    pieceLookupTable.put(Piece.GREEN_PURPLE,6);
+    pieceLookupTable.put(Piece.ORANGE_YELLOW,6);
+    pieceLookupTable.put(Piece.ORANGE_PURPLE,6);
+    pieceLookupTable.put(Piece.YELLOW_PURPLE,6);
+}
 
     public void updateTable(Game game, boolean checkCurrentPlayerRack)
     {
@@ -169,7 +169,6 @@ public class PieceTracker
                 }
             }
         }
-
         return hand;
     }
 

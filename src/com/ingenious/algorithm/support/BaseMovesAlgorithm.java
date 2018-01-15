@@ -25,6 +25,12 @@ public class BaseMovesAlgorithm {
         this.applyHeuristics = applyHeuristics;
     }
 
+    public BaseMovesAlgorithm(Game game, ArrayList<Piece> rack) {
+        this.game = game.getClone();
+        this.rackPieces = rack;
+        this.applyHeuristics = false;
+    }
+
     private boolean nodeIsThirdDegreeIsolated(BoardNode boardNode) {
         ThirdDegreeIsolationCheckAlgorithm isolationCheckAlgorithm = new ThirdDegreeIsolationCheckAlgorithm(this.game.getBoard(), boardNode);
         return isolationCheckAlgorithm.execute();

@@ -1,18 +1,19 @@
-package com.ingenious.algorithm.bot.impl.alphabeta;
+package com.ingenious.algorithm.bot.impl.expectiminimax;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.mcts.MCTSSimulation;
+import com.ingenious.algorithm.support.AllBaseMovesGenerator;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
-import com.ingenious.algorithm.bot.impl.alphabeta.TreeNode;
+import com.ingenious.model.Rack;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class AlphaBetaAlgorithm extends BotAlgorithm
+public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
 {
         public Move generate() {
             return null;
@@ -20,11 +21,17 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
 
     public Move execute(Game game)
     {
-        int treeDepth = Configuration.ALPHABETA_TREE_DEPTH;
-        Tree alphabetaTree = generateTree(game, treeDepth, true);
+        int treeDepth = Configuration.MINIMAX_TREE_DEPTH;
+        Tree expectiTree = generateTree(game, treeDepth, true);
 
         Object[] returned = new Object[2];
-        Object[] results =  runAlphaBeta(alphabetaTree.getRootAsTreeNode(),treeDepth,-10000, 10000, true, returned);
+        Object[] results;
+
+        if(Configuration.MINIMAX_BASE_VERSION)
+             results =  runMiniMax(expectiTree.getRootAsTreeNode(),treeDepth,true, returned);
+        else
+            results =  runAlphaBeta(expectiTree.getRootAsTreeNode(),treeDepth,-10000, 10000, true, returned);
+
         return (Move) results[1];
     }
 
@@ -33,11 +40,11 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
         int countdown = layerLimit;
         Tree tree = new Tree(game);
 
-        ArrayList<TreeNode> newChildren = generateFirstSetOfChildren(game, tree, heuristics);
+        ArrayList<TreeNode> newChildren = generateFirstSetOfChildren(game, tree);
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for(TreeNode newChild : newChildren)
         {
-            executorService.submit(new NodeGenerator(tree.getNodeState(newChild), tree, newChild, countdown-1));
+            executorService.submit(new NodeGenerator(tree.getNodeState(newChild), tree, newChild, countdown-1, true));
         }
 
         try {
@@ -50,25 +57,10 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
         return tree;
     }
 
-    public void generateNewChildren(Game state, Tree tree, TreeNode parent, int countdown, boolean heuristics)
+    private ArrayList<TreeNode> generateFirstSetOfChildren(Game game, Tree tree)
     {
-        if(countdown > 0)
-        {
-            ArrayList<Move> baseMoves = this.generateBaseMoves(state,true);
-
-            for (Move move : baseMoves)
-            {
-                TreeNode newChild = new TreeNode(move, parent.getFullPath());
-                newChild.addEvaluation(tree.getParentState(newChild),tree.getNodeState(newChild));
-
-                parent.addChild(newChild);
-                generateNewChildren(tree.getNodeState(newChild), tree, newChild, countdown-1, true);
-            }
-        }
-    }
-    private ArrayList<TreeNode> generateFirstSetOfChildren(Game game, Tree tree, boolean heuristics)
-    {
-        ArrayList<Move> baseMoves = this.generateBaseMoves(game, heuristics);
+        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(game, game.getTracker().getRandomRack(game.getCurrentPlayer().getRack()));
+        Set<Move> baseMoves = generator.generate();
         ArrayList<TreeNode> outputNodes = new ArrayList<TreeNode>();
 
         for (Move move : baseMoves)
@@ -122,6 +114,43 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
                     returned[1]=node.getRootMove();
                 return returned;
             }
-      }
+    }
+
+    public Object[] runMiniMax(TreeNode node, int depth, Boolean maximizing, Object[] returned)
+    {
+        if (depth == 0 || !node.hasChildren())
+        {
+            if(!node.isRoot() && node.getRootMove() != null)
+            {
+                returned[0]=node.evaluationScore;
+                returned[1]=node.getRootMove();
+            }
+            return returned;
+        }
+        if (maximizing)
+        {
+            int v = -10000;
+            for (TreeNode childNode : node.getChildren())
+            {
+                v = Math.max(v, (int) runMiniMax(childNode, depth - 1,false, returned)[0]);
+            }
+            returned[0]=v;
+            if(!node.isRoot() && node.getRootMove() != null)
+                returned[1]=node.getRootMove();
+            return returned;
+        }
+        else
+        {
+            int v = 10000;
+            for (TreeNode childNode : node.getChildren())
+            {
+                v = Math.min(v, (int) runMiniMax(childNode, depth - 1, true, returned)[0]);
+            }
+            returned[0]=v;
+            if(!node.isRoot() && node.getRootMove() != null)
+                returned[1]=node.getRootMove();
+            return returned;
+        }
+    }
 
 }
