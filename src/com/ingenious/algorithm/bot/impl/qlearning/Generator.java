@@ -55,6 +55,14 @@ public class Generator{
         }
         return states;
     }
+
+    public void load_Qtable(){
+
+    }
+
+    public void save_Qtable(){
+
+    }
     /*
     Check if generated state can actually occur
      */
