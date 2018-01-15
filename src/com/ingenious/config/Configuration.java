@@ -3,6 +3,7 @@ package com.ingenious.config;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.alphabeta.AlphaBetaAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
+import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
@@ -21,8 +22,8 @@ public class Configuration {
     public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
 
     /* MCTS Configuration Settings */
-    public final static int MCTS_SIMULATIONS = 50;
-    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new SmartRandomAlgorithm();
+    public final static int MCTS_SIMULATIONS = 25;
+    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
 
     /* AlphaBeta Configuration Settings */
     public final static int ALPHABETA_TREE_DEPTH = 4;

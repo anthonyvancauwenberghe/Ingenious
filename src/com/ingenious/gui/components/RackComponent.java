@@ -37,7 +37,7 @@ public class RackComponent extends JComponent {
         X_position = X_start;
 
         for (int i = 0; i < 6; i++) {
-            if (game.getCurrentPlayer().getRack().getIndexSelected() != i) {
+            if (game.getCurrentPlayer().getRack().getIndexSelected() != i && i < game.getCurrentPlayer().getRack().getPieces().size()) {
                 g.setColor(game.getCurrentPlayer().getRack().getPieces().get(i).getHead());
                     Hexagon hexagon;
                     hexagon = new Hexagon(new Point(X_position, Y_line));
