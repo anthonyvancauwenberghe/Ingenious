@@ -6,10 +6,7 @@ import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.engine.logic.game.GameOverLogic;
-import com.ingenious.model.Bag;
-import com.ingenious.model.Board;
-import com.ingenious.model.Move;
-import com.ingenious.model.Tile;
+import com.ingenious.model.*;
 import com.ingenious.model.players.Player;
 import com.ingenious.model.players.impl.Bot;
 import com.ingenious.model.players.impl.Human;
@@ -23,15 +20,27 @@ public class Game {
     private ArrayList<Player> players;
     private Bag bag;
     private Player winner;
+    private PieceTracker tracker;
 
     private int currentPlayerIndex = 0;
     public int bonusPlay = 0;
 
-    public Game(Board board, ArrayList<Player> players, Bag bag) {
+    public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker) {
         this.board = board;
         this.players = players;
         this.bag = bag;
+        this.tracker = tracker;
     }
+
+    public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker, int currentPlayerIndex, int bonusPlay) {
+        this.board = board;
+        this.players = players;
+        this.bag = bag;
+        this.tracker = tracker;
+        this.currentPlayerIndex = currentPlayerIndex;
+        this.bonusPlay = bonusPlay;
+    }
+
 
     public Board getBoard() {
         return board;
@@ -39,6 +48,10 @@ public class Game {
 
     public Bag getBag() {
         return bag;
+    }
+
+    public PieceTracker getTracker() {
+        return tracker;
     }
 
     public void gameLoop() {
@@ -54,9 +67,9 @@ public class Game {
         }
     }
 
-    public void refresh(){
-        while(getCurrentPlayer().getRack().getPieces().size()!=6){
-            getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
+    public void grabNewPieceFromBag() {
+        if (!this.getBag().isEmpty()) {
+            this.getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
         }
         GameProvider.updateGraphics();
     }
@@ -84,6 +97,7 @@ public class Game {
 
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
+        this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -103,13 +117,12 @@ public class Game {
             }
 
             GameProvider.updateGraphics();
-            if (this.getCurrentPlayer() instanceof Bot) {
+            if (this.getCurrentPlayer().getName().equals("Bot")) {
                 Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
                 this.doSimulationMove(botMove);
                 GameProvider.updateGraphics();
             }
         }
-
 
     }
 
@@ -118,9 +131,9 @@ public class Game {
 
         /* Execute move on board */
         placeMove.execute();
-
         /* Remove piece from currentplayer rack */
-        this.getCurrentPlayer().rack.removePiece(move.getPiece());
+        this.getCurrentPlayer().getRack().removePiece(move.getPiece());
+        this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -196,7 +209,7 @@ public class Game {
     public void setNextPlayerAsCurrent() {
         if(!gameOver()) {
             this.setBonusPlay(0);
-            refresh();
+            grabNewPieceFromBag();
             if (this.currentPlayerIndex == 1) {
                 this.currentPlayerIndex = 0;
             } else {
@@ -241,7 +254,7 @@ public class Game {
                 players.add(((Bot) player).getClone());
             }
         }
-        return new Game(this.board.getClone(), players, this.bag.getClone());
+        return new Game(this.board.getClone(), this.getPlayers(), this.bag.getClone(), this.tracker.getClone(), this.currentPlayerIndex, this.bonusPlay);
     }
 
     public boolean firstPlayerWon() {

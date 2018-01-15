@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RandomAlgorithm extends BotAlgorithm {
     public Move execute(Game game) {
 
+        System.out.println("RANDOMALGORITHM PLAYER: " + game.getCurrentPlayer().getName());
         ArrayList<Move> moves = generateAllBaseMoves(game);
 
         if (moves.size() != 0) {
