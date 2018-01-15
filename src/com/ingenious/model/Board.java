@@ -10,6 +10,7 @@ public class Board {
 
     private ArrayList<BoardNode> boardNodes = new ArrayList<BoardNode>(); //This is the list containing the boardNodes
     private int[][] nodeCoord = new int[2 * (Configuration.BOARD_WIDTH) - 1][2 * (Configuration.BOARD_WIDTH) - 1];
+    private ArrayList<Piece> placedPieces = new ArrayList<>();
 
     public Board() {
     }
@@ -21,6 +22,12 @@ public class Board {
     private Board(ArrayList<BoardNode> ns, int[][] nc) {
         this.boardNodes = ns;
         this.nodeCoord = nc;
+    }
+
+    private Board(ArrayList<BoardNode> ns, int[][] nc, ArrayList<Piece> pieces) {
+        this.boardNodes = ns;
+        this.nodeCoord = nc;
+        this.placedPieces = pieces;
     }
 
     public ArrayList<BoardNode> getBoardNodes() {
@@ -252,7 +259,7 @@ public class Board {
         for (BoardNode boardNode : this.boardNodes) {
             boardNodes.add(boardNode.getClone());
         }
-        return new Board(boardNodes, this.nodeCoord.clone());
+        return new Board(boardNodes, this.nodeCoord.clone(), this.placedPieces);
     }
 
     public ArrayList<BoardNode> getAvailableBoardNodes() {
@@ -265,5 +272,13 @@ public class Board {
         return availableNodes;
     }
 
+    public void recordUsedPiece(Piece piece)
+    {
+        this.placedPieces.add(piece);
+    }
 
+    public ArrayList<Piece> getPlacedPieces()
+    {
+        return this.placedPieces;
+    }
 }
