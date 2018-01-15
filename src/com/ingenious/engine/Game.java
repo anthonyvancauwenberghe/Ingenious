@@ -56,9 +56,9 @@ public class Game {
         }
     }
 
-    public void refresh(){
-        while(getCurrentPlayer().getRack().getPieces().size()!=6){
-            getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
+    public void grabNewPieceFromBag() {
+        if (!this.getBag().isEmpty()) {
+            this.getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
         }
         GameProvider.updateGraphics();
     }
@@ -84,9 +84,13 @@ public class Game {
         /* Execute move on board */
         placeMove.execute();
 
+
+
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
         this.getTracker().removePiece(move.getPiece());
+
+        System.out.println("Pieces left in tracker:" + this.getTracker().amountOfPiecesLeft());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -113,7 +117,6 @@ public class Game {
             }
         }
 
-
     }
 
     public void doSimulationMove(Move move) {
@@ -123,8 +126,11 @@ public class Game {
         placeMove.execute();
 
         /* Remove piece from currentplayer rack */
-        this.getCurrentPlayer().rack.removePiece(move.getPiece());
+        System.out.println("Amount of pieces in the rack: " + this.getCurrentPlayer().getRack().getPieces().size());
+        this.getCurrentPlayer().getRack().removePiece(move.getPiece());
+        System.out.println("Amount of pieces in the rack: " + this.getCurrentPlayer().getRack().getPieces().size());
         this.getTracker().removePiece(move.getPiece());
+        System.out.println("Pieces left in tracker:" + this.getTracker().amountOfPiecesLeft());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
@@ -197,7 +203,7 @@ public class Game {
     public void setNextPlayerAsCurrent() {
         if(!gameOver()) {
             this.setBonusPlay(0);
-            refresh();
+            grabNewPieceFromBag();
             if (this.currentPlayerIndex == 1) {
                 this.currentPlayerIndex = 0;
             } else {

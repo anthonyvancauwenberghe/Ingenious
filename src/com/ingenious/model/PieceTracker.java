@@ -30,12 +30,12 @@ public class PieceTracker extends Bag {
     }
 
     public PieceTracker getClone() {
-        Bag bag = new Bag();
+        PieceTracker bag = new PieceTracker();
 
         for (Piece piece : this.getPieces()) {
             bag.addPiece(piece);
         }
 
-        return (PieceTracker) bag;
+        return bag;
     }
 }

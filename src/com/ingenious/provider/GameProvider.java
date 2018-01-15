@@ -7,6 +7,7 @@ import com.ingenious.factory.PlayerFactory;
 import com.ingenious.gui.MainFrame;
 import com.ingenious.model.Bag;
 import com.ingenious.model.Board;
+import com.ingenious.model.Piece;
 import com.ingenious.model.PieceTracker;
 import com.ingenious.model.players.Player;
 
@@ -44,10 +45,9 @@ public class GameProvider implements Runnable {
 
     public Game initializeGame() {
         Bag bag = initializeBag();
-        PieceTracker pieceTracker = (PieceTracker) bag.getClone();
+        PieceTracker pieceTracker = this.initializePieceTracker(bag);
         ArrayList<Player> players = initializePlayers(bag);
         Board board = initializeBoard();
-
         return new Game(board, players, bag, pieceTracker);
     }
 
@@ -60,6 +60,13 @@ public class GameProvider implements Runnable {
         return new MainFrame(game);
     }
 
+    private PieceTracker initializePieceTracker(Bag bag) {
+        PieceTracker tracker = new PieceTracker();
+        for (Piece piece : bag.getPieces()) {
+            tracker.addPiece(piece);
+        }
+        return tracker;
+    }
 
     private Bag initializeBag() {
         BagFactory factory = new BagFactory();

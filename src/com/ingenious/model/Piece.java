@@ -3,7 +3,7 @@ package com.ingenious.model;
 
 public class Piece {
 
-    public final static Piece RED_BLUE = new Piece(Tile.red, Tile.blue);
+    public final static Piece RED_BLUE = new Piece(Tile.red, Tile.blue,"RED_BLUE");
     public final static Piece RED_GREEN = new Piece(Tile.red, Tile.green);
     public final static Piece RED_ORANGE = new Piece(Tile.red, Tile.orange);
     public final static Piece RED_YELLOW = new Piece(Tile.red, Tile.yellow);
@@ -32,10 +32,12 @@ public class Piece {
 
     private Tile head;
     private Tile tail;
+    private String name;
 
-    private Piece(Tile head, Tile tail) {
+    private Piece(Tile head, Tile tail, String name) {
         this.head = head;
         this.tail = tail;
+        this.name = name;
     }
 
     @Override
