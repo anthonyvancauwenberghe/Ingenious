@@ -49,6 +49,7 @@ public class BoardComponent extends JComponent {
 
             Hexagon hexagon = new Hexagon(new Point(node.x, node.y));
 
+            Tile tile = boardNodeList.get(i).getTile();
             g.setColor(boardNodeList.get(i).getTile());
 
             g.fillPolygon(hexagon.getHexagon());

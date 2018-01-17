@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.support;
+package com.ingenious.algorithm.support.nodegenerators;
 
 import com.ingenious.engine.Game;
 import com.ingenious.model.*;

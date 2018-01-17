@@ -8,19 +8,46 @@ public class Tile extends Color {
 
     private int tileId;
 
-    public final static Tile empty = new Tile(0, Configuration.EMPTY_TILE_COLOR);
-    public final static Tile occupied = new Tile(1, Configuration.OCCUPIED_TILE_COLOR);
+    public final static Tile empty = new Tile(Configuration.EMPTY_TILE_ID);
+    public final static Tile occupied = new Tile(Configuration.OCCUPIED_TILE_ID);
+    public final static Tile red = new Tile(Configuration.RED_TILE_ID);
+    public final static Tile blue = new Tile(Configuration.BLUE_TILE_ID);
+    public final static Tile green = new Tile(Configuration.GREEN_TILE_ID);
+    public final static Tile orange = new Tile(Configuration.ORANGE_TILE_ID);
+    public final static Tile yellow = new Tile(Configuration.YELLOW_TILE_ID);
+    public final static Tile purple = new Tile(Configuration.PURPLE_TILE_ID);
 
-    public final static Tile red = new Tile(3, Configuration.RED_TILE_COLOR);
-    public final static Tile blue = new Tile(7, Configuration.BLUE_TILE_COLOR);
-    public final static Tile green = new Tile(15, Configuration.GREEN_TILE_COLOR);
-    public final static Tile orange = new Tile(31, Configuration.ORANGE_TILE_COLOR);
-    public final static Tile yellow = new Tile(62, Configuration.YELLOW_TILE_COLOR);
-    public final static Tile purple = new Tile(123, Configuration.PURPLE_TILE_COLOR);
-
-    public Tile(int tileId, Color color) {
-        super(color.getRed(), color.getGreen(), color.getBlue());
+    public Tile(int tileId) {
+        super(getColorFromId(tileId).getRed(), getColorFromId(tileId).getGreen(), getColorFromId(tileId).getBlue());
         this.tileId = tileId;
+    }
+
+    public static Color getColorFromId(int tileId) {
+        if (tileId == Configuration.EMPTY_TILE_ID)
+            return Configuration.EMPTY_TILE_COLOR;
+
+        if (tileId == Configuration.OCCUPIED_TILE_ID)
+            return Configuration.OCCUPIED_TILE_COLOR;
+
+        if (tileId == Configuration.RED_TILE_ID)
+            return Configuration.RED_TILE_COLOR;
+
+        if (tileId == Configuration.BLUE_TILE_ID)
+            return Configuration.BLUE_TILE_COLOR;
+
+        if (tileId == Configuration.GREEN_TILE_ID)
+            return Configuration.GREEN_TILE_COLOR;
+
+        if (tileId == Configuration.ORANGE_TILE_ID)
+            return Configuration.ORANGE_TILE_COLOR;
+
+        if (tileId == Configuration.YELLOW_TILE_ID)
+            return Configuration.YELLOW_TILE_COLOR;
+
+        if (tileId == Configuration.PURPLE_TILE_ID)
+            return Configuration.PURPLE_TILE_COLOR;
+
+        return Configuration.OUTSIDE_TILE_COLOR;
     }
 
     public boolean isEqual(Tile tile) {
@@ -37,38 +64,38 @@ public class Tile extends Color {
     }
 
     public boolean isAvailable() {
-        return this.tileId == 0 || this.tileId == 1;
+        return this.tileId == Configuration.EMPTY_TILE_ID || this.tileId == Configuration.OCCUPIED_TILE_ID;
     }
 
     public boolean isOccupied() {
-        return this.tileId == 1;
+        return this.tileId == Configuration.OCCUPIED_TILE_ID;
     }
 
     public boolean isEmpty() {
-        return this.tileId == 0;
+        return this.tileId == Configuration.EMPTY_TILE_ID;
     }
 
     public boolean isRed() {
-        return this.tileId == 3;
+        return this.tileId == Configuration.RED_TILE_ID;
     }
 
     public boolean isBlue() {
-        return this.tileId == 7;
+        return this.tileId == Configuration.BLUE_TILE_ID;
     }
 
     public boolean isGreen() {
-        return this.tileId == 15;
+        return this.tileId == Configuration.GREEN_TILE_ID;
     }
 
     public boolean isOrange() {
-        return this.tileId == 31;
+        return this.tileId == Configuration.ORANGE_TILE_ID;
     }
 
     public boolean isYellow() {
-        return this.tileId == 62;
+        return this.tileId == Configuration.YELLOW_TILE_ID;
     }
 
     public boolean isPurple() {
-        return this.tileId == 123;
+        return this.tileId == Configuration.PURPLE_TILE_ID;
     }
 }

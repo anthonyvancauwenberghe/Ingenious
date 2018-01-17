@@ -67,7 +67,7 @@ public class GameProvider implements Runnable {
         }
         return tracker;
     }
-
+  
     private Bag initializeBag() {
         BagFactory factory = new BagFactory();
         return factory.generate();

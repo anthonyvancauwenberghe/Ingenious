@@ -67,6 +67,7 @@ public class Rack {
                 return true;
             }
         }
+        System.out.println("Error: Did not found piece to remove in rack");
         return false;
     }
 

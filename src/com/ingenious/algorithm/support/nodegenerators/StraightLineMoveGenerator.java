@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.support;
+package com.ingenious.algorithm.support.nodegenerators;
 
 import com.ingenious.engine.Game;
 import com.ingenious.model.*;
@@ -20,8 +20,11 @@ public class StraightLineMoveGenerator {
     private ArrayList<Piece> yellowPieces = new ArrayList<>();
     private ArrayList<Piece> purplePieces = new ArrayList<>();
 
+    private Game game;
+
     public  StraightLineMoveGenerator(Game game) {
         this.board = game.getBoard().getClone();
+        this.game = game;
         this.generateColorPiecesLists(this.getNonDuplicateRackPieces(game.getCurrentPlayer().getRack().getClone()));
     }
 

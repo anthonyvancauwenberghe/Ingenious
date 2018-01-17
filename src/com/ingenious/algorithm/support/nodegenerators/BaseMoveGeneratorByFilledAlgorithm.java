@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.support;
+package com.ingenious.algorithm.support.nodegenerators;
 
 import com.ingenious.engine.Game;
 import com.ingenious.model.*;
@@ -15,8 +15,10 @@ public class BaseMoveGeneratorByFilledAlgorithm {
     public BaseMoveGeneratorByFilledAlgorithm(Game game) {
         this.board = game.getBoard().getClone();
         Rack rack = game.getCurrentPlayer().getRack().getClone();
-        //System.out.println("rack contains: " + rack.getPieces().size());
+        System.out.println(rack.toString());
+
         this.rackPieces = this.getNonDuplicateRackPieces(rack);
+        System.out.println("rack contains: " + rackPieces.size());
     }
 
 

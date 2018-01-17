@@ -113,7 +113,7 @@ public class Game {
             if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
                 setNextPlayerAsCurrent();
             }
-
+          
             GameProvider.updateGraphics();
             if (this.getCurrentPlayer().getName().equals("Bot")) {
                 Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);

@@ -35,6 +35,7 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
 
         ArrayList<TreeNode> newChildren = generateFirstSetOfChildren(game, tree, heuristics);
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
         for(TreeNode newChild : newChildren)
         {
             executorService.submit(new NodeGenerator(tree.getNodeState(newChild), tree, newChild, countdown-1));

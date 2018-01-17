@@ -1,7 +1,7 @@
 package com.ingenious.algorithm.bot;
 
-import com.ingenious.algorithm.support.AllBaseMovesGenerator;
-import com.ingenious.algorithm.support.StraightLineMoveGenerator;
+import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
+import com.ingenious.algorithm.support.nodegenerators.StraightLineMoveGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 
