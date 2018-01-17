@@ -25,6 +25,20 @@ public class Bag {
         return null;
     }
 
+    public int amountOfPiecesLeft() {
+        return this.pieces.size();
+    }
+
+    public int amountOfSpecificPiecesLeft(Piece piece) {
+        int i = 0;
+        for (Piece aPiece : this.pieces) {
+            if (aPiece.isEqual(piece)) {
+                i++;
+            }
+        }
+        return i;
+    }
+
     public Piece getAndRemoveRandomPiece() {
         int randomIndex = ThreadLocalRandom.current().nextInt(0, this.pieces.size());
         Piece piece = this.pieces.get(randomIndex);
@@ -49,7 +63,7 @@ public class Bag {
     public Bag getClone() {
         Bag bag = new Bag();
 
-        for (Piece piece : this.pieces) {
+        for (Piece piece : this.getPieces()) {
             bag.addPiece(piece);
         }
 

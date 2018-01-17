@@ -1,18 +1,17 @@
 package com.ingenious.engine;
 
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.engine.logic.game.BoardMovePlacementGameLogic;
 import com.ingenious.engine.logic.game.GameOverLogic;
-import com.ingenious.model.Bag;
-import com.ingenious.model.Board;
-import com.ingenious.model.Move;
-import com.ingenious.model.Tile;
+import com.ingenious.model.*;
 import com.ingenious.model.players.Player;
 import com.ingenious.model.players.impl.Bot;
 import com.ingenious.model.players.impl.Human;
 import com.ingenious.provider.GameProvider;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -20,15 +19,27 @@ public class Game {
     private ArrayList<Player> players;
     private Bag bag;
     private Player winner;
+    private PieceTracker tracker;
 
     private int currentPlayerIndex = 0;
     public int bonusPlay = 0;
 
-    public Game(Board board, ArrayList<Player> players, Bag bag) {
+    public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker) {
         this.board = board;
         this.players = players;
         this.bag = bag;
+        this.tracker = tracker;
     }
+
+    public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker, int currentPlayerIndex, int bonusPlay) {
+        this.board = board;
+        this.players = players;
+        this.bag = bag;
+        this.tracker = tracker;
+        this.currentPlayerIndex = currentPlayerIndex;
+        this.bonusPlay = bonusPlay;
+    }
+
 
     public Board getBoard() {
         return board;
@@ -36,6 +47,10 @@ public class Game {
 
     public Bag getBag() {
         return bag;
+    }
+
+    public PieceTracker getTracker() {
+        return tracker;
     }
 
     public void gameLoop() {
@@ -51,9 +66,9 @@ public class Game {
         }
     }
 
-    public void refresh(){
-        while(getCurrentPlayer().getRack().getPieces().size()!=6){
-            getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
+    public void grabNewPieceFromBag() {
+        if (!this.getBag().isEmpty()) {
+            this.getCurrentPlayer().getRack().addPiece(getBag().getAndRemoveRandomPiece());
         }
         GameProvider.updateGraphics();
     }
@@ -81,25 +96,32 @@ public class Game {
 
         /* Remove piece from currentplayer rack */
         this.getCurrentPlayer().rack.removePiece(move.getPiece());
+        this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if (this.bonusPlay > 0)
-            this.bonusPlay--;
-
-
-        if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
-            setNextPlayerAsCurrent();
+        if(gameOver()){
+          end();
         }
+        else{
+            if (this.bonusPlay > 0)
+                this.bonusPlay--;
 
-        GameProvider.updateGraphics();
-        if (this.getCurrentPlayer() instanceof Bot) {
-            Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
-            this.executeMove(botMove);
+
+            if(this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size()==0){
+                setNextPlayerAsCurrent();
+            }
+          
             GameProvider.updateGraphics();
+            if (this.getCurrentPlayer().getName().equals("Bot")) {
+                Move botMove = ((Bot) this.getCurrentPlayer()).getMove(this);
+                this.doSimulationMove(botMove);
+                GameProvider.updateGraphics();
+            }
         }
+
     }
 
     public void doSimulationMove(Move move) {
@@ -107,23 +129,37 @@ public class Game {
 
         /* Execute move on board */
         placeMove.execute();
-
         /* Remove piece from currentplayer rack */
-        this.getCurrentPlayer().rack.removePiece(move.getPiece());
+        this.getCurrentPlayer().getRack().removePiece(move.getPiece());
+        this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if (this.bonusPlay > 0)
-            this.bonusPlay--;
-
-        if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
-            setNextPlayerAsCurrent();
+        if(gameOver()){
+            end();
         }
+        else{
+            if (this.bonusPlay > 0)
+                this.bonusPlay--;
+
+            if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
+                setNextPlayerAsCurrent();
+            }
+        }
+
     }
 
     public void end(){
+
+        if(Configuration.BOT_ALGORITHM instanceof qlearning){
+            ((qlearning) Configuration.BOT_ALGORITHM).end();
+        }
+
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+
         if (Configuration.DEBUG_MODE) {
             if (this.winner.equals(null)) {
                 System.out.println("IS A DRAW");
@@ -182,7 +218,7 @@ public class Game {
     public void setNextPlayerAsCurrent() {
         if(!gameOver()) {
             this.setBonusPlay(0);
-            refresh();
+            grabNewPieceFromBag();
             if (this.currentPlayerIndex == 1) {
                 this.currentPlayerIndex = 0;
             } else {
@@ -190,7 +226,7 @@ public class Game {
             }
         }
         else{
-            end();
+            this.end();
         }
     }
 
@@ -227,7 +263,7 @@ public class Game {
                 players.add(((Bot) player).getClone());
             }
         }
-        return new Game(this.board.getClone(), players, this.bag.getClone());
+        return new Game(this.board.getClone(), this.getPlayers(), this.bag.getClone(), this.tracker.getClone(), this.currentPlayerIndex, this.bonusPlay);
     }
 
     public boolean firstPlayerWon() {
@@ -257,6 +293,25 @@ public class Game {
         }
         else
         {
+            return null;
+        }
+    }
+
+    public Player wichPlayerWon() // true for first player, false for second player, null for no winner
+    {
+        GameOverLogic logic = new GameOverLogic(this);
+
+        if (logic.playerHasMaxScoreAcrossAllColors(0))
+            return this.players.get(0);
+        else if (logic.playerHasMaxScoreAcrossAllColors(1))
+            return this.players.get(1);
+        else if (logic.noMovesLeft()) {
+            if (logic.firstPlayerWinsWithBestScore()) {
+                return this.players.get(0);
+            } else {
+                return this.players.get(1);
+            }
+        } else {
             return null;
         }
     }

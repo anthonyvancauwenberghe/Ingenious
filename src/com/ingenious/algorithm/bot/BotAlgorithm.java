@@ -19,7 +19,7 @@ abstract public class BotAlgorithm {
             System.out.println("-------------------------------------------------------");
             startTime = System.nanoTime();
         }
-
+        System.out.println("BOTALGOR PLAYER: " + game.getCurrentPlayer().getName());
         Move move = execute(game);
         endTime = System.nanoTime();
         timeDifference = (endTime - startTime) / 1000000;

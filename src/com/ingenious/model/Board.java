@@ -21,6 +21,11 @@ public class Board {
         this.nodeCoord = nc;
     }
 
+    private Board(ArrayList<BoardNode> ns, int[][] nc) {
+        this.boardNodes = ns;
+        this.nodeCoord = nc;
+    }
+
     @Deprecated
     public ArrayList<BoardNode> getBoardNodes() {
         ArrayList<BoardNode> nodes = new ArrayList<>();
@@ -268,5 +273,13 @@ public class Board {
         return new Board(this.nodeCoord.clone());
     }
 
+    public void recordUsedPiece(Piece piece)
+    {
+        this.placedPieces.add(piece);
+    }
 
+    public ArrayList<Piece> getPlacedPieces()
+    {
+        return this.placedPieces;
+    }
 }

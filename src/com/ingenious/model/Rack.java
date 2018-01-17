@@ -20,6 +20,12 @@ public class Rack {
         return rack;
     }
 
+    public void printRackPieces(){
+        for(Piece piece : this.pieces){
+            System.out.println(piece.toString());
+        }
+    }
+
     public void setPieceSelected(int i) {
         this.indexSelected = i;
     }
@@ -54,13 +60,12 @@ public class Rack {
     }
 
     public boolean removePiece(Piece piece) {
-        int i = 0;
-        for (Piece aPiece : this.pieces) {
-            if (aPiece.isEqual(piece)) {
-                this.pieces.remove(i);
+        for (int index = 0; index < this.getPieces().size(); index++) {
+            //System.out.println("comparing " + piece.getUniqueCode() + " with " + this.pieces.get(index).getUniqueCode());
+            if (this.pieces.get(index).isEqual(piece)) {
+                this.pieces.remove(index);
                 return true;
             }
-            i++;
         }
         System.out.println("Error: Did not found piece to remove in rack");
         return false;
