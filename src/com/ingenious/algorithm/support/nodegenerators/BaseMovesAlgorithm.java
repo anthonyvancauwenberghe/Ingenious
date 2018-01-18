@@ -26,7 +26,7 @@ public class BaseMovesAlgorithm {
     }
 
     private boolean nodeIsThirdDegreeIsolated(BoardNode boardNode) {
-        ThirdDegreeIsolationCheckAlgorithm isolationCheckAlgorithm = new ThirdDegreeIsolationCheckAlgorithm(this.game.getBoard(), boardNode);
+        ThirdDegreeIsolationCheckAlgorithm isolationCheckAlgorithm = new ThirdDegreeIsolationCheckAlgorithm(this.game.getBoard().logic(), boardNode);
         return isolationCheckAlgorithm.execute();
     }
 

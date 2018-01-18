@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AllBaseMovesGenerator {
+public class GreedySmartBaseMovesGenerator {
 
     private Game game;
     private ArrayList<Piece> rackPieces;
 
-    public AllBaseMovesGenerator(Game game) {
+    public GreedySmartBaseMovesGenerator(Game game) {
         this.game = game.getClone();
         this.rackPieces = this.getNonDuplicateRackPieces(this.game.getCurrentPlayer().getRack());
     }
@@ -39,14 +39,16 @@ public class AllBaseMovesGenerator {
     public Set<Move> generate() {
         HashSet<Move> moves = new HashSet<>();
 
-        for (BoardNode boardNode : this.game.getBoard().logic().getEmptyNodes()) {
+        for (BoardNode boardNode : this.game.getBoard().logic().getNeighboursOfFilledNodes()) {
+            if (boardNode.isEmpty()) {
                 for (BoardNode neighbour : this.game.getBoard().logic().getEmptyNeighboursOfNode(boardNode)) {
                     for (Piece piece : this.rackPieces) {
+
                         Move move = new Move(boardNode, neighbour, piece);
-                        if (!moves.contains(move)) {
+                        if (!moves.contains(move) && this.neighbourContainsTile(boardNode, piece.getHead())) {
                             moves.add(move);
                         }
-                        if (!piece.hasEqualTiles()) {
+                        if (!piece.hasEqualTiles() && this.neighbourContainsTile(boardNode, piece.getTail())) {
                             Move invertedMove = new Move(neighbour, boardNode, piece);
                             if (!moves.contains(move)) {
                                 moves.add(invertedMove);
@@ -56,8 +58,22 @@ public class AllBaseMovesGenerator {
                     }
 
                 }
+            }
+        }
+        if (moves.size() == 0) {
+            SmartBaseMovesGenerator generator = new SmartBaseMovesGenerator(this.game);
+            moves = (HashSet<Move>) generator.generate();
+            System.out.println("ERROR didn't find greedy moves to generate. Using SmartBaseMoveGenerator!");
         }
 
         return moves;
+    }
+
+    private boolean neighbourContainsTile(BoardNode node, Tile tile) {
+        for (BoardNode neighbour : this.game.getBoard().logic().getNeighboursOfNode(node)) {
+            if (neighbour.getTile().isEqual(tile))
+                return true;
+        }
+        return false;
     }
 }

@@ -185,6 +185,7 @@ class BoardListener implements MouseListener, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (boardComponent.getGame().getCurrentPlayer().getRack().selected() && cnt == 2) {
                 Move move = new Move(clicked, clicked2, boardComponent.getGame().getCurrentPlayer().getRack().getPieceSelected());
+                if (Configuration.DEBUG_MODE)
                     System.out.println("topnode: " + clicked.x + "," + clicked.y + "  tailnode: " + clicked2.x + "," + clicked2.y);
                     boardComponent.getGame().executeMove(move);
                 cnt = 0;

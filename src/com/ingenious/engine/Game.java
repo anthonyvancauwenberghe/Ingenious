@@ -21,6 +21,7 @@ public class Game {
     private Player winner;
     private PieceTracker tracker;
 
+    public static boolean simulating = false;
     private int currentPlayerIndex = 0;
     public int bonusPlay = 0;
 
@@ -130,7 +131,14 @@ public class Game {
         /* Execute move on board */
         placeMove.execute();
         /* Remove piece from currentplayer rack */
-        this.getCurrentPlayer().getRack().removePiece(move.getPiece());
+        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece())) {
+            System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
+            System.out.println("-------------------------------------------------------");
+            this.getCurrentPlayer().getRack().printRackPieces();
+            System.out.println("-------------------------------------------------------");
+            this.getOtherPlayer().getRack().printRackPieces();
+            System.out.println();
+        }
         this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
@@ -151,14 +159,45 @@ public class Game {
 
     }
 
+    public boolean simulateMove(Move move) {
+        BoardMovePlacementGameLogic placeMove = new BoardMovePlacementGameLogic(this, move);
+
+        /* Execute move on board */
+        placeMove.execute();
+
+        /* Remove piece from currentplayer rack */
+        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece())) {
+            System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
+            this.getCurrentPlayer().getRack().printRackPieces();
+        }
+
+        /* Calculate current player score */
+        ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
+        scoreCalculator.execute();
+
+        if (!gameOver()) {
+            if (this.bonusPlay > 0)
+                this.bonusPlay--;
+
+            if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
+                setNextPlayerAsCurrent();
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     public void end(){
 
         if(Configuration.BOT_ALGORITHM instanceof qlearning){
             ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
 
-        JFrame frame = new JFrame();
-        JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+        if (!Game.simulating) {
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+        }
 
         if (Configuration.DEBUG_MODE) {
             if (this.winner.equals(null)) {
@@ -263,7 +302,7 @@ public class Game {
                 players.add(((Bot) player).getClone());
             }
         }
-        return new Game(this.board.getClone(), this.getPlayers(), this.bag.getClone(), this.tracker.getClone(), this.currentPlayerIndex, this.bonusPlay);
+        return new Game(this.board.getClone(), players, this.bag.getClone(), this.tracker.getClone(), this.currentPlayerIndex, this.bonusPlay);
     }
 
     public boolean firstPlayerWon() {

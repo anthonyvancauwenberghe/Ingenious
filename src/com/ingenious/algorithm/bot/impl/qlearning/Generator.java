@@ -1,15 +1,12 @@
 package com.ingenious.algorithm.bot.impl.qlearning;
 
-import com.ingenious.algorithm.support.AllBaseMovesGenerator;
+import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
 import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;
 import com.ingenious.model.Move;
 import com.ingenious.model.Piece;
 import com.ingenious.provider.GameProvider;
-
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Set;
 
 /**

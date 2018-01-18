@@ -2,6 +2,7 @@ package com.ingenious.model; /**
  * Created by alexisguillot on 14/09/2017.
  */
 
+import com.ingenious.algorithm.support.board.BoardLogic;
 import com.ingenious.config.Configuration;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class Board {
 
     private int[][] nodeCoord = new int[2 * (Configuration.BOARD_WIDTH) - 1][2 * (Configuration.BOARD_WIDTH) - 1];
+    private BoardLogic logic;
 
     public Board() {
     }
@@ -18,11 +20,6 @@ public class Board {
     }
 
     private Board(int[][] nc) {
-        this.nodeCoord = nc;
-    }
-
-    private Board(ArrayList<BoardNode> ns, int[][] nc) {
-        this.boardNodes = ns;
         this.nodeCoord = nc;
     }
 
@@ -43,7 +40,6 @@ public class Board {
         return getTileIdFromCoordinate(x, y) != -1;
     }
 
-    @Deprecated
     public BoardNode getBoardNodeFromCoordinate(int x, int y) {
         return new BoardNode(x, y, getTileFromCoordinate(x, y));
     }
@@ -109,6 +105,7 @@ public class Board {
         return this.getNode(node.getX() + 1, node.getY());
     }
 
+    @Deprecated
     public ArrayList<BoardNode> getNeighboursOfNode(BoardNode boardNode) {
         ArrayList<BoardNode> neighbours = new ArrayList<BoardNode>();
 
@@ -267,19 +264,24 @@ public class Board {
     public void setTile(int x, int y, Tile tile) {
         int offset = Configuration.BOARD_WIDTH - 1;
         this.nodeCoord[x + offset][y + offset] = tile.getUniqueCode();
+        this.logic().updateEmptyNodeList();
+    }
+
+    public BoardLogic logic() {
+        if (this.logic == null)
+            this.logic = new BoardLogic(this);
+
+        return this.logic;
     }
 
     public Board getClone() {
-        return new Board(this.nodeCoord.clone());
+        int[][] coords = new int[2 * (Configuration.BOARD_WIDTH) - 1][2 * (Configuration.BOARD_WIDTH) - 1];
+        for (int x = 0; x < getNodeCoord().length; x++) {
+            for (int y = 0; y < getNodeCoord()[x].length; y++) {
+                coords[x][y] = getNodeCoord()[x][y];
+            }
+        }
+        return new Board(coords);
     }
 
-    public void recordUsedPiece(Piece piece)
-    {
-        this.placedPieces.add(piece);
-    }
-
-    public ArrayList<Piece> getPlacedPieces()
-    {
-        return this.placedPieces;
-    }
 }
