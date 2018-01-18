@@ -8,7 +8,6 @@ import com.ingenious.model.Move;
 import java.util.concurrent.Callable;
 
 public class MCTSSimulation implements Callable {
-    public static Object lock = new Object();
 
     private Move move;
     private int winAmount = 0;
@@ -28,18 +27,23 @@ public class MCTSSimulation implements Callable {
     @Override
     public Object call() {
         Game firstMoveGame = game.getClone();
-        firstMoveGame.doSimulationMove(this.move);
+        firstMoveGame.simulateMove(this.move);
 
         int simulationRound = 0;
         Move randomMove;
-        BotAlgorithm randomAlgorithm = Configuration.MCTS_SIMULATION_ALGORITHM;
+        BotAlgorithm algorithm = Configuration.MCTS_SIMULATION_ALGORITHM;
         while (simulationRound < this.simulations) {
             Game aGame = firstMoveGame.getClone();
-            while (!game.isOver()) {
-                randomMove = randomAlgorithm.execute(aGame);
-                if (randomMove == null)
+
+            boolean gameOver = false;
+            while (!gameOver) {
+                randomMove = algorithm.execute(aGame);
+                if (randomMove == null) {
+                    System.out.println("probably gameover but unsure");
                     break;
-                aGame.doSimulationMove(randomMove);
+                }
+
+                gameOver = aGame.simulateMove(randomMove);
             }
 
             if (!game.firstPlayerWon()) {
@@ -49,7 +53,8 @@ public class MCTSSimulation implements Callable {
             simulationRound++;
             aGame = null;
         }
-
+        if(index % 10 == 0)
+        System.out.print(".");
         this.totalwins[this.index] = this.winAmount;
 
         return null;

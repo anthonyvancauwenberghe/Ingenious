@@ -1,18 +1,21 @@
 package com.ingenious.algorithm.support.nodegenerators;
 
 import com.ingenious.engine.Game;
-import com.ingenious.model.*;
+import com.ingenious.model.BoardNode;
+import com.ingenious.model.Move;
+import com.ingenious.model.Piece;
+import com.ingenious.model.Rack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AllBaseMovesGenerator {
+public class SmartBaseMovesGenerator {
 
     private Game game;
     private ArrayList<Piece> rackPieces;
 
-    public AllBaseMovesGenerator(Game game) {
+    public SmartBaseMovesGenerator(Game game) {
         this.game = game.getClone();
         this.rackPieces = this.getNonDuplicateRackPieces(this.game.getCurrentPlayer().getRack());
     }
@@ -39,7 +42,8 @@ public class AllBaseMovesGenerator {
     public Set<Move> generate() {
         HashSet<Move> moves = new HashSet<>();
 
-        for (BoardNode boardNode : this.game.getBoard().logic().getEmptyNodes()) {
+        for (BoardNode boardNode : this.game.getBoard().logic().getNeighboursOfFilledNodes()) {
+            if (boardNode.isEmpty()) {
                 for (BoardNode neighbour : this.game.getBoard().logic().getEmptyNeighboursOfNode(boardNode)) {
                     for (Piece piece : this.rackPieces) {
                         Move move = new Move(boardNode, neighbour, piece);
@@ -54,8 +58,8 @@ public class AllBaseMovesGenerator {
                         }
 
                     }
-
                 }
+            }
         }
 
         return moves;

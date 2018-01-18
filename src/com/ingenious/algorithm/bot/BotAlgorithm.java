@@ -1,11 +1,14 @@
 package com.ingenious.algorithm.bot;
 
 import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
+import com.ingenious.algorithm.support.nodegenerators.SmartBaseMovesGenerator;
 import com.ingenious.algorithm.support.nodegenerators.StraightLineMoveGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 abstract public class BotAlgorithm {
 
@@ -14,18 +17,19 @@ abstract public class BotAlgorithm {
 
         startTime = System.nanoTime();
         if (output) {
+            System.out.println();
             System.out.println("-------------------------------------------------------");
             System.out.println("Executing Algorithm: " + this.getClass().getSimpleName());
-            System.out.println("-------------------------------------------------------");
             startTime = System.nanoTime();
+            System.out.println("-------------------------------------------------------");
         }
-        System.out.println("BOTALGOR PLAYER: " + game.getCurrentPlayer().getName());
+        System.out.println();
         Move move = execute(game);
         endTime = System.nanoTime();
         timeDifference = (endTime - startTime) / 1000000;
         if (output) {
             System.out.println("-------------------------------------------------------");
-            System.out.println("Took " + timeDifference + " ms to execute BOT_ALGORITHM " + this.getClass().getSimpleName());
+            System.out.println("Time to execute: " + timeDifference + " ms");
             System.out.println("-------------------------------------------------------");
             System.out.println();
         }
@@ -41,6 +45,12 @@ abstract public class BotAlgorithm {
     protected ArrayList<Move> generateAllBaseMoves(Game game) {
         AllBaseMovesGenerator movesFactory = new AllBaseMovesGenerator(game);
         return new ArrayList<>(movesFactory.generate());
+    }
+
+    protected List<Move> smartBaseMoveGenerator(Game game) {
+        SmartBaseMovesGenerator generator = new SmartBaseMovesGenerator(game);
+        Set<Move> baseMovesSet = generator.generate();
+        return new ArrayList<>(baseMovesSet);
     }
 
     public abstract Move execute(Game game);

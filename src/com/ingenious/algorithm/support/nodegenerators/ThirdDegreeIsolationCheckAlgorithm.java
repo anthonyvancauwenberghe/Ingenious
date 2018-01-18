@@ -1,13 +1,14 @@
 package com.ingenious.algorithm.support.nodegenerators;
 
+import com.ingenious.algorithm.support.board.BoardLogic;
 import com.ingenious.model.Board;
 import com.ingenious.model.BoardNode;
 
 public class ThirdDegreeIsolationCheckAlgorithm {
-    private Board board;
+    private BoardLogic board;
     private BoardNode node;
 
-    public ThirdDegreeIsolationCheckAlgorithm(Board board, BoardNode node) {
+    public ThirdDegreeIsolationCheckAlgorithm(BoardLogic board, BoardNode node) {
         this.board = board;
         this.node = node;
     }
