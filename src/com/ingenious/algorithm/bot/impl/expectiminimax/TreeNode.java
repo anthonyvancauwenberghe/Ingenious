@@ -1,9 +1,8 @@
-package com.ingenious.algorithm.bot.impl.alphabeta;
+package com.ingenious.algorithm.bot.impl.expectiminimax;
 
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class TreeNode

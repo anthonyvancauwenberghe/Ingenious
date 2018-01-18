@@ -1,30 +1,33 @@
-package com.ingenious.algorithm.bot.impl.alphabeta;
+package com.ingenious.algorithm.bot.impl.expectiminimax;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.mcts.MCTSSimulation;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
-import com.ingenious.algorithm.bot.impl.alphabeta.TreeNode;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class AlphaBetaAlgorithm extends BotAlgorithm
+public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
 {
-        public Move generate() {
+        /*public Move generate() {
             return null;
-        }
+        }*/
 
     public Move execute(Game game)
     {
-        int treeDepth = Configuration.ALPHABETA_TREE_DEPTH;
-        Tree alphabetaTree = generateTree(game, treeDepth, true);
+        int treeDepth = Configuration.MINIMAX_TREE_DEPTH;
+        Tree expectiTree = generateTree(game, treeDepth, true);
 
         Object[] returned = new Object[2];
-        Object[] results =  runAlphaBeta(alphabetaTree.getRootAsTreeNode(),treeDepth,-10000, 10000, true, returned);
+        Object[] results;
+        if(Configuration.USE_BASE_MINIMAX)
+            results = runMiniMax(expectiTree.getRootAsTreeNode(),treeDepth,true, returned);
+        else
+            results =  runAlphaBeta(expectiTree.getRootAsTreeNode(),treeDepth,-10000, 10000, true, returned);
         return (Move) results[1];
     }
 
@@ -51,25 +54,9 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
         return tree;
     }
 
-    public void generateNewChildren(Game state, Tree tree, TreeNode parent, int countdown, boolean heuristics)
-    {
-        if(countdown > 0)
-        {
-            ArrayList<Move> baseMoves = this.generateBaseMoves(state,true);
-
-            for (Move move : baseMoves)
-            {
-                TreeNode newChild = new TreeNode(move, parent.getFullPath());
-                newChild.addEvaluation(tree.getParentState(newChild),tree.getNodeState(newChild));
-
-                parent.addChild(newChild);
-                generateNewChildren(tree.getNodeState(newChild), tree, newChild, countdown-1, true);
-            }
-        }
-    }
     private ArrayList<TreeNode> generateFirstSetOfChildren(Game game, Tree tree, boolean heuristics)
     {
-        ArrayList<Move> baseMoves = this.generateBaseMoves(game, heuristics);
+        List<Move> baseMoves = smartBaseMoveGenerator(game);
         ArrayList<TreeNode> outputNodes = new ArrayList<TreeNode>();
 
         for (Move move : baseMoves)
@@ -124,5 +111,42 @@ public class AlphaBetaAlgorithm extends BotAlgorithm
                 return returned;
             }
       }
+
+    public Object[] runMiniMax(TreeNode node, int depth, Boolean maximizing, Object[] returned)
+    {
+        if (depth == 0 || !node.hasChildren())
+        {
+            if(!node.isRoot() && node.getRootMove() != null)
+            {
+                returned[0]=node.evaluationScore;
+                returned[1]=node.getRootMove();
+            }
+            return returned;
+        }
+        if (maximizing)
+        {
+            int v = -10000;
+            for (TreeNode childNode : node.getChildren())
+            {
+                v = Math.max(v, (int)runMiniMax(childNode, depth - 1,false, returned)[0]);
+            }
+            returned[0]=v;
+            if(!node.isRoot() && node.getRootMove() != null)
+                returned[1]=node.getRootMove();
+            return returned;
+        }
+        else
+        {
+            int v = 10000;
+            for (TreeNode childNode : node.getChildren())
+            {
+                v = Math.min(v, (int)runMiniMax(childNode, depth - 1, true, returned)[0]);
+            }
+            returned[0]=v;
+            if(!node.isRoot() && node.getRootMove() != null)
+                returned[1]=node.getRootMove();
+            return returned;
+        }
+    }
 
 }

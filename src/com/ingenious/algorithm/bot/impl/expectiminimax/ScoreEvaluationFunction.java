@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.bot.impl.alphabeta;
+package com.ingenious.algorithm.bot.impl.expectiminimax;
 
 import com.ingenious.engine.Game;
 

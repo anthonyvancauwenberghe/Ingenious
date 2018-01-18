@@ -1,14 +1,9 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.alphabeta.AlphaBetaAlgorithm;
+import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
-import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
-import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
-
-import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
-import com.ingenious.model.Tile;
 
 import java.awt.*;
 
@@ -20,14 +15,15 @@ public class Configuration {
     /* Debug Settings */
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
-    public final static BotAlgorithm BOT_ALGORITHM = new MCTSAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new ExpectiMiniMaxAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 5;
     public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
 
     /* AlphaBeta Configuration Settings */
-    public final static int ALPHABETA_TREE_DEPTH = 3;
+    public final static int MINIMAX_TREE_DEPTH = 3;
+    public final static boolean USE_BASE_MINIMAX = false;
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;
