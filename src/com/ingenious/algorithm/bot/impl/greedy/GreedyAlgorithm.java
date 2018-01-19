@@ -6,8 +6,11 @@ import com.ingenious.algorithm.support.nodegenerators.SmartBaseMovesGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
 import com.ingenious.model.Move;
+import com.ingenious.model.Score;
 import com.ingenious.model.Tile;
+import com.ingenious.provider.GameProvider;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -101,7 +104,6 @@ public class GreedyAlgorithm extends BotAlgorithm {
             return getGlobalHigh(scoreMoves);
     }
 
-
     public boolean playHighest(Game game) {
         Tile[] sorted = game.getCurrentPlayer().getScore().sort();
         int low = game.getCurrentPlayer().getScore().getScore(sorted[0]);
@@ -116,6 +118,31 @@ public class GreedyAlgorithm extends BotAlgorithm {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Move> reach18(ArrayList<ScoreMove> scoreMoves){
+        Score score = GameProvider.getInstance().game.getCurrentPlayer().getScore();
+        ArrayList<Move> moves = new ArrayList<>();
+        for(ScoreMove scoreMove: scoreMoves){
+            Move move = scoreMove.getMove();
+            if(move.getPiece().hasEqualTiles()){
+                int cscore = score.getScore(scoreMove.getColor()[0]);
+                if(cscore<18 && cscore+scoreMove.scoreColor(scoreMove.getColor()[0])>=18){
+                    moves.add(move);
+                }
+            }
+            else{
+                int cscoreH = score.getScore(scoreMove.getColor()[0]);
+                int cscoreT = score.getScore(scoreMove.getColor()[1]);
+                if(cscoreH<18 && cscoreH+scoreMove.scoreColor(scoreMove.getColor()[0])>=18){
+                    moves.add(move);
+                }
+                if(cscoreT<18 && cscoreT+scoreMove.scoreColor(scoreMove.getColor()[1])>=18){
+                    moves.add(move);
+                }
+            }
+        }
+        return moves;
     }
 
     @Override
