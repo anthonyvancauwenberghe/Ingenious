@@ -3,7 +3,6 @@ package com.ingenious.config;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
-import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 
 import java.awt.*;
 
@@ -22,8 +21,8 @@ public class Configuration {
     public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
 
     /* AlphaBeta Configuration Settings */
-    public final static int MINIMAX_TREE_DEPTH = 3;
-    public final static boolean USE_BASE_MINIMAX = false;
+    public final static int MINIMAX_TREE_DEPTH = 2;
+    public final static boolean USE_BASE_MINIMAX = true;
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;

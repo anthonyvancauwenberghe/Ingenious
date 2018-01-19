@@ -5,75 +5,89 @@ import com.ingenious.model.Move;
 
 import java.util.ArrayList;
 
-public class TreeNode
-{
-    public ArrayList<TreeNode> children;
-    public ArrayList<Move> parentMoves;
-    public Move move;
+public class TreeNode {
+    private ArrayList<TreeNode> children;
+    private TreeNode parent;
+    private Game state;
     public int evaluationScore;
-    private boolean isRoot = false;
+    private Move move;
 
-    public TreeNode(Move move, ArrayList<Move> parentMoves)
+    public TreeNode(Game game, TreeNode parent, Move move)
     {
+        this.children = new ArrayList<TreeNode>();
+        this.state = game.getClone();
+        this.parent = parent;
         this.move = move;
-        this.children = new ArrayList<>();
-        this.parentMoves = parentMoves;
     }
 
-    public TreeNode(boolean root)
+    public Move getMove()
     {
-        this.isRoot = root;
+        return this.move;
     }
 
-    public ArrayList<TreeNode> getChildren()
+    public boolean isRoot()
     {
-        return children;
-    }
-
-    public void addChild(TreeNode newChild)
-    {
-        this.children.add(newChild);
-    }
-
-    public ArrayList<Move> getFullPath()
-    {
-        ArrayList<Move> fullPath = new ArrayList<Move>();
-        for(Move move : this.parentMoves)
-        {
-            fullPath.add(move);
-        }
-        fullPath.add(this.move);
-        return fullPath;
-    }
-
-    public void addEvaluation(Game parentState, Game currentState)
-    {
-        this.evaluationScore = ScoreEvaluationFunction.evaluateScores(parentState, currentState);
-    }
-
-    public boolean hasChildren()
-    {
-        if(children.size() > 0)
+        if(this.parent == null)
             return true;
         else
             return false;
     }
 
-    public Move getRootMove()
+    public TreeNode getRoot()
     {
-        if(!isRoot())
-        {
-            if (parentMoves.size() > 0)
-                return parentMoves.get(0);
-            else
-                return move;
-        }
+        if(this.isRoot())
+            return this;
         else
-            return null;
+            return parent.getRoot();
     }
 
-    public boolean isRoot()
+    public Game getRootState()
     {
-        return this.isRoot;
+        return this.getRoot().getState();
     }
+
+    public TreeNode getImmediateChildOfRoot()
+    {
+        if (this.isRoot())
+            return null;
+        else if (this.getParent().isRoot())
+            return this;
+        else
+            return parent.getImmediateChildOfRoot();
+    }
+
+    public Move getRootMove()
+    {
+        return getImmediateChildOfRoot().getMove();
+    }
+
+    public Game getState() {
+        return this.state;
+    }
+
+    public ArrayList<TreeNode> getChildren() {
+        return children;
+    }
+
+    public void addChild(TreeNode newChild) {
+        this.children.add(newChild);
+    }
+
+    public void addEvaluation(Game parentState, Game currentState) {
+        this.evaluationScore = ScoreEvaluationFunction.evaluateScores(parentState, currentState);
+    }
+
+    public boolean hasChildren()
+    {
+        if (children.size() > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public TreeNode getParent()
+    {
+        return this.parent;
+    }
+
 }

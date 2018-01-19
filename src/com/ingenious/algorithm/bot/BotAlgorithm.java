@@ -5,6 +5,7 @@ import com.ingenious.algorithm.support.nodegenerators.SmartBaseMovesGenerator;
 import com.ingenious.algorithm.support.nodegenerators.StraightLineMoveGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
+import com.ingenious.model.Rack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,12 @@ abstract public class BotAlgorithm {
 
     protected List<Move> smartBaseMoveGenerator(Game game) {
         SmartBaseMovesGenerator generator = new SmartBaseMovesGenerator(game);
+        Set<Move> baseMovesSet = generator.generate();
+        return new ArrayList<>(baseMovesSet);
+    }
+
+    protected List<Move> smartBaseMoveGenerator(Game game, Rack rack) {
+        SmartBaseMovesGenerator generator = new SmartBaseMovesGenerator(game, rack);
         Set<Move> baseMovesSet = generator.generate();
         return new ArrayList<>(baseMovesSet);
     }

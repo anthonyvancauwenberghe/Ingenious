@@ -20,6 +20,11 @@ public class SmartBaseMovesGenerator {
         this.rackPieces = this.getNonDuplicateRackPieces(this.game.getCurrentPlayer().getRack());
     }
 
+    public SmartBaseMovesGenerator(Game game, Rack rack) {
+        this.game = game.getClone();
+        this.rackPieces = this.getNonDuplicateRackPieces(rack);
+    }
+
     private ArrayList<Piece> getNonDuplicateRackPieces(Rack rack) {
         ArrayList<Piece> pieces = new ArrayList<>();
 

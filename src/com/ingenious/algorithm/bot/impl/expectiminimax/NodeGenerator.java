@@ -3,6 +3,7 @@ package com.ingenious.algorithm.bot.impl.expectiminimax;
 import com.ingenious.algorithm.support.nodegenerators.StraightLineMoveGenerator;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
+import com.ingenious.model.Rack;
 
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -10,34 +11,48 @@ import java.util.concurrent.Callable;
 public class NodeGenerator implements Callable {
 
     private Game game;
-    private Tree tree;
     private TreeNode treeNode;
     private int countDown;
+    private boolean maximising;
 
-    public NodeGenerator(Game state, Tree tree, TreeNode parent, int countdown) {
-        this.tree = tree;
+    public NodeGenerator(Game state, TreeNode parent, int countdown, boolean maximising)
+    {
         this.game = state;
         this.treeNode = parent;
         this.countDown = countdown;
+        this.maximising = maximising;
     }
 
     @Override
     public Object call() {
-        this.doAlgorithm(this.game, this.tree, this.treeNode, this.countDown);
+        this.doAlgorithm(this.game, this.treeNode, this.countDown, this.maximising);
         return null;
     }
 
-    private void doAlgorithm(Game state, Tree tree, TreeNode treeNode, int countDown) {
-        if (countDown > 0) {
-            StraightLineMoveGenerator generator = new StraightLineMoveGenerator(state);
+    private void doAlgorithm(Game parentState,  TreeNode parentNode, int countDown, boolean maximising)
+    {
+        if (countDown > 0)
+        {
+            StraightLineMoveGenerator generator;
+            //if(maximising)
+                generator = new StraightLineMoveGenerator(parentState);
+            /*else
+            {
+                Rack minimisingEstimatedRack = parentState.getTracker().getRandomRack(game.getOtherPlayer().getRack());
+                generator = new StraightLineMoveGenerator(parentState, minimisingEstimatedRack);
+            }*/
+
             Set<Move> baseMoves = generator.generate();
 
-            for (Move move : baseMoves) {
-                TreeNode newChild = new TreeNode(move, treeNode.getFullPath());
-                newChild.addEvaluation(tree.getParentState(newChild), tree.getNodeState(newChild));
+            for (Move move : baseMoves)
+            {
+                Game childState = parentState.getClone();
+                childState.doSimulationMove(move);
+                TreeNode newChild = new TreeNode(childState, parentNode, move);
+                newChild.addEvaluation(parentState, childState);
+                parentNode.addChild(newChild);
 
-                treeNode.addChild(newChild);
-                doAlgorithm(tree.getNodeState(newChild), tree, newChild, countDown - 1);
+                doAlgorithm(childState, newChild, countDown - 1, !maximising);
             }
         }
     }

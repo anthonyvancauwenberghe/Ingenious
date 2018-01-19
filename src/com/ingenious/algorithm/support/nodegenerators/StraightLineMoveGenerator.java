@@ -28,6 +28,13 @@ public class StraightLineMoveGenerator {
         this.generateColorPiecesLists(this.getNonDuplicateRackPieces(game.getCurrentPlayer().getRack().getClone()));
     }
 
+    public  StraightLineMoveGenerator(Game game, Rack rack)
+    {
+        this.board = game.getBoard().getClone();
+        this.game = game;
+        this.generateColorPiecesLists(this.getNonDuplicateRackPieces(rack));
+    }
+
     private void generateColorPiecesLists(ArrayList<Piece> pieces) {
         for (Piece piece : pieces) {
             if (piece.containsTile(Tile.red))
