@@ -1,7 +1,10 @@
 package com.ingenious.model;
 
 
+import com.ingenious.config.Configuration;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Rack {
 
@@ -67,8 +70,15 @@ public class Rack {
                 return true;
             }
         }
-        System.out.println("Error: Did not found piece to remove in rack");
+        if(Configuration.DEBUG_MODE)
+            System.out.println("Error: Did not find piece to remove in rack");
         return false;
+    }
+
+    public void removeRandomPiece()
+    {
+        Random r = new Random();
+        this.pieces.remove(r.nextInt(this.pieces.size()));
     }
 
     public boolean contains(Tile color){

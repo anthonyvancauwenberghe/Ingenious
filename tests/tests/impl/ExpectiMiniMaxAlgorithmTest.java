@@ -4,9 +4,9 @@ import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.engine.Game;
 import tests.Test;
 
-public class AlphaBetaAlgorithmTest extends Test
+public class ExpectiMiniMaxAlgorithmTest extends Test
 {
-    public AlphaBetaAlgorithmTest(Game game)
+    public ExpectiMiniMaxAlgorithmTest(Game game)
     {
         super(game);
     }

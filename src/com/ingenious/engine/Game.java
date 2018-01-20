@@ -1,5 +1,6 @@
 package com.ingenious.engine;
 
+import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
@@ -103,7 +104,8 @@ public class Game {
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if(gameOver()){
+        if(gameOver())
+        {
           end();
         }
         else{
@@ -131,14 +133,36 @@ public class Game {
         /* Execute move on board */
         placeMove.execute();
         /* Remove piece from currentplayer rack */
-        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece())) {
-            System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
-            System.out.println("-------------------------------------------------------");
-            this.getCurrentPlayer().getRack().printRackPieces();
-            System.out.println("-------------------------------------------------------");
-            this.getOtherPlayer().getRack().printRackPieces();
-            System.out.println();
+        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece()))
+        {
+            if(Configuration.BOT_ALGORITHM instanceof ExpectiMiniMaxAlgorithm)
+            {
+                this.getBag().removePiece(move.getPiece());
+                this.getCurrentPlayer().getRack().removeRandomPiece();
+            }
+            if(Configuration.DEBUG_MODE)
+            {
+                    System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
+                    System.out.println("-------------------------------------------------------");
+                    this.getCurrentPlayer().getRack().printRackPieces();
+                    System.out.println("-------------------------------------------------------");
+                    this.getOtherPlayer().getRack().printRackPieces();
+                    //System.out.println();
+                if(Configuration.BOT_ALGORITHM instanceof ExpectiMiniMaxAlgorithm)
+                {
+                    System.out.println("***");
+                    System.out.println("Removed from bag.");
+                    System.out.println("***");
+                    System.out.println("-------------------------------------------------------");
+                }
+            }
         }
+        /*else
+            {
+                System.out.println("-------------------------------------------------------");
+                System.out.println("All went well.");
+                System.out.println("-------------------------------------------------------");
+            }*/
         this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
@@ -196,7 +220,7 @@ public class Game {
 
         if (!Game.simulating) {
             JFrame frame = new JFrame();
-            JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.wichPlayerWon().getName() + " WON");
+            JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.whichPlayerWon().getName() + " WON");
         }
 
         if (Configuration.DEBUG_MODE) {
@@ -250,8 +274,13 @@ public class Game {
         return true;
     }
 
-    public boolean isWinner(Player player) {
+    /*public boolean isWinner(Player player) {
         return isOver() && this.getCurrentPlayer().getName().equals(player.getName());
+    }*/
+
+    public boolean thereIsAWinner()
+    {
+        return (this.winner != null);
     }
 
     public void setNextPlayerAsCurrent() {
@@ -264,7 +293,8 @@ public class Game {
                 this.currentPlayerIndex++;
             }
         }
-        else{
+        else if(gameOver())
+        {
             this.end();
         }
     }
@@ -318,7 +348,7 @@ public class Game {
         return false;
     }
 
-    public Boolean whoWon() // true for first player, false for second player, null for no winner
+    /*public Boolean whoWon() // true for first player, false for second player, null for no winner
     {
         GameOverLogic logic = new GameOverLogic(this);
 
@@ -334,9 +364,9 @@ public class Game {
         {
             return null;
         }
-    }
+    }*/
 
-    public Player wichPlayerWon() // true for first player, false for second player, null for no winner
+    public Player whichPlayerWon() // true for first player, false for second player, null for no winner
     {
         GameOverLogic logic = new GameOverLogic(this);
 

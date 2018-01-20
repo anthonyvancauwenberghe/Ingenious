@@ -15,14 +15,22 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
 {
     public Move execute(Game game)
     {
-        TreeNode expectiTree = createTree(game);
-        Object[] returned = new Object[2];
-        Object[] results;
-        if(Configuration.USE_BASE_MINIMAX)
-            results = runMiniMax(expectiTree,true, returned);
-        else
-            results =  runAlphaBeta(expectiTree,-10000, 10000, true, returned);
-        return (Move) results[1];
+        Game.simulating = true;
+        if (!game.thereIsAWinner())
+        {
+            TreeNode expectiTree = createTree(game);
+            Object[] returned = new Object[2];
+            Object[] results;
+            if (Configuration.USE_BASE_MINIMAX)
+                results = runMiniMax(expectiTree, true, returned);
+            else
+                results = runAlphaBeta(expectiTree, -10000, 10000, true, returned);
+            Game.simulating = false;
+            return (Move) results[1];
+        }
+        System.out.println("Bot runs EMM when game is already won!");
+        Game.simulating = false;
+        return null;
     }
 
 
@@ -34,18 +42,19 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
 
-        //Rack minimisingEstimatedRack = rootState.getTracker().getRandomRack(rootState.getOtherPlayer().getRack());
-        List<Move> baseMoves = smartBaseMoveGenerator(rootState/*, minimisingEstimatedRack*/);
+        Rack minimisingEstimatedRack = rootState.getTracker().getRandomRack(rootState.getOtherPlayer().getRack());
+        List<Move> baseMoves = smartBaseMoveGenerator(rootState, minimisingEstimatedRack);
 
         for (Move move : baseMoves)
         {
-            Game childState = tree.getRootState().getClone();
+            Game childState = rootState.getClone();
             childState.doSimulationMove(move);
             TreeNode newChild = new TreeNode(childState, tree, move);
-            newChild.addEvaluation(tree.getRootState(), childState);
+            newChild.addEvaluation(rootState, childState);
             tree.addChild(newChild);
 
-            executorService.submit(new NodeGenerator(childState, newChild, countdown - 1, true));
+            if(!childState.thereIsAWinner())
+                executorService.submit(new NodeGenerator(childState, newChild, countdown - 1, true));
         }
         try {
             executorService.shutdown();
@@ -97,11 +106,12 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
             int v = -10000;
             for (TreeNode childNode : node.getChildren())
             {
+                int oldV = v;
                 v = Math.max(v, (int)runMiniMax(childNode, false, returned)[0]);
+                if(oldV != v && !node.isRoot())
+                    returned[1] = node.getRootMove();
             }
-            returned[0]=v;
-            if(!node.isRoot())
-                returned[1]=node.getRootMove();
+            returned[0] = v;
             return returned;
         }
         else
@@ -109,11 +119,12 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
             int v = 10000;
             for (TreeNode childNode : node.getChildren())
             {
+                int oldV = v;
                 v = Math.min(v, (int)runMiniMax(childNode, true, returned)[0]);
+                if(oldV != v && !node.isRoot())
+                    returned[1] = node.getRootMove();
             }
-            returned[0]=v;
-            if(!node.isRoot())
-                returned[1]=node.getRootMove();
+            returned[0] = v;
             return returned;
         }
     }

@@ -34,13 +34,13 @@ public class NodeGenerator implements Callable {
         if (countDown > 0)
         {
             StraightLineMoveGenerator generator;
-            //if(maximising)
+            if(maximising)
                 generator = new StraightLineMoveGenerator(parentState);
-            /*else
+            else
             {
                 Rack minimisingEstimatedRack = parentState.getTracker().getRandomRack(game.getOtherPlayer().getRack());
                 generator = new StraightLineMoveGenerator(parentState, minimisingEstimatedRack);
-            }*/
+            }
 
             Set<Move> baseMoves = generator.generate();
 
@@ -52,7 +52,8 @@ public class NodeGenerator implements Callable {
                 newChild.addEvaluation(parentState, childState);
                 parentNode.addChild(newChild);
 
-                doAlgorithm(childState, newChild, countDown - 1, !maximising);
+                if(!childState.thereIsAWinner())
+                    doAlgorithm(childState, newChild, countDown - 1, !maximising);
             }
         }
     }

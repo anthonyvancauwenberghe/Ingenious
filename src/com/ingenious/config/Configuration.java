@@ -3,6 +3,7 @@ package com.ingenious.config;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
+import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
 
 import java.awt.*;
 

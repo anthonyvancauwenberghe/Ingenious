@@ -1,6 +1,8 @@
 package com.ingenious.algorithm.bot.impl.expectiminimax;
 
 import com.ingenious.engine.Game;
+import com.ingenious.model.players.Player;
+import com.ingenious.model.players.impl.Bot;
 
 public class ScoreEvaluationFunction
 {
@@ -24,15 +26,33 @@ public class ScoreEvaluationFunction
             if(playerScorePast[j] <= 8)
                 playerDiff[j] *= (maxWeight - playerScorePast[j]);
             else if (playerScorePast[j] >= 9)
-                playerDiff[j] *= (maxWeight - (17 - playerScorePast[j]));
-            else  if (playerScorePast[j] == 18)
+                //playerDiff[j] *= (maxWeight - (17 - playerScorePast[j]));
                 playerDiff[j] *= 0;
+        }
+
+        //award one-time bonus to lowest color
+        for(int x = 0; x < 18; x++)
+        {
+            for(int y = 0; y < 6; y++)
+            {
+                if (playerDiff[y] == x)
+                {
+                    playerDiff[y] += 300;
+                    break;
+                }
+            }
         }
 
         int totalGain = 0;
         for(int i = 0; i < 6; i++)
         {
             totalGain += playerDiff[i];
+        }
+
+        //if game is won, award a large bonus
+        if(currentNodeState.gameOver() && currentNodeState.getWinner().isBot())
+        {
+            totalGain += 1000;
         }
 
         if(totalGain > 0)
