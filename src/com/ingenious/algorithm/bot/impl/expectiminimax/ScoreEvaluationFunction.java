@@ -31,13 +31,15 @@ public class ScoreEvaluationFunction
         }
 
         //award one-time bonus to lowest color
-        for(int x = 0; x < 18; x++)
+        boolean done = false;
+        for(int x = 1; x < 18 && !done; x++)
         {
-            for(int y = 0; y < 6; y++)
+            for(int y = 0; y < 6 && !done; y++)
             {
-                if (playerDiff[y] == x)
+                if (playerScorePast[y] == x)
                 {
                     playerDiff[y] += 300;
+                    done = true;
                     break;
                 }
             }
@@ -50,10 +52,12 @@ public class ScoreEvaluationFunction
         }
 
         //if game is won, award a large bonus
-        if(currentNodeState.gameOver() && currentNodeState.getWinner().isBot())
+        /*if(!parentNodeState.gameOver())
         {
-            totalGain += 1000;
-        }
+            if (currentNodeState.gameOver() && currentNodeState.getWinner().isBot()) {
+                totalGain += 1000;
+            }
+        }*/
 
         if(totalGain > 0)
             return totalGain;

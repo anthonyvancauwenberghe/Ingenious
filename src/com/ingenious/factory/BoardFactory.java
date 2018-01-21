@@ -21,13 +21,14 @@ public class BoardFactory {
         return this.board;
     }
 
-    public void setInitialTiles() {
-        this.board.setTile(0, -5, Tile.red);
-        this.board.setTile(-5, 0, Tile.green);
-        this.board.setTile(-5, 5, Tile.orange);
-        this.board.setTile(5, 0, Tile.yellow);
-        this.board.setTile(5, -5, Tile.purple);
-        this.board.setTile(0, 5, Tile.blue);
+    public void setInitialTiles()
+    {
+        this.board.setTile(0, -(Configuration.BOARD_WIDTH - 1), Tile.red);
+        this.board.setTile(-(Configuration.BOARD_WIDTH - 1), 0, Tile.green);
+        this.board.setTile(-(Configuration.BOARD_WIDTH - 1), (Configuration.BOARD_WIDTH - 1), Tile.orange);
+        this.board.setTile((Configuration.BOARD_WIDTH - 1), 0, Tile.yellow);
+        this.board.setTile((Configuration.BOARD_WIDTH - 1), -(Configuration.BOARD_WIDTH - 1), Tile.purple);
+        this.board.setTile(0, (Configuration.BOARD_WIDTH - 1), Tile.blue);
     }
 
     private void buildBoardList() {

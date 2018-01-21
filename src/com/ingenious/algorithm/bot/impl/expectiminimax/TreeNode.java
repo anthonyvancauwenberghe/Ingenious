@@ -73,6 +73,11 @@ public class TreeNode {
         this.children.add(newChild);
     }
 
+    public TreeNode getChild(int index)
+    {
+        return this.children.get(index);
+    }
+
     public void addEvaluation(Game parentState, Game currentState) {
         this.evaluationScore = ScoreEvaluationFunction.evaluateScores(parentState, currentState);
     }

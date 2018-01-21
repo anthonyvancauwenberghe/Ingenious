@@ -98,4 +98,28 @@ public class Tile extends Color {
     public boolean isPurple() {
         return this.tileId == Configuration.PURPLE_TILE_ID;
     }
+
+    public String getName()
+    {
+        switch (this.tileId)
+        {
+            case Configuration.OCCUPIED_TILE_ID:
+                return "Occupied";
+            case Configuration.EMPTY_TILE_ID:
+                return "Empty";
+            case Configuration.RED_TILE_ID:
+                return "Red";
+            case Configuration.BLUE_TILE_ID:
+                return "Blue";
+            case Configuration.GREEN_TILE_ID:
+                return "Green";
+            case Configuration.ORANGE_TILE_ID:
+                return "Orange";
+            case Configuration.YELLOW_TILE_ID:
+                return "Yellow";
+            case Configuration.PURPLE_TILE_ID:
+                return "Purple";
+        }
+        return null;
+    }
 }

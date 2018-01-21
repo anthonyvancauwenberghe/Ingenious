@@ -3,10 +3,11 @@ package com.ingenious.algorithm.bot.impl.expectiminimax;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
+import com.ingenious.engine.logic.game.GameOverLogic;
 import com.ingenious.model.Move;
-import com.ingenious.model.Rack;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -16,21 +17,34 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
     public Move execute(Game game)
     {
         Game.simulating = true;
-        if (!game.thereIsAWinner())
+        GameOverLogic logic = new GameOverLogic(game);
+        if(!logic.execute())
         {
             TreeNode expectiTree = createTree(game);
-            Object[] returned = new Object[2];
-            Object[] results;
+            Object[] results = new Object[2];
             if (Configuration.USE_BASE_MINIMAX)
-                results = runMiniMax(expectiTree, true, returned);
+                results = runMiniMax(expectiTree, true, results);
             else
-                results = runAlphaBeta(expectiTree, -10000, 10000, true, returned);
+                results = runAlphaBeta(expectiTree, -10000, 10000, true, results);
+
+            //make sure a move is returned even if no optimal one is found
+            if(results[1] == null)
+                results[1] = fillWithMove(expectiTree);
+
+            System.out.println("EMM says: move " + results[1].toString());
+
             Game.simulating = false;
             return (Move) results[1];
         }
         System.out.println("Bot runs EMM when game is already won!");
         Game.simulating = false;
         return null;
+    }
+
+    private Move fillWithMove(TreeNode tree)
+    {
+        Random r = new Random();
+        return tree.getChild(r.nextInt(tree.getChildren().size())).getMove();
     }
 
 
@@ -42,20 +56,22 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
 
-        Rack minimisingEstimatedRack = rootState.getTracker().getRandomRack(rootState.getOtherPlayer().getRack());
-        List<Move> baseMoves = smartBaseMoveGenerator(rootState, minimisingEstimatedRack);
+        List<Move> baseMoves = smartBaseMoveGenerator(rootState);
 
         for (Move move : baseMoves)
         {
             Game childState = rootState.getClone();
-            childState.doSimulationMove(move);
+
+            boolean endOfGame = childState.simulateMove(move);
             TreeNode newChild = new TreeNode(childState, tree, move);
             newChild.addEvaluation(rootState, childState);
             tree.addChild(newChild);
 
-            if(!childState.thereIsAWinner())
-                executorService.submit(new NodeGenerator(childState, newChild, countdown - 1, true));
+            if (!endOfGame)
+                executorService.submit(new NodeGenerator(childState, newChild, countdown - 1));
+
         }
+
         try {
             executorService.shutdown();
             executorService.awaitTermination(30, TimeUnit.MINUTES);

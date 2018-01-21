@@ -169,16 +169,17 @@ public class Game {
         ScoreCalculatorLogic scoreCalculator = new ScoreCalculatorLogic(this, move);
         scoreCalculator.execute();
 
-        if(gameOver()){
+        if(gameOver())
+        {
             end();
         }
-        else{
+        else
+        {
             if (this.bonusPlay > 0)
                 this.bonusPlay--;
 
-            if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0) {
+            if (this.bonusPlay == 0 || getCurrentPlayer().getRack().getPieces().size() == 0)
                 setNextPlayerAsCurrent();
-            }
         }
 
     }
@@ -207,6 +208,7 @@ public class Game {
                 setNextPlayerAsCurrent();
             }
         } else {
+            setNextPlayerAsCurrent();
             return true;
         }
         return false;
@@ -233,8 +235,12 @@ public class Game {
     }
     public boolean gameOver(){
         GameOverLogic logic = new GameOverLogic(this);
-        if(won()){
+        if(won(this.getCurrentPlayer())){
             this.winner = getCurrentPlayer();
+            return true;
+        }
+        else if(won(this.getOtherPlayer())){
+            this.winner = getOtherPlayer();
             return true;
         }
         if(logic.noMovesLeft()){
@@ -249,9 +255,11 @@ public class Game {
             Tile current_low = getCurrentPlayer().getScore().sort()[i];
             Tile other_low = getOtherPlayer().getScore().sort()[i];
             if(getCurrentPlayer().getScore().getScore(current_low)<getOtherPlayer().getScore().getScore(other_low)){
-                return  getOtherPlayer();
+                System.out.println("Winner: " + getOtherPlayer().getName());
+                return getOtherPlayer();
             }
             if(getCurrentPlayer().getScore().getScore(current_low)>getOtherPlayer().getScore().getScore(other_low)){
+                System.out.println("Winner: " + getCurrentPlayer().getName());
                 return getCurrentPlayer();
             }
         }
@@ -265,9 +273,9 @@ public class Game {
         return logic.execute();
     }
 
-    public boolean won() {
+    public boolean won(Player player) {
         for (int i = 0; i < 6; i++) {
-            if (getCurrentPlayer().getScore().toArray()[i] < 18) {
+            if (player.getScore().toArray()[i] < 18) {
                 return false;
             }
         }
