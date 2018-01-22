@@ -2,6 +2,7 @@ package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
+import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
 
@@ -16,11 +17,11 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
     public final static boolean ExperimentMode = true;
-    public final static BotAlgorithm BOT_ALGORITHM = new RandomAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new qlearning(0.5);
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 5;
-    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm();
+    public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm(2,0);
 
     /* AlphaBeta Configuration Settings */
     public final static int MINIMAX_TREE_DEPTH = 2;
@@ -28,8 +29,8 @@ public class Configuration {
 
     /* Experiments Configuration Settings */
     public final static int EXPERIMENT_SIMULATIONS = 1000;
-    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm();
-    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new SmartRandomAlgorithm();
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm(2,0);
+    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new qlearning(0.0);
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;

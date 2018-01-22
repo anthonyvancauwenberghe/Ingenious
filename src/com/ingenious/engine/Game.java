@@ -219,7 +219,14 @@ public class Game {
     }
 
     public void end(){
-
+        if(Configuration.ExperimentMode){
+            if(Configuration.EXPERIMENT_SECOND_PLAYER instanceof qlearning){
+                ((qlearning) Configuration.EXPERIMENT_SECOND_PLAYER).end();
+            }
+            if(Configuration.EXPERIMENT_FIRST_PLAYER instanceof qlearning){
+                ((qlearning) Configuration.EXPERIMENT_FIRST_PLAYER).end();
+            }
+        }
         if(Configuration.BOT_ALGORITHM instanceof qlearning){
             ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
