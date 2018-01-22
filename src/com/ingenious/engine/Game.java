@@ -1,6 +1,7 @@
 package com.ingenious.engine;
 
 import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
+import com.ingenious.algorithm.bot.impl.experiments.Experiment;
 import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.config.Configuration;
 import com.ingenious.engine.logic.calculation.ScoreCalculatorLogic;
@@ -23,7 +24,7 @@ public class Game {
     private PieceTracker tracker;
 
     public static boolean simulating = false;
-    private int currentPlayerIndex = 0;
+    public int currentPlayerIndex = 0;
     public int bonusPlay = 0;
 
     public Game(Board board, ArrayList<Player> players, Bag bag, PieceTracker tracker) {
@@ -56,7 +57,10 @@ public class Game {
     }
 
     public void gameLoop() {
-
+        if (Configuration.ExperimentMode) {
+            Experiment experiment = new Experiment();
+            experiment.execute(this);
+        }
     }
 
     public void swap() {
@@ -255,11 +259,11 @@ public class Game {
             Tile current_low = getCurrentPlayer().getScore().sort()[i];
             Tile other_low = getOtherPlayer().getScore().sort()[i];
             if(getCurrentPlayer().getScore().getScore(current_low)<getOtherPlayer().getScore().getScore(other_low)){
-                System.out.println("Winner: " + getOtherPlayer().getName());
+                //System.out.println("Winner1: " + getOtherPlayer().getName());
                 return getOtherPlayer();
             }
             if(getCurrentPlayer().getScore().getScore(current_low)>getOtherPlayer().getScore().getScore(other_low)){
-                System.out.println("Winner: " + getCurrentPlayer().getName());
+                //System.out.println("Winner2: " + getCurrentPlayer().getName());
                 return getCurrentPlayer();
             }
         }
@@ -356,6 +360,19 @@ public class Game {
         return false;
     }
 
+    public boolean secondPlayerWon() {
+        GameOverLogic logic = new GameOverLogic(this);
+
+        if (logic.playerHasMaxScoreAcrossAllColors(1))
+            return true;
+        else if (logic.playerHasMaxScoreAcrossAllColors(0))
+            return true;
+        else if (logic.noMovesLeft()) {
+            return !logic.firstPlayerWinsWithBestScore();
+        }
+        return false;
+    }
+
     /*public Boolean whoWon() // true for first player, false for second player, null for no winner
     {
         GameOverLogic logic = new GameOverLogic(this);
@@ -374,7 +391,7 @@ public class Game {
         }
     }*/
 
-    public Player whichPlayerWon() // true for first player, false for second player, null for no winner
+    public Player whichPlayerWon()
     {
         GameOverLogic logic = new GameOverLogic(this);
 

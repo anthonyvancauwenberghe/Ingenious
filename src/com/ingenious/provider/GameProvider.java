@@ -1,5 +1,6 @@
 package com.ingenious.provider;
 
+import com.ingenious.config.Configuration;
 import com.ingenious.engine.Game;
 import com.ingenious.factory.BagFactory;
 import com.ingenious.factory.BoardFactory;
@@ -22,7 +23,7 @@ public class GameProvider implements Runnable {
 
     private GameProvider(boolean enableGui) {
         game = initializeGame();
-        if (enableGui)
+        if (enableGui && !Configuration.ExperimentMode)
             gui = initializeGui(game);
     }
 

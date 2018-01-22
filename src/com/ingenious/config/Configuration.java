@@ -1,9 +1,9 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
+import com.ingenious.algorithm.bot.impl.experiments.Experiment;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
-import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
+import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 
 import java.awt.*;
 
@@ -15,7 +15,8 @@ public class Configuration {
     /* Debug Settings */
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
-    public final static BotAlgorithm BOT_ALGORITHM = new ExpectiMiniMaxAlgorithm();
+    public final static boolean ExperimentMode = true;
+    public final static BotAlgorithm BOT_ALGORITHM = new GreedyAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 5;
@@ -24,6 +25,11 @@ public class Configuration {
     /* AlphaBeta Configuration Settings */
     public final static int MINIMAX_TREE_DEPTH = 2;
     public final static boolean USE_BASE_MINIMAX = true;
+
+    /* Experiments Configuration Settings */
+    public final static int EXPERIMENT_SIMULATIONS = 10000;
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm();
+    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm();
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;
