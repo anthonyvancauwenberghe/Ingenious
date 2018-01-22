@@ -40,24 +40,43 @@ public class AllBaseMovesGenerator {
         HashSet<Move> moves = new HashSet<>();
 
         for (BoardNode boardNode : this.game.getBoard().logic().getEmptyNodes()) {
-                for (BoardNode neighbour : this.game.getBoard().logic().getEmptyNeighboursOfNode(boardNode)) {
-                    for (Piece piece : this.rackPieces) {
-                        Move move = new Move(boardNode, neighbour, piece);
+            for (BoardNode neighbour : this.game.getBoard().logic().getEmptyNeighboursOfNode(boardNode)) {
+                for (Piece piece : this.rackPieces) {
+                    Move move = new Move(boardNode, neighbour, piece);
+                    if (!moves.contains(move)) {
+                        moves.add(move);
+                    }
+                    if (!piece.hasEqualTiles()) {
+                        Move invertedMove = new Move(neighbour, boardNode, piece);
                         if (!moves.contains(move)) {
-                            moves.add(move);
+                            moves.add(invertedMove);
                         }
-                        if (!piece.hasEqualTiles()) {
-                            Move invertedMove = new Move(neighbour, boardNode, piece);
-                            if (!moves.contains(move)) {
-                                moves.add(invertedMove);
-                            }
-                        }
-
                     }
 
                 }
-        }
 
+            }
+        }
+        return getNonDuplicateMoves(moves);
+    }
+
+    private Set<Move> getNonDuplicateMoves(HashSet<Move> list)
+    {
+        HashSet<Move> moves = new HashSet<>();
+
+        boolean moveIsNonDuplicate;
+        for (Move move : list) {
+            moveIsNonDuplicate = true;
+            for (Move aMove : moves) {
+                if (move.equals(aMove)) {
+                    moveIsNonDuplicate = false;
+                    break;
+                }
+            }
+            if (moveIsNonDuplicate) {
+                moves.add(move);
+            }
+        }
         return moves;
     }
 }

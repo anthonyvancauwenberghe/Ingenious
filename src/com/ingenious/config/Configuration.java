@@ -1,6 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
 import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
@@ -16,7 +17,7 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
     public final static boolean ExperimentMode = true;
-    public final static BotAlgorithm BOT_ALGORITHM = new RandomAlgorithm();
+    public final static BotAlgorithm BOT_ALGORITHM = new ExpectiMiniMaxAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 5;
@@ -27,8 +28,8 @@ public class Configuration {
     public final static boolean USE_BASE_MINIMAX = true;
 
     /* Experiments Configuration Settings */
-    public final static int EXPERIMENT_SIMULATIONS = 1000;
-    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm();
+    public final static int EXPERIMENT_SIMULATIONS = 500;
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new ExpectiMiniMaxAlgorithm();
     public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new SmartRandomAlgorithm();
 
     /* GUI Settings */
