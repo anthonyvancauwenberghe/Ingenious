@@ -1,4 +1,5 @@
-package com.ingenious.model; /**
+package com.ingenious.model;
+/*
  * Created by alexisguillot on 14/09/2017.
  */
 

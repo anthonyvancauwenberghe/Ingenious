@@ -151,7 +151,6 @@ public class Game {
                     this.getCurrentPlayer().getRack().printRackPieces();
                     System.out.println("-------------------------------------------------------");
                     this.getOtherPlayer().getRack().printRackPieces();
-                    //System.out.println();
                 if(Configuration.BOT_ALGORITHM instanceof ExpectiMiniMaxAlgorithm)
                 {
                     System.out.println("***");
@@ -159,14 +158,13 @@ public class Game {
                     System.out.println("***");
                     System.out.println("-------------------------------------------------------");
                 }
+                else
+                {
+                    System.out.println();
+                }
             }
         }
-        /*else
-            {
-                System.out.println("-------------------------------------------------------");
-                System.out.println("All went well.");
-                System.out.println("-------------------------------------------------------");
-            }*/
+
         this.getTracker().removePiece(move.getPiece());
 
         /* Calculate current player score */
@@ -195,9 +193,18 @@ public class Game {
         placeMove.execute();
 
         /* Remove piece from currentplayer rack */
-        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece())) {
-            System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
-            this.getCurrentPlayer().getRack().printRackPieces();
+        if (!this.getCurrentPlayer().getRack().removePiece(move.getPiece()))
+        {
+            if(Configuration.BOT_ALGORITHM instanceof ExpectiMiniMaxAlgorithm)
+            {
+                this.getBag().removePiece(move.getPiece());
+                this.getCurrentPlayer().getRack().removeRandomPiece();
+            }
+            else if (Configuration.DEBUG_MODE)
+            {
+                System.out.println("PIECE TO PLACE: " + move.getPiece().toString());
+                this.getCurrentPlayer().getRack().printRackPieces();
+            }
         }
 
         /* Calculate current player score */
@@ -233,8 +240,7 @@ public class Game {
             }
         }
 
-
-        if (!Game.simulating) {
+        if (!Game.simulating && !Configuration.ExperimentMode) {
             JFrame frame = new JFrame();
             JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.whichPlayerWon().getName() + " WON");
         }
@@ -269,11 +275,9 @@ public class Game {
             Tile current_low = getCurrentPlayer().getScore().sort()[i];
             Tile other_low = getOtherPlayer().getScore().sort()[i];
             if(getCurrentPlayer().getScore().getScore(current_low)<getOtherPlayer().getScore().getScore(other_low)){
-                //System.out.println("Winner1: " + getOtherPlayer().getName());
                 return getOtherPlayer();
             }
             if(getCurrentPlayer().getScore().getScore(current_low)>getOtherPlayer().getScore().getScore(other_low)){
-                //System.out.println("Winner2: " + getCurrentPlayer().getName());
                 return getCurrentPlayer();
             }
         }
@@ -295,10 +299,6 @@ public class Game {
         }
         return true;
     }
-
-    /*public boolean isWinner(Player player) {
-        return isOver() && this.getCurrentPlayer().getName().equals(player.getName());
-    }*/
 
     public boolean thereIsAWinner()
     {
@@ -382,24 +382,6 @@ public class Game {
         }
         return false;
     }
-
-    /*public Boolean whoWon() // true for first player, false for second player, null for no winner
-    {
-        GameOverLogic logic = new GameOverLogic(this);
-
-        if (logic.playerHasMaxScoreAcrossAllColors(0))
-            return true;
-        else if (logic.playerHasMaxScoreAcrossAllColors(1))
-            return false;
-        else if (logic.noMovesLeft())
-        {
-            return logic.firstPlayerWinsWithBestScore();
-        }
-        else
-        {
-            return null;
-        }
-    }*/
 
     public Player whichPlayerWon()
     {
