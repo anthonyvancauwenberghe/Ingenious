@@ -227,9 +227,12 @@ public class Game {
                 ((qlearning) Configuration.EXPERIMENT_FIRST_PLAYER).end();
             }
         }
-        if(Configuration.BOT_ALGORITHM instanceof qlearning){
-            ((qlearning) Configuration.BOT_ALGORITHM).end();
+        else{
+            if(Configuration.BOT_ALGORITHM instanceof qlearning){
+                ((qlearning) Configuration.BOT_ALGORITHM).end();
+            }
         }
+
 
         if (!Game.simulating) {
             JFrame frame = new JFrame();

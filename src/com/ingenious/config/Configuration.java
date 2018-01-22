@@ -30,7 +30,7 @@ public class Configuration {
     /* Experiments Configuration Settings */
     public final static int EXPERIMENT_SIMULATIONS = 1000;
     public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm(2,0);
-    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new qlearning(0.0);
+    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,4);
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;
