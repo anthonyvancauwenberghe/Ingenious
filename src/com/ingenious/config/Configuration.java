@@ -29,8 +29,8 @@ public class Configuration {
     public final static boolean USE_BASE_MINIMAX = true;
 
     /* Experiments Configuration Settings */
-    public final static int EXPERIMENT_SIMULATIONS = 1;
-    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new qlearning(0.5);
+    public final static int EXPERIMENT_SIMULATIONS = 10000;
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new qlearning(0.7);
     public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,8);
 
     /* GUI Settings */
