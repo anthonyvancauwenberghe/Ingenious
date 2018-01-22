@@ -22,6 +22,8 @@ public class ExperimentSimulation implements Callable {
 
     @Override
     public Object call() {
+        if(index % 10 == 0)
+            System.out.print(".");
         Game game = this.game.getClone();
 
 

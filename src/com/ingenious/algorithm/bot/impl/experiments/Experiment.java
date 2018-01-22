@@ -26,9 +26,10 @@ public class Experiment extends BotAlgorithm {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 
-        System.out.println("Executing Experiments on " + Runtime.getRuntime().availableProcessors() + " threads");
-        System.out.println("amount of simulations: " + this.simulations);
-        System.out.println("Algorithm " + Configuration.EXPERIMENT_FIRST_PLAYER.getClass() + " VS " + Configuration.EXPERIMENT_SECOND_PLAYER.getClass());
+        System.out.println("Executing Experiments On " + Runtime.getRuntime().availableProcessors() + " threads");
+        System.out.println("Amount Of Simulations: " + this.simulations);
+        System.out.println("-------------------------------------------------------");
+        System.out.println(Configuration.EXPERIMENT_FIRST_PLAYER.getClass().getSimpleName() + " VS " + Configuration.EXPERIMENT_SECOND_PLAYER.getClass().getSimpleName());
         int[] totalWins = new int[this.simulations];
 
         int index = 0;
@@ -43,7 +44,7 @@ public class Experiment extends BotAlgorithm {
 
         try {
             executorService.shutdown();
-            executorService.awaitTermination(10, TimeUnit.MINUTES);
+            executorService.awaitTermination(3, TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -58,6 +59,7 @@ public class Experiment extends BotAlgorithm {
         }
         double winrate = (100 * (double) maxValueIndex) / (double) simulations;
         DecimalFormat f = new DecimalFormat("##.00");
+        System.out.println("");
         System.out.println("-------------------------------------------------------");
         System.out.println("First Player Won " + maxValueIndex + "/" + simulations + " games");
         System.out.println("First Player Winrate: " + f.format(winrate) + "%");
