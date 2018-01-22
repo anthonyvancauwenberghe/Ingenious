@@ -14,8 +14,19 @@ import java.util.concurrent.TimeUnit;
 
 public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
 {
+    private int depthToUse = 0;
+    public ExpectiMiniMaxAlgorithm(){}
+
+    public ExpectiMiniMaxAlgorithm(int depthToUse)
+    {
+        this.depthToUse = depthToUse;
+    }
+
     public Move execute(Game game)
     {
+        if(depthToUse == 0)
+            depthToUse = Configuration.MINIMAX_TREE_DEPTH;
+
         Game.simulating = true;
         GameOverLogic logic = new GameOverLogic(game);
         if(!logic.execute())
@@ -23,9 +34,9 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
             TreeNode expectiTree = createTree(game);
             Object[] results = new Object[2];
             if (Configuration.USE_BASE_MINIMAX)
-                results = runMiniMax(expectiTree, Configuration.MINIMAX_TREE_DEPTH, true, results);
+                results = runMiniMax(expectiTree, depthToUse, true, results);
             else
-                results = runAlphaBeta(expectiTree, Configuration.MINIMAX_TREE_DEPTH, -10000, 10000, true, results);
+                results = runAlphaBeta(expectiTree, depthToUse, -10000, 10000, true, results);
 
             //make sure a move is returned even if no optimal one is found
             if(results[1] == null)
@@ -52,7 +63,8 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
         int countdown = Configuration.MINIMAX_TREE_DEPTH;
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
+        if(!Configuration.ExperimentMode)
+            System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
 
         List<Move> baseMoves = smartBaseMoveGenerator(rootState);
 
@@ -158,6 +170,7 @@ public class ExpectiMiniMaxAlgorithm extends BotAlgorithm
                 if(bestV == v && !node.isRoot())
                     returned[1] = node.getRootMove();
             }
+
             returned[0] = bestV;
             return returned;
         }

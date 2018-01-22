@@ -238,7 +238,7 @@ public class Game {
             ((qlearning) Configuration.BOT_ALGORITHM).end();
         }
 
-        if (!Game.simulating) {
+        if (!Game.simulating && !Configuration.ExperimentMode) {
             JFrame frame = new JFrame();
             JOptionPane.showMessageDialog(frame, "GAME OVER, " + this.whichPlayerWon().getName() + " WON");
         }
