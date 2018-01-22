@@ -17,7 +17,7 @@ public class qlearning extends BotAlgorithm{
     private double epsilon;
     private Qtable qtable;
     private Information popup;
-    private double P_RATE = 0.6;
+    private double P_RATE = 1.0;
 
 
     public qlearning(double epsilon){
@@ -80,10 +80,10 @@ public class qlearning extends BotAlgorithm{
         }
         double oldQ = state1.getQ_value();
         double alpha = 1/1+state1.getVisited();
-        double newQ = (1-alpha)*oldQ + (state1.getVisited()+1)*P_RATE*reward(state1);
+        double newQ = (1-alpha)*oldQ + reward(state1);
         state1.setQ_value(newQ);
         state1.visited();
-        popup.popup(oldQ,newQ);
+       // popup.popup(oldQ,newQ);
         return newQ;
     }
 

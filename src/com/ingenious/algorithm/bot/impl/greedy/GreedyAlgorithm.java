@@ -19,6 +19,13 @@ import java.util.Set;
  */
 public class GreedyAlgorithm extends BotAlgorithm {
 
+    double a;
+    double c;
+
+    public GreedyAlgorithm(double a, int c){
+        this.a = a;
+        this.c = c;
+    }
     public Set<Move> getAvailableMoves(Game game) {
         SmartBaseMovesGenerator generator = new SmartBaseMovesGenerator(game);
         return generator.generate();
@@ -114,7 +121,7 @@ public class GreedyAlgorithm extends BotAlgorithm {
                 break;
             }
         }
-        if (high < (low * 2)) {
+        if (high - (this.a * low) < this.c) {
             return true;
         }
         return false;
