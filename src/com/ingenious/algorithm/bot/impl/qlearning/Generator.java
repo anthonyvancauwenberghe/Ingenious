@@ -1,17 +1,19 @@
-package com.ingenious.algorithm.bot.impl.qlearning;
-
-import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
-import com.ingenious.model.Board;
-import com.ingenious.model.BoardNode;
-import com.ingenious.model.Move;
-import com.ingenious.model.Piece;
-import com.ingenious.provider.GameProvider;
-import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by carolley on 10-Jan-18.
  */
+package com.ingenious.algorithm.bot.impl.qlearning;
+
+import com.ingenious.algorithm.bot.impl.experiments.Experiment;
+import com.ingenious.algorithm.bot.impl.experiments.ExperimentSimulation;
+import com.ingenious.algorithm.support.nodegenerators.AllBaseMovesGenerator;
+import com.ingenious.engine.Game;
+import com.ingenious.model.Board;
+import com.ingenious.model.BoardNode;
+import com.ingenious.model.Move;
+import com.ingenious.model.Piece;
+import java.util.ArrayList;
+import java.util.Set;
 public class Generator{
 
     /*
@@ -105,8 +107,8 @@ public class Generator{
     /*
     0 = color of head, 1 = color of tail, -1 = node doesnt exist, 2 = different color, 3 = empty node
      */
-    public State convert(Move move){
-        Board board = GameProvider.getInstance().game.getBoard();
+    public State convert(Move move, Game game){
+        Board board = game.getBoard();
         int description [] = new int [9];
         int [] head = {move.getHeadNode().getX(), move.getHeadNode().getY()};
         int [] tail = {move.getTailNode().getX(), move.getTailNode().getY()};
@@ -185,13 +187,16 @@ public class Generator{
     }
 
 
-    public ArrayList<Move> generateActions(){
-        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(GameProvider.getInstance().game);
+    public ArrayList<Move> generateActions(Game game){
+        AllBaseMovesGenerator generator = new AllBaseMovesGenerator(game);
         Set<Move> moves  = generator.generate();
+
         ArrayList<Move> actions = new ArrayList<>();
         for(Move move: moves){
             actions.add(move);
         }
+
+        System.out.println("SIZE: "+  actions.size());
         return actions;
     }
 

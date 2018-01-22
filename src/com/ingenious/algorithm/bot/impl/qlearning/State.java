@@ -166,34 +166,34 @@ public class State {
         if(this.getTail()==0){
             for(int i=0; i<8; i++){
                 if(this.get_description()[i] == 0) {
-                    reward = reward + 0.3;
+                    reward = reward + 0.5;
                 }
                 if(this.get_description()[i]==2){
-                    reward = reward - 0.04;
+                    reward = reward - 0.5;
                 }
             }
         }
         else{
             for(int i =0; i<5; i++){
                 if(this.get_description()[i]==0){
-                    reward = reward + 0.15;
+                    reward = reward + 0.25;
                 }
             }
             for(int i=3; i<8; i++){
                 if(this.get_description()[i]==1){
-                    reward= reward + 0.15;
+                    reward= reward + 0.25;
                 }
             }
             for(int i =0; i<8; i++){
 
                 if(this.get_description()[i]==2){
-                    reward = reward - 0.02;
+                    reward = reward - 0.25;
                 }
             }
 
         }
         if(disconnected()){
-            reward = reward - 0.5;
+            reward = reward - 100;
         }
 
         return reward;

@@ -1,6 +1,7 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
+import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
 import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
 import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
@@ -28,9 +29,9 @@ public class Configuration {
     public final static boolean USE_BASE_MINIMAX = true;
 
     /* Experiments Configuration Settings */
-    public final static int EXPERIMENT_SIMULATIONS = 1000;
-    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new GreedyAlgorithm(2,0);
-    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,4);
+    public final static int EXPERIMENT_SIMULATIONS = 1;
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new qlearning(0.5);
+    public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,8);
 
     /* GUI Settings */
     public final static int HEXAGON_SIZE = 30;

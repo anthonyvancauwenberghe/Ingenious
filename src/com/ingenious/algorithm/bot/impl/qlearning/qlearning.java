@@ -3,9 +3,6 @@ package com.ingenious.algorithm.bot.impl.qlearning;
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.engine.Game;
 import com.ingenious.model.Move;
-import com.ingenious.provider.GameProvider;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,12 +28,12 @@ public class qlearning extends BotAlgorithm{
     public Move execute(Game game) {
         if(random()){
             popup.setType(" RANDOM ");
-            Move move = randomMove();
+            Move move = randomMove(game);
             return move;
         }
         else{
             popup.setType(" Q ");
-            Move move = qMove();
+            Move move = qMove(game);
             return move;
         }
     }
@@ -58,13 +55,13 @@ public class qlearning extends BotAlgorithm{
         return false;
     }
 
-    public Move randomMove(){
+    public Move randomMove(Game game){
         Generator generator = new Generator();
-        ArrayList<Move> moves = generator.generateActions();
+        ArrayList<Move> moves = generator.generateActions(game);
         int moveIndex = (int) (Math.random() * moves.size());
         Move move = moves.get(moveIndex);
         Generator converter = new Generator();
-        State state = converter.convert(move);
+        State state = converter.convert(move, game);
         setNewQ(state);
         return move;
     }
@@ -80,10 +77,10 @@ public class qlearning extends BotAlgorithm{
         }
         double oldQ = state1.getQ_value();
         double alpha = 1/1+state1.getVisited();
-        double newQ = (1-alpha)*oldQ + reward(state1);
+        double newQ = (1-alpha)*oldQ +  (alpha*0.5*reward(state1));
         state1.setQ_value(newQ);
         state1.visited();
-       // popup.popup(oldQ,newQ);
+        //popup.popup(oldQ,newQ);
         return newQ;
     }
 
@@ -91,27 +88,28 @@ public class qlearning extends BotAlgorithm{
         return this.qtable;
     }
 
-    private Move qMove(){
+    private Move qMove(Game game){
         Generator generator = new Generator();
-        ArrayList<Move> moves = generator.generateActions();
-        Move move = highestQ(moves);
-        State state = generator.convert(move);
+        ArrayList<Move> moves = generator.generateActions(game);
+        Move move = highestQ(moves, game);
+        State state = generator.convert(move, game);
         setNewQ(state);
         return move;
     }
 
-    private Move highestQ(ArrayList<Move> moves){
+    private Move highestQ(ArrayList<Move> moves, Game game){
         Generator gen = new Generator();
-        double max = gen.convert(moves.get(0)).getQ_value();
+        double max = gen.convert(moves.get(0), game).getQ_value();
         Move maxMove = moves.get(0);
         for(Move move: moves){
-            State state = gen.convert(move);
-            double q = state.getQ_value();
+            State state = gen.convert(move, game);
+            double q = this.qtable.getState(state).getQ_value();
             if(q > max){
                 max = q;
                 maxMove = move;
             }
         }
+        System.out.println("MAX MOVE :" + max);
         return maxMove;
     }
 
