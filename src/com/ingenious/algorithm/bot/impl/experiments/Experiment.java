@@ -44,7 +44,7 @@ public class Experiment extends BotAlgorithm {
 
         try {
             executorService.shutdown();
-            executorService.awaitTermination(3, TimeUnit.HOURS);
+            executorService.awaitTermination(24, TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

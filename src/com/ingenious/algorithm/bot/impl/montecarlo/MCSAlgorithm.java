@@ -55,7 +55,7 @@ public class MCSAlgorithm extends BotAlgorithm {
 
         try {
             executorService.shutdown();
-            executorService.awaitTermination(10, TimeUnit.MINUTES);
+            executorService.awaitTermination(25, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

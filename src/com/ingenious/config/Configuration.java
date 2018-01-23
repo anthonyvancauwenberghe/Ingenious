@@ -28,7 +28,7 @@ public class Configuration {
     public final static boolean USE_BASE_MINIMAX = true;
 
     /* Experiments Configuration Settings */
-    public final static int EXPERIMENT_SIMULATIONS = 1;
+    public final static int EXPERIMENT_SIMULATIONS = 25;
     public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new MCSAlgorithm();
     public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,8);
 
