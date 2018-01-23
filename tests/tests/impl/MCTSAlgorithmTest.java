@@ -1,6 +1,6 @@
 package tests.impl;
 
-import com.ingenious.algorithm.bot.impl.mcts.MCTSAlgorithm;
+import com.ingenious.algorithm.bot.impl.montecarlo.MCSAlgorithm;
 import com.ingenious.engine.Game;
 import tests.Test;
 
@@ -11,7 +11,7 @@ public class MCTSAlgorithmTest extends Test {
 
     @Override
     protected void executeTest() {
-        MCTSAlgorithm algorithm = new MCTSAlgorithm();
+        MCSAlgorithm algorithm = new MCSAlgorithm();
         game.doSimulationMove(algorithm.execute(this.game));
     }
 }

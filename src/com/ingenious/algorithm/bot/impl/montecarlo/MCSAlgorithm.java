@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.bot.impl.mcts;
+package com.ingenious.algorithm.bot.impl.montecarlo;
 
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
@@ -14,12 +14,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class MCTSAlgorithm extends BotAlgorithm {
+public class MCSAlgorithm extends BotAlgorithm {
 
     /* Amount of simulations per basemove */
     private final int simulations = Configuration.MCTS_SIMULATIONS;
 
-    public MCTSAlgorithm() {
+    public MCSAlgorithm() {
         super();
     }
 
@@ -31,17 +31,25 @@ public class MCTSAlgorithm extends BotAlgorithm {
         Set<Move> baseMovesSet = generator.generate();
         List<Move> baseMoves = new ArrayList<>(baseMovesSet);
 
-        System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
-        System.out.println("amount of moves: " + baseMoves.size());
-        System.out.println("simulations per move: " + this.simulations);
-        System.out.println("total amount of moveSimulations: " + baseMoves.size() * this.simulations);
-        System.out.print("Executing");
+        if(Configuration.DEBUG_MODE){
+            System.out.println("Executing Algorithm on "+ Runtime.getRuntime().availableProcessors() + " threads");
+            System.out.println("amount of moves: " + baseMoves.size());
+            System.out.println("simulations per move: " + this.simulations);
+            System.out.println("total amount of moveSimulations: " + baseMoves.size() * this.simulations);
+        }
+        System.out.print("Executing MCS");
+
         int[] totalWins = new int[baseMoves.size()];
 
         int index = 0;
 
         for (Move baseMove : baseMoves) {
-            executorService.submit(new MCTSSimulation(game, baseMove, index, totalWins, this.simulations));
+            if (Configuration.LIMITED_SIMULATION) {
+                executorService.submit(new MCSLimitedSimulation(game, baseMove, index, totalWins, this.simulations));
+            } else {
+                executorService.submit(new MCSSimulation(game, baseMove, index, totalWins, this.simulations));
+            }
+
             index++;
         }
 

@@ -1,4 +1,4 @@
-package com.ingenious.algorithm.bot.impl.mcts;
+package com.ingenious.algorithm.bot.impl.montecarlo;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
 import com.ingenious.config.Configuration;
@@ -7,7 +7,7 @@ import com.ingenious.model.Move;
 
 import java.util.concurrent.Callable;
 
-public class MCTSSimulation implements Callable {
+public class MCSSimulation implements Callable {
 
     private Move move;
     private int winAmount = 0;
@@ -16,7 +16,7 @@ public class MCTSSimulation implements Callable {
     private final int[] totalwins;
     private final int simulations;
 
-    public MCTSSimulation(Game game, Move move, int index, int[] totalwins, int simulations) {
+    public MCSSimulation(Game game, Move move, int index, int[] totalwins, int simulations) {
         this.move = move;
         this.game = game;
         this.index = index;

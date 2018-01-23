@@ -1,11 +1,8 @@
 package com.ingenious.config;
 
 import com.ingenious.algorithm.bot.BotAlgorithm;
-import com.ingenious.algorithm.bot.impl.expectiminimax.ExpectiMiniMaxAlgorithm;
 import com.ingenious.algorithm.bot.impl.greedy.GreedyAlgorithm;
-import com.ingenious.algorithm.bot.impl.qlearning.qlearning;
-import com.ingenious.algorithm.bot.impl.random.RandomAlgorithm;
-import com.ingenious.algorithm.bot.impl.random.SmartRandomAlgorithm;
+import com.ingenious.algorithm.bot.impl.montecarlo.MCSAlgorithm;
 
 import java.awt.*;
 
@@ -18,10 +15,12 @@ public class Configuration {
     public final static boolean DEBUG_MODE = false;
     public final static boolean SHOW_COORDINATES = true;
     public final static boolean ExperimentMode = true;
-    public final static BotAlgorithm BOT_ALGORITHM = new qlearning(0.5);
+    public final static BotAlgorithm BOT_ALGORITHM = new MCSAlgorithm();
 
     /* MCTS Configuration Settings */
     public final static int MCTS_SIMULATIONS = 5;
+    public final static boolean LIMITED_SIMULATION = true;
+    public final static int MOVE_LIMIT = 10;
     public final static BotAlgorithm MCTS_SIMULATION_ALGORITHM = new GreedyAlgorithm(2,0);
 
     /* AlphaBeta Configuration Settings */
@@ -29,8 +28,8 @@ public class Configuration {
     public final static boolean USE_BASE_MINIMAX = true;
 
     /* Experiments Configuration Settings */
-    public final static int EXPERIMENT_SIMULATIONS = 10000;
-    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new qlearning(0.7);
+    public final static int EXPERIMENT_SIMULATIONS = 1;
+    public final static BotAlgorithm EXPERIMENT_FIRST_PLAYER = new MCSAlgorithm();
     public final static BotAlgorithm EXPERIMENT_SECOND_PLAYER = new GreedyAlgorithm(1.0,8);
 
     /* GUI Settings */
